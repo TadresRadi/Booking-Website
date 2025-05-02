@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('accept_terms')
 
-        # استخدام الجزء قبل @ كاسم مستخدم تلقائي
+        
         base_username = validated_data['email'].split('@')[0].lower()
         username = base_username
         counter = 1
