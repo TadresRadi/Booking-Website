@@ -6,6 +6,8 @@ from .serializers import RegisterSerializer
 from django.contrib.auth import authenticate
 from .serializers import LoginSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import api_view
+
 
 class RegisterView(APIView):
     def post(self, request):
@@ -21,3 +23,10 @@ class LoginView(APIView):
         if serializer.is_valid():
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+def register_user(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
