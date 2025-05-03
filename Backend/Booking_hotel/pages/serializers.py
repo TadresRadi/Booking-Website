@@ -41,4 +41,20 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the credentials are correct
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Invalid username or password")
+
+        return {
+            'user': user,
+            'username': username,
+        }
