@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
+from rest_framework import serializers
+from django.contrib.auth.models import User
+
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -26,12 +29,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         validated_data.pop('accept_terms')
 
         
-        base_username = validated_data['email'].split('@')[0].lower()
+        first_name = validated_data['first_name'].strip().lower()
+        last_name = validated_data['last_name'].strip().lower()
+        base_username = f"{first_name} {last_name}"
         username = base_username
         counter = 1
+
         while User.objects.filter(username=username).exists():
-            username = f"{base_username}{counter}"
-            counter += 1
+           username = f"{base_username}{counter}"
+           counter += 1
 
         user = User.objects.create_user(
             username=username,
@@ -41,4 +47,20 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the credentials are correct
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Invalid username or password")
+
+        return {
+            'user': user,
+            'username': username,
+        }

@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     
 ]
 
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'booking-website-auth'
+
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
