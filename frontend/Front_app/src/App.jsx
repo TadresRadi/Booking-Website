@@ -3,6 +3,7 @@ import './App.css';
 import { Register } from './page/register/register';
 import { Add_property } from './page/hostone/host';
 import { Login } from './page/login/login';
+import { SearchResult } from './page/search_result/result';
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/booking" element={<Add_property />} />
-        <Route path="*" element={<Register />} />
+        <Route path="/SearchResult" element={<SearchResult/>} />
+        <Route path="/" element={<Register />} />
+        
       </Routes>
     </Router>
   );

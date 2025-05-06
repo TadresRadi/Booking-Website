@@ -1,0 +1,90 @@
+.card{
+    margin: 8px;
+    width: 60%;
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    
+}
+.card_img{
+    width: 45%;
+    height: 100%;
+    box-shadow: 10px 20px 30px rgba(29, 9, 148, 0.1);
+    border-radius: 10px;
+}
+.card_body{
+    width: 55%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.card_title{
+    margin-top: 0%;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgba(57, 157, 191, 1);
+}
+.card_title_container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    height: 15%;
+
+}
+.card_location{
+    height: 6%;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.property_title{
+    font-size: 15px;
+    font-weight: bold;
+    color: rgba(57, 157, 191, 1);
+}
+.property_item{
+    margin-right: 5px;
+    background-color: rgba(217, 217, 217, 1);
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 2px;
+
+}
+.reviews{
+    font-size: 20px;
+    font-weight:100;
+    color: rgba(131, 61, 6, 1);
+}
+.rate{
+    font-size: 20px;
+    font-weight: bold;
+    color: rgba(57, 157, 191, 1);
+
+}
+.card_footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 7%;
+    height: 20%;
+}
+.card_price{
+    padding: 30px;
+   
+    font-size: 30px;
+    font-weight: bold;
+    color:rgba(148, 148, 40, 1);
+}
+.per_night{
+    font-size: 15px;
+    font-weight: 100;
+    color: rgb(0, 0, 0);
+   
+}
+.per{
+    font-size: 30px;
+    font-weight: 700;
+    color: rgb(3, 14, 36);
+}
