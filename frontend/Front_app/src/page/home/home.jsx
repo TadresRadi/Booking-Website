@@ -49,7 +49,7 @@ export function Homepage() {
 
         <div className={styles["bookinghome-form"]}>
           <div className={styles["booking-container"]}>
-            <div className={styles["booking-input"]}>
+            <div className={styles["booking-input1"]}>
               <input
                 className={styles["destination-input"]}
                 type="text"
@@ -59,7 +59,7 @@ export function Homepage() {
               />
             </div>
 
-            <div className={styles["booking-input"]}>
+            <div className={styles["booking-input2"]}>
               <DatePicker
                 selected={checkIn}
                 onChange={(date) => setCheckIn(date)}
@@ -68,7 +68,7 @@ export function Homepage() {
               />
             </div>
 
-            <div className={styles["booking-input"]}>
+            <div className={styles["booking-input3"]}>
               <DatePicker
                 selected={checkOut}
                 onChange={(date) => setCheckOut(date)}
@@ -77,7 +77,7 @@ export function Homepage() {
               />
             </div>
 
-            <div className={`${styles["booking-input"]} ${styles["guest-wrapper"]}`}>
+            <div className={`${styles["booking-input11"]} ${styles["guest-wrapper11"]}`}>
               <div
                 className={styles["selector-input"]}
                 onClick={() => setOpenGuests(!openGuests)}
