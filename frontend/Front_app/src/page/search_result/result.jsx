@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 
 import styles  from "./result.module.css"
 import HotelsCard from '../../components/hotel_card/hotels_card';
-
+import { SearchInput } from '../../components/search_input/searchInput';
 export  function SearchResult() {
 
   function valuetext(value) {
@@ -13,6 +13,7 @@ export  function SearchResult() {
   }
   
   return (<>
+     <SearchInput></SearchInput>
     <div className={styles.price_slider} >
     <TextField id="min" label="Min" variant="outlined" style={{width:'150px',height:'50px' }} />   
     <Box sx={{ width: 500 }} style={{ margin: 'auto', paddingTop: '0px' }}>
@@ -30,12 +31,12 @@ export  function SearchResult() {
     </Box>
     <TextField id="max" label="Max" variant="outlined"  style={{width:'150px',height:'50px' }} />   
     </div>
+    <div className={styles.bi}></div>
       <div className={styles.search_result_cards}>
       <HotelsCard></HotelsCard>
       <HotelsCard></HotelsCard>
       <HotelsCard></HotelsCard>
       <HotelsCard></HotelsCard>   
-      
       </div>
     
     </>
