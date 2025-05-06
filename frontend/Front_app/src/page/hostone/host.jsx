@@ -1,13 +1,12 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './hostone.css';
+import styles from './hostone.module.css';
 
 export function Add_property() {
   return (
-    <div className="property-wrapper">
-      <Card className="property-card">
+    <div className={styles.propertyWrapper}>
+      <Card className={styles.propertyCard}>
         <Card.Body>
           <Card.Title>Step 1</Card.Title>
           <Card.Text>
@@ -18,7 +17,7 @@ export function Add_property() {
         </Card.Body>
       </Card>
 
-      <Card className="property-card">
+      <Card className={styles.propertyCard}>
         <Card.Body>
           <Card.Title>Step 2</Card.Title>
           <Card.Text>
@@ -29,7 +28,7 @@ export function Add_property() {
         </Card.Body>
       </Card>
 
-      <Card className="property-card">
+      <Card className={styles.propertyCard}>
         <Card.Body>
           <Card.Title>Step 3</Card.Title>
           <Card.Text>
@@ -40,7 +39,7 @@ export function Add_property() {
         </Card.Body>
       </Card>
 
-      <Card className="property-card">
+      <Card className={styles.propertyCard}>
         <Card.Body>
           <Card.Title>Step 4</Card.Title>
           <Card.Text>
