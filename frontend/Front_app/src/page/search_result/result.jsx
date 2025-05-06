@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
-
 import styles  from "./result.module.css"
 import HotelsCard from '../../components/hotel_card/hotels_card';
 import { SearchInput } from '../../components/search_input/searchInput';
