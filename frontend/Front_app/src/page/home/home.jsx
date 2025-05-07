@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import styles from "./home.module.css";
-/*
 
 export function Homepage() {
   const [location, setLocation] = useState("");
@@ -43,7 +42,7 @@ export function Homepage() {
 
 
         </div>
-    
+      {/* Filter Section */}
 
       <div className={styles["filter_container"]}>
     
@@ -143,14 +142,16 @@ export function Homepage() {
           </div>
         </div>
       </div>
+   
 
 
- 
+
+      {/* Recent Searches Section */}
       <div className={styles["recent_searches_section"]}>
         <p className={styles["para"]}>Your recent searches</p>
         <div className={styles["card_home"]}>
-          <Row xs={1} md={2} className="g-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
+        <Row xs={1} sm={2} md={2} lg={3} xl={4} className="g-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img variant="top" src="holder.js/100px160" />
@@ -168,12 +169,12 @@ export function Homepage() {
         </div>
       </div>
 
-      
+      {/* Trending Section */}
       <div className={styles["trending_section"]}>
         <p className={styles["para2"]}>Trending search</p>
         <div className={styles["trending_card"]}>
-          <Row xs={1} md={2} className="g-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
+        <Row xs={1} sm={2} md={2} lg={3} xl={4} className="g-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img variant="top" src="holder.js/100px160" />
@@ -191,11 +192,12 @@ export function Homepage() {
         </div>
       </div>
 
+      {/* Top Destination Section */}
       <div className={styles["top_destination_section"]}>
         <p className={styles["para3"]}>Top destination in Egypt</p>
         <div className={styles["topdistination_card"]}>
-          <Row xs={1} md={2} className="g-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
+        <Row xs={1} sm={2} md={2} lg={3} xl={4} className="g-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img variant="top" src="holder.js/100px160" />
@@ -215,5 +217,3 @@ export function Homepage() {
     </div>
   );
 }
-   
-*/
