@@ -13,10 +13,10 @@ export function SearchResult() {
   }
 
   return (<>
-    <SearchInput></SearchInput>
+    {/* <SearchInput></SearchInput> */}
 
     {/* price slider */}
-    <div className={styles.price_slider} >
+    <div className={`${styles.price_slider}`} >
       <TextField id="min" label="Min" variant="outlined" style={{ width: '150px', height: '50px' }} />
       <Box sx={{ width: 700 }} style={{ margin: 'auto', paddingTop: '0px' }}>
         <Slider
@@ -36,23 +36,30 @@ export function SearchResult() {
 
 
     {/* main content  */}
+    <div className={` d-flex ${styles.page_container}`}>
 
-    {/* filter */}
-    <div className={`container ${styles.page_container}`}>
+        {/* filter */}
+        <div className={`d-none d-lg-block d-md-block ${styles.fliter_container}`}>
+          <FilterSide></FilterSide>
+        </div>
 
-      <div className={styles.fliter_container}>
-        <FilterSide></FilterSide>
+        {/* hotel cards  */}
+        <div className={`col-12 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
+          <HotelsCard></HotelsCard>
+          <HotelsCard></HotelsCard>
+          <HotelsCard></HotelsCard>
+          <HotelsCard></HotelsCard>
+        </div>
+
+
+
+
+
+
+
       </div>
 
-      {/* hotel cards  */}
-      <div className={styles.search_result_cards}>
-        <HotelsCard></HotelsCard>
-        <HotelsCard></HotelsCard>
-        <HotelsCard></HotelsCard>
-        <HotelsCard></HotelsCard>
-      </div>
-
-    </div>
+  
 
 
   </>

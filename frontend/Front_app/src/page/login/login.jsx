@@ -15,9 +15,10 @@ export function Login() {
   };
 
   return (
-    <div className={`container ${styles.loginWrapper}`}>
+     < div className={styles.body_like}>
+       <div className={`container ${styles.loginWrapper}`}>
       <div className="row justify-content-center">
-        <div className={` col-sm-8 col-md-3 col-lg-5  m-4 p-5 d-flex flex-column align-items-center ${styles.LoginContainer}`}>
+        <div className={` col-sm-8  col-md-3 col-lg-5  m-4 p-5 d-flex flex-column align-items-center ${styles.LoginContainer}`}>
           <h2 className={styles.textCenter}>Log in</h2>
 
           <form onSubmit={handleSubmit} className="w-100 d-flex flex-column align-items-center">
@@ -66,5 +67,10 @@ export function Login() {
         </div>
       </div>
     </div>
+
+
+
+     </div>
+   
   );
 }

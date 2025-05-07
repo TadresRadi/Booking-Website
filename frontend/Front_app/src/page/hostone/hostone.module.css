@@ -1,8 +1,8 @@
 
-body {
+.bodylike {
     margin: 0;
     padding: 0;
-    /* background-image: url('../../assets/natural.jpg'); */
+    background-image: url('../../assets/natural.jpg'); 
     background-size: cover;
   
     background-repeat:no-repeat;
@@ -13,7 +13,7 @@ body {
   
 
 
-.property-wrapper {
+  .propertyWrapper {
   padding: 3rem 1rem;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,7 @@ body {
   margin: auto;
 }
 
-.property-card {
+.propertyCard {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -35,12 +35,12 @@ body {
   background-color: #fff5f3;
 }
 
-.property-card:hover {
+.propertyCard:hover {
   transform: translateY(-8px);
   box-shadow: 0 30px 40px rgba(0, 0, 0, 0.12);
 }
 
-.property-card .step-number {
+.propertyCard .step-number {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -57,20 +57,20 @@ body {
   font-size: 1.1rem;
 }
 
-.property-card h2 {
+.propertyCard h2 {
   font-size: 1.8rem;
   color: #333;
   margin-bottom: 0.5rem;
 }
 
-.property-card p {
+.propertyCard p {
   font-size: 1rem;
   color: #555;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
-.property-card a {
+.propertyCard a {
   background: linear-gradient(135deg, #78c4dd, #78c4dd);
   color: white;
   text-decoration: none;
@@ -81,6 +81,6 @@ body {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-.property-card a:hover {
+.propertyCard a:hover {
   background:#5d8b9b;
 }
