@@ -36,10 +36,11 @@ export function SearchInput()
     
     <div className={styles["first_container"]}>
         <p className={styles["home_text"]}>Make Your Reservation</p>
-
-
         </div>
       {/* Filter Section */}
+
+
+
 
       <div className={styles["filter_container"]}>
     

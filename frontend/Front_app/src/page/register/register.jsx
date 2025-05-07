@@ -36,7 +36,11 @@ export function Register() {
   };
 
   return (
+<<<<<<< HEAD
     <div className={styles.backgroundImage}>
+=======
+    <div className={styles.bodylike}>
+>>>>>>> search_result_page
     <Container fluid className="d-flex justify-content-center align-items-center min-vh-100">
       <Row className="w-100 justify-content-center px-2">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>

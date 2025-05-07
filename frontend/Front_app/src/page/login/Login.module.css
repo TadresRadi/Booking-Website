@@ -1,13 +1,47 @@
-.container{
-    padding-top: 70px !important;
-    background-color:#e4d9d7;
-    border-radius: 20px;
-    width: 70%;
-    box-shadow: 0px 0px 100px rgba(17, 41, 107, 0.1) !important;
-    
-}
-.text_center{
+.loginWrapper {
+    width: 100%;
+  }
+  
+  .LoginContainer {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: rgb(240, 224, 210);
+    border: 1px solid #02799b;
+  }
+  
+  .textCenter {
     color: #02799b;
     margin-bottom: 30px;
-    align-self: center;
-}
+    align-self: center !important;
+  }
+  
+  .Loginbtn {
+    background-color: #559aa5;
+    width: 40%;
+    border: none;
+    color: white;
+    margin-top: 10px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 20px;
+  }
+  
+  .Loginbtn:hover {
+    background-color: #02799b;
+    color: white;
+    cursor: pointer;
+  }
+  
+   
+.body_like {
+    margin: 0;
+    padding: 0;
+     background-image: url('../../assets/natural.jpg');   
+    background-size: cover;      
+    background-position: center;   
+    background-repeat: no-repeat;  
+    height: 100vh;                
+    width: 100vw;                  
+  }
+  
+  

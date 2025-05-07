@@ -1,11 +1,7 @@
-.body {
+.bodylike {
   margin: 0;
   padding: 0;
-
-}
-
-.backgroundImage{
-  background-image: url('../../assets/natural.jpg');
+  background-image: url('../../assets/natural.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

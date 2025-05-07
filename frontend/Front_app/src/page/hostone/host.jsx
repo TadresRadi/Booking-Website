@@ -5,6 +5,7 @@ import styles from './hostone.module.css';
 
 export function Add_property() {
   return (
+    <div className={styles.bodylike}>
     <div className={styles.propertyWrapper}>
       <Card className={styles.propertyCard}>
         <Card.Body>
@@ -49,6 +50,7 @@ export function Add_property() {
           <a href="#">Add Final Details</a>
         </Card.Body>
       </Card>
+    </div>
     </div>
   );
 }
