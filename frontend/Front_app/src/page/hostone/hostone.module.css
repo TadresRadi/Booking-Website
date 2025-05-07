@@ -1,17 +1,4 @@
 
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url('../../assets/natural.jpg');
-    background-size: cover;
-  
-    background-repeat:no-repeat;
- 
-    height: 100%;
-    width: 100%;
-  }
-  
-
 
   .propertyWrapper {
   padding: 3rem 1rem;

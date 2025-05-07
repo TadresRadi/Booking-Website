@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import styles from "./home.module.css";
+/*
 
 export function Homepage() {
   const [location, setLocation] = useState("");
@@ -42,7 +43,7 @@ export function Homepage() {
 
 
         </div>
-      {/* Filter Section */}
+    
 
       <div className={styles["filter_container"]}>
     
@@ -142,11 +143,9 @@ export function Homepage() {
           </div>
         </div>
       </div>
-   
 
 
-
-      {/* Recent Searches Section */}
+ 
       <div className={styles["recent_searches_section"]}>
         <p className={styles["para"]}>Your recent searches</p>
         <div className={styles["card_home"]}>
@@ -169,7 +168,7 @@ export function Homepage() {
         </div>
       </div>
 
-      {/* Trending Section */}
+      
       <div className={styles["trending_section"]}>
         <p className={styles["para2"]}>Trending search</p>
         <div className={styles["trending_card"]}>
@@ -192,7 +191,6 @@ export function Homepage() {
         </div>
       </div>
 
-      {/* Top Destination Section */}
       <div className={styles["top_destination_section"]}>
         <p className={styles["para3"]}>Top destination in Egypt</p>
         <div className={styles["topdistination_card"]}>
@@ -217,3 +215,5 @@ export function Homepage() {
     </div>
   );
 }
+   
+*/
