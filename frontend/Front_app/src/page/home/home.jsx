@@ -12,7 +12,7 @@ export function Homepage() {
   return (
     <div className={styles["main_container"]}>
 
-       <SearchInput></SearchInput>
+       <SearchInput> </SearchInput>
 
 
       {/* Recent Searches Section */}

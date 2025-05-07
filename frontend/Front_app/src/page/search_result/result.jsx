@@ -44,7 +44,7 @@ export function SearchResult() {
         </div>
 
         {/* hotel cards  */}
-        <div className={`col-12 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
+        <div className={`col-11 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
           <HotelsCard></HotelsCard>
           <HotelsCard></HotelsCard>
           <HotelsCard></HotelsCard>
