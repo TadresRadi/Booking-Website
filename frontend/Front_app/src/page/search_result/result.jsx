@@ -13,7 +13,7 @@ export function SearchResult() {
   }
 
   return (<>
-    {/* <SearchInput></SearchInput> */}
+    <SearchInput></SearchInput>
 
     {/* price slider */}
     <div className={`${styles.price_slider}`} >

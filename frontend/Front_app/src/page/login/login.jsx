@@ -9,14 +9,45 @@ import styles from "./Login.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("Form submitted"); // Add authentication logic here
-  };
 
-  return (
-     < div className={styles.body_like}>
-       <div className={`container ${styles.loginWrapper}`}>
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const Email = document.getElementById("emailInput").value
+    const Password = document.getElementById("passwordInput").value
+    const RememberMe = document.getElementById("rememberMe").checked
+
+    const response = await fetch("http://localhost:5000/api/login", {
+      methode: "post ",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: Email,
+        password: Password,
+        rememberMe: RememberMe,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log("Login successful", result);
+      // Handle successful login (e.g., redirect to dashboard)
+    }
+
+    else {
+      console.error("Login failed", result);
+      // Handle login failure (e.g., show error message)
+    }
+
+  
+    console.log("Form submitted"); 
+};
+
+return (
+  < div className={styles.body_like}>
+    <div className={`container ${styles.loginWrapper}`}>
       <div className="row justify-content-center">
         <div className={` col-sm-8  col-md-3 col-lg-5  m-4 p-5 d-flex flex-column align-items-center ${styles.LoginContainer}`}>
           <h2 className={styles.textCenter}>Log in</h2>
@@ -70,7 +101,7 @@ export function Login() {
 
 
 
-     </div>
-   
-  );
+  </div>
+
+);
 }
