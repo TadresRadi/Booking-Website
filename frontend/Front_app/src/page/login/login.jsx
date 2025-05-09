@@ -13,19 +13,20 @@ export function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const Email = document.getElementById("emailInput").value
+    const username = document.getElementById("usernameInput").value
     const Password = document.getElementById("passwordInput").value
     const RememberMe = document.getElementById("rememberMe").checked
 
-    const response = await fetch("http://localhost:5000/api/login", {
-      methode: "post ",
+  
+  try {
+    const response = await fetch("http://127.0.0.1:5000/api/login/", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: Email,
+        username: username,
         password: Password,
-        rememberMe: RememberMe,
       }),
     });
 
@@ -34,17 +35,17 @@ export function Login() {
     if (response.ok) {
       console.log("Login successful", result);
       // Handle successful login (e.g., redirect to dashboard)
-    }
-
-    else {
+    } else {
       console.error("Login failed", result);
-      // Handle login failure (e.g., show error message)
+      alert("Login failed: " + result.detail || "Invalid email or password");
     }
+  } catch (error) {
+    console.error("Fetch error:", error);
+    alert("An error occurred while trying to login. Please try again.");
+  }
 
-  
-    console.log("Form submitted"); 
+  console.log("Form submitted");
 };
-
 return (
   < div className={styles.body_like}>
     <div className={`container ${styles.loginWrapper}`}>
@@ -55,11 +56,11 @@ return (
           <form onSubmit={handleSubmit} className="w-100 d-flex flex-column align-items-center">
             <MDBInput
               wrapperClass="mb-4 w-100"
-              label="Email address"
-              id="emailInput"
-              type="email"
+              label="Username"
+              id="usernameInput"
+              type="text"
               size="lg"
-              aria-label="Enter your email"
+              aria-label="Enter your username"
             />
 
             <MDBInput
