@@ -56,6 +56,8 @@ export function Login() {
         } else {
           localStorage.removeItem("username"); // Remove the username if Remember Me is unchecked
         }
+      // Redirect to the dashboard or another page
+        window.location.href = "/home"; 
     } else {
       console.error("Login failed", result);
       alert("Login failed: " + result.detail || "Invalid email or password");
