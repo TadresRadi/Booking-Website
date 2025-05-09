@@ -5,6 +5,7 @@ import { Add_property } from './page/hostone/host';
 import { Login } from './page/login/login';
 import { SearchResult } from './page/search_result/result';
 import { Homepage } from './page/home/home';
+import { Details } from './page/horel_details/details';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="*" element={<Register />} />
         <Route path="/home" element={<Homepage />} />
         <Route path="/search" element={<SearchResult />} />
+        <Route path="/details" element={<Details />} />
         
         
       </Routes>
