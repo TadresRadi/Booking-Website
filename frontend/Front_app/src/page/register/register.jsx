@@ -23,7 +23,7 @@ export function Register() {
       accept_terms: data.accept_terms,
     };
 
-    const response = await fetch('http://127.0.0.1:8000/api/register/', {
+    const response = await fetch('http://127.0.0.1:5000/api/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export function Register() {
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
           <Card className={`${styles.cardCustom} w-100`}>
             <Card.Body>
-              <Card.Title className="text-center mb-3">Sign Up</Card.Title>
+              <Card.Title className="text-center mb-3 txt" >Sign Up</Card.Title>
               <p className="text-center text-muted mb-4">Create your account in seconds</p>
 
               <Form onSubmit={handleSubmit(onSubmit)} noValidate>

@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
+
+# This serializer is used for user registration
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -47,6 +49,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    
+#  This serializer is used for user login   
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -56,7 +60,7 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password')
 
         # Check if the credentials are correct
-        user = authenticate(username=username, password=password)
+        user = authenticate (username=username, password=password)
         if not user:
             raise serializers.ValidationError("Invalid username or password")
 
@@ -64,3 +68,11 @@ class LoginSerializer(serializers.Serializer):
             'user': user,
             'username': username,
         }
+    
+
+
+# This serializer is used to get user details
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
