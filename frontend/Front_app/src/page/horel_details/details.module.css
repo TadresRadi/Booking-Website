@@ -98,6 +98,8 @@
 
 .selestroom{
     background-color: #FFF5F391;
+   margin-top: 10px;
+
 
 }
 .room{
@@ -111,5 +113,15 @@
 }
 .Review{
  background-color: #FFF5F391;
- height: 75%;
+
+}
+.paragrh1{
+     color: #4697A8;
+    font-family: Inter;
+    font-size: 30px;
+
+}
+.paragrh2{
+    color: rgb(87, 83, 83);
+  margin-top: -10px;
 }

@@ -18,10 +18,10 @@ const reviews = [
 export default function ReviewSection() {
   return (
     <div className="p-4 border rounded ">
-      <h5 className="mb-3">Review</h5>
+      <h5 className="mb-3 fs-2" style={{color: '#4697A8' }}>Review</h5>
       <Row className="align-items-center">
         <Col md={2} className="text-center">
-          <h3 className="text-info fw-bold">8/10</h3>
+          <h3 className=" fw-bold" style={{color: '#4697A8' }}>8/10</h3>
           <div className="text-warning">
             {[...Array(5)].map((_, i) => (
               <FaStar key={i} />
@@ -37,7 +37,7 @@ export default function ReviewSection() {
                 <Card className="p-3 shadow-sm">
                   <p className="text-muted mb-2">{review.text}</p>
                   <div className="d-flex justify-content-between">
-                    <a href="#" className="text-info">see more</a>
+                    <a href="#" className="" style={{color: '#4697A8' }}>see more</a>
                     <div className="text-end">
                       <div className="fw-semibold">{review.author}</div>
                       <small className="text-muted">{review.date}</small>
