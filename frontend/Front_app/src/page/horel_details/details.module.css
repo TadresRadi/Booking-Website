@@ -65,6 +65,51 @@
     border-radius: 25px;
     margin-top: 20px;
 }
+.abouthotel_container{
 
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
 
+}
 
+.hotel_discption{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
+}
+.abouthotel_containerrr{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
+}
+.hotel_rate_location{
+    text-align: center;
+}
+
+.selestroom{
+    background-color: #FFF5F391;
+
+}
+.room{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #FFF5F391;
+    height: 100vh;
+   
+}
+.Review{
+ background-color: #FFF5F391;
+ height: 75%;
+}
