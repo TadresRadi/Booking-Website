@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./hotel_card.module.css";
 import Rating from '@mui/material/Rating';
 import { useState } from "react";
+import { BsHeart } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
 
 
 export default function HotelsCard() {
@@ -12,7 +14,8 @@ export default function HotelsCard() {
             <div className={`  ${styles.card}`}>
                  <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                     alt="Hotel" className={styles.card_img} />
-               
+                    
+                    
 
                 {/* card body */}
                 <div className={`    ${styles.card_body}`}> 
