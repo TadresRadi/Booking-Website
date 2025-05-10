@@ -1,13 +1,12 @@
 import styles from './h_card.module.css';
-import Button from 'react-bootstrap/Button';
+
 import Card from 'react-bootstrap/Card';
 import { FaMapMarkerAlt } from 'react-icons/fa'; 
 import { FaStar } from 'react-icons/fa'; // Solid star
 import {  Badge, Stack } from 'react-bootstrap';
-import { MdLocationOn } from 'react-icons/md';
+
 import locationImg from '../../assets/location.jpg';
-import React, { useState } from "react";
-import {  Row, Col, Form } from "react-bootstrap";
+
 
 
 export default function Hotel_card() {
@@ -34,7 +33,7 @@ export default function Hotel_card() {
 
 </div>
     <div className={`mt-5`}>
-  <Card className={`h-100`}>
+  <Card className={styles["Card_facilitis"]} >
     <Card.Header className="fs-5 fw-bold text-center">Facilities</Card.Header>
     <Card.Body>
       <blockquote className="blockquote mb-0">

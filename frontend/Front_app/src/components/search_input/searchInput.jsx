@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./searchInput.module.css";
+import { useNavigate } from "react-router-dom";
 
 export function SearchInput()
 {
-
+  const navigate = useNavigate();
  const [location, setLocation] = useState("");
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
@@ -15,10 +16,35 @@ export function SearchInput()
   const [rooms, setRooms] = useState(1);
   const [childrenAges, setChildrenAges] = useState([]);
   const [openGuests, setOpenGuests] = useState(false);
+  
 
-  const handleSearch = () => {
-    // Add search logic here
-  };
+const handleSearch = async () => {
+  
+  const queryParams = new URLSearchParams({
+    name: location,  
+    check_in: checkIn ? checkIn.toISOString().split('T')[0] : '',  
+    check_out: checkOut ? checkOut.toISOString().split('T')[0] : '',
+    adults: adults.toString(),
+    children: children.toString(),
+    rooms: rooms.toString(),
+  });
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/hotels/?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server Error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+   console.log("Hotel Search Results:", JSON.stringify(data));  // Pretty print
+     navigate(`/search?${queryParams.toString()}`);
+  } catch (error) {
+    console.error("Error fetching hotel data:", error);
+  }
+};
+
 
   const handleChildAgeChange = (index, value) => {
     const updated = [...childrenAges];
