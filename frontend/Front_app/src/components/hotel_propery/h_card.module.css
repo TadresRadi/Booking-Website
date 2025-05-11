@@ -1,5 +1,6 @@
 .dis_Card{
     background-color: #FFF5F391;
+    height: 60%;
 }
 .dis_Card h1 {
     color: #4697A8 !important;
@@ -8,6 +9,7 @@
 }
 .Card_facilitis{
        background-color: #FFF5F391;
+       height: 35%;
 
 }
 .title_facilitis {
@@ -20,7 +22,7 @@
  background-color: #FFF5F391;
    color: #4697A8;
     font-family: Inter;
-    font-size: 50px;
+    font-size: 30px;
     text-align: center;
       
 
@@ -29,4 +31,22 @@
      background-color: #FFF5F391;
    color: #4697A8;
    font-size: 10px;
+}
+.styles.Card_facilitis{
+    color: #4697A8;;
+
+}
+.mainmain {
+  padding-top: 20px;
+}
+
+@media (max-width: 400px) {
+  .Card_Title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .Card_facilitis, .Card_rate, .location_card {
+    margin-top: 1rem;
+  }
 }
