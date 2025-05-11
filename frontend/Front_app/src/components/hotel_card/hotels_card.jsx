@@ -1,11 +1,9 @@
 import React from "react";
 import styles from "./hotel_card.module.css";
 import Rating from '@mui/material/Rating';
-import { useState } from "react";
 
 
-export default function HotelsCard() {
-    const [star_value] = useState(3);
+export default function HotelsCard( { hotel }) {
 
     return (
         <>
@@ -17,7 +15,7 @@ export default function HotelsCard() {
                 {/* card body */}
                 <div className={`    ${styles.card_body}`}> 
                     <div className={styles.card_title_container}>
-                        <h5 className={styles.card_title}>Meramees Hostel</h5>
+                        <h5 className={styles.card_title}>{hotel.hotel_name}</h5>
                         <Rating sx={{
                             fontSize: "clamp(20px, 2vw, 1.5rem)",
                             '& .MuiRating-iconFilled': {
@@ -26,12 +24,12 @@ export default function HotelsCard() {
                             '& .MuiRating-iconEmpty': {
                                 color: 'rgba(230, 116, 44, 1)', // empty star color
                             },
-                        }} name="read-only" value={star_value} readOnly />
+                        }} name="read-only" value={hotel.star_rate} readOnly />
                     </div>
 
                     <div className={`  ${styles.card_location}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="24px" fill=" rgba(230, 116, 44, 1)"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" /></svg>
-                        <p className="card-text">32 Sabry Abu Allam, from Talaat Harb, Downtown, Cairo, Egypt.</p>
+                        <p className="card-text">{hotel.location}</p>
                     </div>
 
                      <p className={styles.property_title}>The property offer:</p>

@@ -3,11 +3,17 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./searchInput.module.css";
+import axiosInstance from "../../api/axiosInstance";
+import { useHotel } from "../../context/HotelContext.jsx";
+import { useNavigate } from 'react-router-dom';
 
-export function SearchInput()
+
+
+ export default function SearchInput()
 {
 
  const [location, setLocation] = useState("");
+
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [adults, setAdults] = useState(2);
@@ -15,9 +21,21 @@ export function SearchInput()
   const [rooms, setRooms] = useState(1);
   const [childrenAges, setChildrenAges] = useState([]);
   const [openGuests, setOpenGuests] = useState(false);
-
+  const { setHotels } = useHotel();
+  const navigate = useNavigate(); 
   const handleSearch = () => {
-    // Add search logic here
+
+    console.log("Searching for hotels in:", location);
+    axiosInstance.get(`/hotel-search/?location=${location}`)
+      .then(response => {
+        console.log("Search results:", response.data);
+        setHotels(response.data);
+        navigate('/search'); 
+      })
+      .catch(error => {
+        console.error("Error fetching hotels:", error);
+      });
+
   };
 
   const handleChildAgeChange = (index, value) => {

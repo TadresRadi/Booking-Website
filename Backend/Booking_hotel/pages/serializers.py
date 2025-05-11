@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from .models import Hotel, Room, Facilities, HotelFacilities, RoomImage, HotelImage
 
 
 # This serializer is used for user registration
@@ -76,3 +77,25 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email']
+
+
+
+
+
+
+# this serializer is used to hotel
+class HotelSerializer(serializers.ModelSerializer):
+    hotel_name = serializers.CharField()
+    location = serializers.CharField()
+    star_rating = serializers.IntegerField()
+    description = serializers.CharField()
+    class Meta:
+        
+        model =  Hotel
+        fields = [ 'hotel_name', 'location', 'star_rating', 'description']
+
+    def create(self, validated_data):
+        hotel = Hotel.objects.create(**validated_data)
+        return hotel    
+
+    

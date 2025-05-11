@@ -4,16 +4,16 @@ import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 import styles from "./result.module.css"
 import HotelsCard from '../../components/hotel_card/hotels_card';
-import { SearchInput } from '../../components/search_input/searchInput';
 import { FilterSide } from '../../components/filter_side/FilterSide';
-export function SearchResult() {
+import { useHotel } from '../../context/HotelContext.jsx';
 
+export function SearchResult() {
+  const { hotels } = useHotel();
   function valuetext(value) {
     return `${value}$`;
   }
 
   return (<>
-    <SearchInput></SearchInput>
 
     {/* price slider */}
     <div className={`${styles.price_slider}`} >
@@ -45,10 +45,18 @@ export function SearchResult() {
 
         {/* hotel cards  */}
         <div className={`col-11 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
-          <HotelsCard></HotelsCard>
-          <HotelsCard></HotelsCard>
-          <HotelsCard></HotelsCard>
-          <HotelsCard></HotelsCard>
+          {
+            hotels.map((hotel) => {
+              return (
+                <HotelsCard hotel={hotel} key={hotel.id}></HotelsCard>
+              )
+            })
+          }
+          {
+            hotels.length === 0 && <div className={styles.no_result}>No Result Found</div>
+          }
+          
+          
         </div>
 
 
