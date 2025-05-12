@@ -16,7 +16,7 @@ const AddHotelForm = () => {
     check_out_until: '',
     serves_breakfast: false,
     parking: 'no',
-    // الخدمات كلها فالس: (true لما يتحدد الـ checkbox)
+  
     restaurant: false,
     room_service: false,
     sauna: false,
