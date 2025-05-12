@@ -6,9 +6,9 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 
-from .models import Hotel
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, HotelSerializer
-import django_filters
+
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+
 
 # Register View
 class RegisterView(APIView):
@@ -39,24 +39,3 @@ def register_user(request):
     return Response(serializer.errors, status=400)
 
 
-# Hotel Filter Class
-class HotelFilter(django_filters.FilterSet):
-    location = django_filters.CharFilter(field_name="location", lookup_expr='icontains')
-    check_in = django_filters.DateFilter(field_name='created_at', lookup_expr='gte')
-    check_out = django_filters.DateFilter(field_name='created_at', lookup_expr='lte')
-
-    class Meta:
-        model = Hotel
-        fields = ['location', 'check_in', 'check_out']
-
-class HotelListCreateView(generics.ListCreateAPIView):
-    queryset = Hotel.objects.all()
-    serializer_class = HotelSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = HotelFilter
-
-
-# Hotel Detail View (Retrieve, Update, Destroy)
-class HotelDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Hotel.objects.all()
-    serializer_class = HotelSerializer
