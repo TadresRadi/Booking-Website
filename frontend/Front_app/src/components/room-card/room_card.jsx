@@ -24,19 +24,19 @@ export default function Room_card() {
 
   <div>
 
- <div className={`${styles["dublex_room"]}  `} >
+ <div className={`${styles["dublex_room"]} w-100 `} >
  <Card className="p-3 shadow">
- <h5 className="fw-bold"  style={{color: '#4697A8' }}>Deluxe Queen Room</h5>
+ <h5 className="fw-bold  "  style={{color: '#4697A8' }}>Deluxe Queen Room</h5>
       <Row>
-        {/* Left: Images */}
-        <Col md={4}>
+      
+        <Col md={4} className="w-25 ">
           <div className="position-relative">
             
              <PhotoGallery/>
           </div>
          
         </Col>
-        <Col md={5} className=''>
+        <Col md={5} className=' '  style={{marginLeft: '60px', marginTop:'10px'}} >
      
           <h6 className=" " style={{color: '#4697A8' }} >Room Animates</h6>
           <ul className="ps-3 fs-6">
@@ -50,7 +50,7 @@ export default function Room_card() {
           <a href="#" className="fs-5" style={{color: '#4697A8' }}>More details...</a>
         </Col>
 
-        <Col md={3} className="text-center">
+        <Col md={3} className="">
           <Form.Group controlId="roomCount">
             <Form.Label className=" fs-5" style={{color: '#4697A8' }}>How many room you need :</Form.Label>
            <Form.Control
@@ -81,19 +81,19 @@ export default function Room_card() {
 
 
 
- <div className={`${styles["single_room"]} mt-5 `} >
+ <div className={`${styles["single_room"]} mt-5  w-100`} >
  <Card className="p-3 shadow">
  <h5 className="fw-bold"  style={{color: '#4697A8' }}>Single Queen Room</h5>
       <Row>
      
-        <Col md={4}>
+        <Col md={4} className="w-25 ">
           <div className="position-relative">
          
           
         <PhotoGallery/>
         </div>
         </Col>
-        <Col md={5}>
+        <Col md={5} style={{marginLeft: '60px', marginTop:'10px'}}>
      
           <h6 className=" " style={{color: '#4697A8' }} >Room Animates</h6>
           <ul className="ps-3 fs-6">

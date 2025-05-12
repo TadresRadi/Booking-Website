@@ -9,7 +9,6 @@ from rest_framework.decorators import api_view
 
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 
-
 # Register View
 class RegisterView(APIView):
     def post(self, request):
@@ -37,5 +36,6 @@ def register_user(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
 
 

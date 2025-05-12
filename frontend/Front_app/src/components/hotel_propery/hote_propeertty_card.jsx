@@ -11,88 +11,65 @@ import locationImg from '../../assets/location.jpg';
 
 export default function Hotel_card() {
   return (
-    <div className={`${styles["mainmain"]} container`}>
-  <div className={`${styles["abouthotel_container"]} row w-100 gx-3 gy-4`}>
-<div className={`${styles["hotel_discption"]} col-7  mt-5`}>
-   <div className={`${styles["disrption"]} h-50 `}>
-    <Card  className={styles["dis_Card"]}  >
-      <Card.Body>
-        <h1 className={styles["Card_Title "]} >Baron Palace</h1>
-    <p>    
-       <span><FaMapMarkerAlt style={{ color: 'red', fontSize: '10px' }} /></span> 32 Sabry Abu Allam, from Talaat Harb, Downtown, Cairo, Egypt.</p>
-         <hr />
-        <Card.Text>
-       Prime Beachfront Location: Baron Palace Sahl Hasheesh in 
-       Hurghada offers a private beach area, beachfront, and an
-        infinity swimming pool. Guests enjoy sea views and direct 
-        access to the beach.
-        </Card.Text>
-        
-      </Card.Body>
-    </Card>
-
-</div>
-    <div className={`mt-5`}>
-  <Card className={styles["Card_facilitis"]} >
-    <Card.Header className="fs-5 fw-bold text-center">Facilities</Card.Header>
-    <Card.Body>
-      <blockquote className="blockquote mb-0">
-        <Stack
-          direction="horizontal"
-          gap={2}
-          className="flex-wrap justify-content-center"
-        >
-          <Badge bg="secondary">Wi-Fi</Badge>
-          <Badge bg="secondary">Parking</Badge>
-          <Badge bg="secondary">Gym</Badge>
-          <Badge bg="secondary">Pool</Badge>
-          <Badge bg="secondary">Breakfast</Badge>
-          <Badge bg="secondary">Spa</Badge>
-          <Badge bg="secondary">AC</Badge>
-          <Badge bg="secondary">TV</Badge>
-        </Stack>
-      </blockquote>
-    </Card.Body>
-  </Card>
-</div>
-
-
-
-    </div>
-    <div className={`${styles["hotel_rate_location"]} col-4 ms-5 h-100`}>
-      <div className={`${styles["rate"]} mt-4 `}>
-      <Card className={styles["Card_rate"]}>
-
-      <Card.Body>
-        <blockquote className="blockquote mb-0">
+   <div className={`container ${styles.mainmain}`}>
+  <div className="row gx-4 gy-5">
+    <div className="col-12 col-md-8">
+      <Card className={styles.dis_Card}>
+        <Card.Body>
+          <h1 className={styles.Card_Title}>Baron Palace</h1>
           <p>
-          8/10 very good
-  
+            <FaMapMarkerAlt style={{ color: 'red', fontSize: '10px' }} /> 32 Sabry Abu Allam, from Talaat Harb, Downtown, Cairo, Egypt.
           </p>
-            <div>
-      {[...Array(5)].map((_, index) => (
-        <FaStar key={index} color="gold" size={20} />
-      ))}
-    </div>
-         
-        </blockquote>
-      </Card.Body>
-    </Card>
+          <hr />
+          <Card.Text>
+            Prime Beachfront Location: Baron Palace Sahl Hasheesh in Hurghada offers a 
+            private beach area, beachfront, and an
+            infinity swimming pool. Guests enjoy sea views and direct access to the beach.
+          </Card.Text>
+        </Card.Body>
+      </Card>
+
+      <Card className={`mt-4 ${styles.Card_facilitis}`}>
+        <Card.Header className="fs-5 fw-bold text-center">Facilities</Card.Header>
+        <Card.Body>
+          <Stack direction="horizontal" gap={2} className="flex-wrap justify-content-center">
+            {["Wi-Fi", "Parking", "Gym", "Pool", "Breakfast", "Spa", "AC", "TV"].map((item, idx) => (
+              <Badge bg="secondary" key={idx}>{item}</Badge>
+            ))}
+          </Stack>
+        </Card.Body>
+      </Card>
     </div>
 
-    <div className={`${styles["location"]}  mt-4 `}>
-      <Card className={styles["location_card"]}>
-  
-      <Card.Body>
-        <blockquote className="blockquote mb-0">
-          
-      <img
-  src={locationImg}
-  alt="Location"
-  style={{ width: '100%', borderRadius: '70%' }}
-/>
-<p>    
-  <span><FaMapMarkerAlt style={{ color: 'red', fontSize: '10px' }} /></span> 32 Sabry Abu Allam, from Talaat Harb, Downtown, Cairo, Egypt.</p>     </blockquote>  </Card.Body>  </Card>  </div></div></div></div>
+    <div className="col-12 col-md-4">
+      <Card className={`mb-4 mt-4 mt-md-0 ${styles.Card_rate}`}>
+        <Card.Body>
+          <p className={styles.blockquote}>8/10 Very Good</p>
+          <div>
+            {[...Array(5)].map((_, index) => (
+              <FaStar key={index} color="gold" size={20} />
+            ))}
+          </div>
+        </Card.Body>
+      </Card>
+
+      <Card className={styles.location_card}>
+        <Card.Body>
+          <img
+            src={locationImg}
+            alt="Location"
+            className="img-fluid"
+            style={{ borderRadius: '70%' }}
+          />
+          <p className="mt-3">
+            <FaMapMarkerAlt style={{ color: 'red', fontSize: '10px' }} /> 32 Sabry Abu Allam, Downtown, Cairo, Egypt.
+          </p>
+        </Card.Body>
+      </Card>
+    </div>
+  </div>
+</div>
+
 
 
 
