@@ -65,6 +65,81 @@
     border-radius: 25px;
     margin-top: 20px;
 }
+.abouthotel_container{
+
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
+
+}
+
+.hotel_discption{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
+}
+.abouthotel_containerrr{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 25px;
+}
+.hotel_rate_location{
+    text-align: center;
+}
+
+.selestroom{
+    background-color: #FFF5F391;
+   margin-top: 10px;
 
 
+}
+.room{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #FFF5F391;
+    height: 100vh;
+   
+}
+.Review{
+ background-color: #FFF5F391;
 
+}
+.paragrh1{
+     color: #4697A8;
+    font-family: Inter;
+    font-size: 30px;
+
+}
+.paragrh2{
+    color: rgb(87, 83, 83);
+  margin-top: -10px;
+}
+
+.confirmButton {
+  background-color:   #4697A8;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 40%;
+}
+
+.confirmButton:hover {
+  background-color:  #3e7580;
+  transform: scale(1.03);
+}

@@ -1,13 +1,19 @@
 import React from "react";
 import styles from "./hotel_card.module.css";
 import Rating from '@mui/material/Rating';
+import { useNavigate } from "react-router-dom";
 
 
 export default function HotelsCard( { hotel }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/details/${hotel.id}`);
+    };
 
     return (
         <>
-            <div className={`  ${styles.card}`}>
+            <div className={`  ${styles.card}`} onClick={handleClick} >
                  <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                     alt="Hotel" className={styles.card_img} />
                
