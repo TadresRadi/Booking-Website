@@ -5,6 +5,7 @@ from .models import Room
 from .models import Details
 from .models import HotelPhoto
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -32,7 +33,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         first_name = validated_data['first_name'].strip().lower()
         last_name = validated_data['last_name'].strip().lower()
+
         base_username = f"{first_name}_{last_name}"
+
+        base_username = f"{first_name} {last_name}"
+
         username = base_username
         counter = 1
 
@@ -48,6 +53,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
     
 class HotelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -71,4 +77,22 @@ class HotelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelPhoto
         fields = ['id', 'hotel', 'image', 'uploaded_at']
+=======
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the credentials are correct
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Invalid username or password")
+
+
+        return {
+            'user': user,
+            'username': username,
+        }

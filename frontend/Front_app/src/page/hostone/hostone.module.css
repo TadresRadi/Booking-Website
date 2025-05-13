@@ -1,0 +1,86 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../../assets/natural.jpg');
+    background-size: cover;
+  
+    background-repeat:no-repeat;
+ 
+    height: 100%;
+    width: 100%;
+  }
+  
+
+
+  .propertyWrapper {
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.propertyCard {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 8px solid #78c4dd;
+  background-color: #fff5f3;
+}
+
+.propertyCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.12);
+}
+
+.propertyCard .step-number {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, #78c4dd,#2b9cc2);
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  font-size: 1.1rem;
+}
+
+.propertyCard h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.propertyCard p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.propertyCard a {
+  background: linear-gradient(135deg, #78c4dd, #78c4dd);
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition:  0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.propertyCard a:hover {
+  background:#5d8b9b;
+}
