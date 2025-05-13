@@ -14,10 +14,10 @@ const favSlice = createSlice({
         state.favoritehotel.push(action.payload);
       }
     },
-    removeFavorite: (state, action) => {
+    // removeFavorite: (state, action) => {
 
-      state.favoritehotel = state.favoritehotel.filter((hotel) => movie.id !== action.payload.id);
-    },
+    //   // state.favoritehotel = state.favoritehotel.filter((hotel) => movie.id !== action.payload.id);
+    // },
   },
 });
 

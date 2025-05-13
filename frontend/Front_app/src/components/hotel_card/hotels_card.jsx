@@ -2,14 +2,23 @@ import React from "react";
 import styles from "./hotel_card.module.css";
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { addSearch } from "../../store/slice/recent_search";
+
 
 
 export default function HotelsCard( { hotel }) {
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const handleClick = () => {
-        navigate(`/details/${hotel.id}`);
-    };
+       console.log('Hotel clicked:', hotel); 
+       dispatch(addSearch(hotel));
+       navigate(`/details/${hotel.id}`);
+       
+  };
+    
 
     return (
         <>
