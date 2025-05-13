@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 
 import SearchBar from './components/search_input/searchInput.jsx';
+import { Homepage } from './page/home/home';
 
 function App() {
   const location = useLocation();
@@ -34,6 +35,14 @@ function App() {
         </Routes>
      
     </Provider>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/booking" element={<Add_property />} />
+        <Route path="*" element={<Register />} />
+        <Route path="home" element={<Homepage />} />
+
+      </Routes>
+    </Router>
   );
 }
 

@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from .models import Hotel, Room, Facilities, HotelFacilities, RoomImage, HotelImage
 
-
-# This serializer is used for user registration
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
