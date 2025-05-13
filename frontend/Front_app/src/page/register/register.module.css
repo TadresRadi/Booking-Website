@@ -1,7 +1,14 @@
+
 .bodylike {
   margin: 0;
   padding: 0;
   background-image: url('../../assets/natural.jpg'); 
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../../assets/natural.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -9,6 +16,10 @@
   width: 100vw;
 
 }
+
+}
+
+
 .cardCustom {
   padding: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
