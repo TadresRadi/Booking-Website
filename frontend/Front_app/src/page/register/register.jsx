@@ -7,12 +7,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './register.module.css';
+import { useNavigate } from 'react-router-dom';  // استيراد useNavigate
 
 export function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();  // تفعيل التوجيه باستخدام useNavigate
 
   const onSubmit = async (data) => {
     const payload = {
@@ -33,6 +34,11 @@ export function Register() {
 
     const result = await response.json();
     console.log(result);
+  };
+
+  // دالة لانتقال إلى صفحة اللوجن
+  const goToLogin = () => {
+    navigate('/login');
   };
 
   return (
@@ -106,6 +112,9 @@ export function Register() {
 
                 <Button variant="primary" type="submit" className={styles.createAccountButton}>
                   Create Account
+                </Button>
+                <Button variant="link" onClick={goToLogin} className={styles.createAccountButton}>
+                  Login
                 </Button>
               </Form>
 
