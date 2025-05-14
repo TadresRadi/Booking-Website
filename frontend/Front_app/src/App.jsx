@@ -11,17 +11,21 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 
 import SearchBar from './components/search_input/searchInput.jsx';
+import Header from './components/header/header'; 
+import Footer from './components/footer/footer';
 
 function App() {
   const location = useLocation();
 
   const showSearchBar = location.pathname === "/home" || location.pathname === "/search";
+  const hideHeaderFooter = location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <Provider store={store}>
-     
+      <div className="app-container">
+        {!hideHeaderFooter && <Header />}
         {showSearchBar && <SearchBar />}
-
+        
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -29,10 +33,12 @@ function App() {
           <Route path="/home" element={<Homepage />} />
           <Route path="/search" element={<SearchResult />} />
           <Route path="/details/:id" element={<Details />} />
-                <Route path="fav" element={<Fav />} />
+          <Route path="fav" element={<Fav />} />
           <Route path="*" element={<Register />} />
         </Routes>
-     
+        
+        {!hideHeaderFooter && <Footer />}
+      </div>
     </Provider>
   );
 }
