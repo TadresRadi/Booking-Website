@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  favoritehotel: [],
+  favoriteHotels: [],
 };
 
 const favSlice = createSlice({
@@ -9,15 +9,13 @@ const favSlice = createSlice({
   initialState,
   reducers: {
     addFavorite: (state, action) => {
-   
-      if (!state.favoritehotel.some((hotel) => hotel.id === action.payload.id)) {
-        state.favoritehotel.push(action.payload);
+      if (!state.favoriteHotels.some((hotel) => hotel.id === action.payload.id)) {
+        state.favoriteHotels.push(action.payload);
       }
     },
-    // removeFavorite: (state, action) => {
-
-    //   // state.favoritehotel = state.favoritehotel.filter((hotel) => movie.id !== action.payload.id);
-    // },
+    removeFavorite: (state, action) => {
+      state.favoriteHotels = state.favoriteHotels.filter((hotel) => hotel.id !== action.payload.id);
+    },
   },
 });
 

@@ -1,40 +1,25 @@
-import { useDispatch, useSelector } from "react-redux";
-import { ImBin } from "react-icons/im";
-import { removeFavorite } from "../../store/slice/fav";
-import style from "./fav.module.css";
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-export function Fav() {
-  const counter = useSelector((state) => state.favorites.favoritehotel.length);
+import styles from './fav.module.css';
+import HotelsCard from '../../components/hotel_card/hotels_card';
 
-  const favoriteHotels = useSelector((state) => state.favorites.favoritehotel);
-  const dispatch = useDispatch();
+export default function Fav() {
+  const favoriteHotels = useSelector((state) => state.favorites.favoriteHotels);
 
-  function removeHotel(hotel) {
-    dispatch(removeFavorite(hotel));
-  }
-  
-
+  const countteHotels = useSelector((state) => state.favorites.favoriteHotels);
   return (
-    <div>
-      <h1> {counter} Favorite Hotels </h1>
+    <div className={styles.fav_container}>
+      <h2 className={styles.title}>My Favorite Hotels</h2>
 
-      {favoriteHotels.length > 0 ? (
-        favoriteHotels.map((hotel) => (
-          <div key={hotel.id} className={style.icon_div}>
-            <ImBin 
-              className={style.icona} 
-              onClick={() => removeHotel(hotel)} 
-            />
-            <img 
-              src={hotel.imageUrl || "https://via.placeholder.com/150"} 
-              alt={hotel.title || "Hotel image"} 
-            />
-            <h2>{hotel.title}</h2>
-            <h3>Popularity: {hotel.popularity || "N/A"}</h3>
-          </div>
-        ))
+      {favoriteHotels.length === 0 ? (
+        <p className={styles.empty_message}>You have no favorite hotels yet.</p>
       ) : (
-        <p>No favorite hotels yet.</p>
+        <div className={styles.fav_grid}>
+          {favoriteHotels.map((hotel) => (
+            <HotelsCard key={hotel.id} hotel={hotel} />
+          ))}
+        </div>
       )}
     </div>
   );

@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 
 export function Details() {
 
+  
+
 const navigate = useNavigate();
 const [selectedRoom, setSelectedRoom] = useState(null);
 

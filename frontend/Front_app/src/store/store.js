@@ -1,15 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import hotelreducer from "./slice/fav";
-// import counter from "./slice/counter";
-import recentSearchReducer from "./slice/recent_search"
-
+import { configureStore } from '@reduxjs/toolkit';
+import favReducer from './slice/fav'; // ✅ import the favorites slice
+import recentSearchReducer from './slice/recent_search'; // your other slice(s)
 
 const store = configureStore({
   reducer: {
- 
-    movies: hotelreducer,
-    // counter: counter,
-    recentSearch : recentSearchReducer
+    favorites: favReducer,          // ✅ must match the key you use in useSelector
+    recentSearch: recentSearchReducer,
+    // other reducers if any
   },
 });
 

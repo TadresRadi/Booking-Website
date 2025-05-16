@@ -6,13 +6,14 @@ import { Login } from './page/login/login';
 import { SearchResult } from './page/search_result/result';
 import { Homepage } from './page/home/home';
 import { Details } from './page/horel_details/details';
-import { Fav } from './page/fav/fav';
+
 import { Provider } from 'react-redux';
 import store from './store/store';
 
 import SearchBar from './components/search_input/searchInput.jsx';
 import Header from './components/header/header'; 
 import Footer from './components/footer/footer';
+import Fav from './page/fav/fav.jsx';
 
 function App() {
   const location = useLocation();
