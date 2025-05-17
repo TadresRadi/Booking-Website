@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Hotel, Facility, HotelPhoto, Room, Feature, RoomPhoto, Details
-
+from .models import Hotel, Facility, HotelPhoto, Room, Room_animates, RoomPhoto, Details
 
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
@@ -64,49 +63,95 @@ class LoginSerializer(serializers.Serializer):
             'username': username,
         }
 
-
+# Facility serializer
 class FacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Facility
-        fields = ['id', 'name']
+        fields = ['id', 'facility_name']
 
+
+# Hotel photo serializer
 class HotelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelPhoto
-        fields = ['id','hotel', 'image', 'uploaded_at']
+        fields = ['id', 'hotel', 'image']
 
+
+# Hotel serializer
 class HotelSerializer(serializers.ModelSerializer):
     facilities = serializers.PrimaryKeyRelatedField(queryset=Facility.objects.all(), many=True)
-    photos = HotelPhotoSerializer(many=True, read_only=True)
+    hotel_images = HotelPhotoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Hotel
-        fields = ['id', 'name','rating', 'country', 'city', 'street_address', 'postal_code',
-                  'check_in_from', 'check_in_until', 'check_out_from', 'check_out_until',
-                  'serves_breakfast', 'parking', 'facilities', 'photos', 'created_at']
+        fields = [
+            'id',
+            'hotel_name',
+            # 'location',
+            'description',
+            'star_rating',
+            'country',
+            'city',
+            'street_address',
+            'postal_code',
+            'check_in_from',
+            'check_in_until',
+            'check_out_from',
+            'check_out_until',
+            'parking',
+            'created_at',
+            'facilities',
+            'hotel_images'
+        ]
 
-class FeatureSerializer(serializers.ModelSerializer):
+
+# Room features (Room_animates) serializer
+class RoomAnimateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Feature
-        fields = ['id', 'name']
+        model = Room_animates
+        fields = ['id', 'animation_name']
 
+
+# Room serializer
 class RoomSerializer(serializers.ModelSerializer):
-    features = serializers.PrimaryKeyRelatedField(queryset=Feature.objects.all(), many=True)
+    room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
 
     class Meta:
         model = Room
-        fields = ['id', 'hotel', 'name', 'minimum_rate', 'room_size', 'number_of_bathrooms', 'outdoor_view',
-                  'clothes_rack', 'flat_screen_tv', 'air_conditioning', 'desk', 'wake_up_service', 'towels',
-                  'wardrobe_or_closet', 'heating', 'fan', 'safety_deposit_box', 'extra_towels_fee',
-                  'ground_floor_unit', 'features']
+        fields = [
+            'id',
+            'hotel',
+            'name',
+            'price_per_night',
+            'available_rooms',
+            'adult_capacity',
+            'room_size',
+            'room_facilities'
+        ]
 
+
+# Room photo serializer
 class RoomPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomPhoto
-        fields = ['id', 'room', 'image', 'uploaded_at']
+        fields = ['id', 'room', 'image']
 
+
+# Hotel payment & policy details
 class DetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Details
-        fields = ['id', 'visa', 'mastercard', 'meeza_card', 'cash_on_delivery', 'etsalat_cash',
-                  'aman_payment', 'orange_cash', 'vodafone_cash', 'fawny_pay', 'allow_children', 'allow_pets']
+        fields = [
+            'id',
+            'visa',
+            'mastercard',
+            'meeza_card',
+            'cash_on_delivery',
+            'etsalat_cash',
+            'aman_payment',
+            'orange_cash',
+            'vodafone_cash',
+            'fawny_pay',
+            'allow_children',
+            'allow_pets'
+        ]
