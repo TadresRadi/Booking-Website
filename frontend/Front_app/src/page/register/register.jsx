@@ -7,12 +7,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './register.module.css';
+import { useNavigate } from 'react-router-dom';  // استيراد useNavigate
 
 export function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();  // تفعيل التوجيه باستخدام useNavigate
 
   const onSubmit = async (data) => {
     const payload = {
@@ -23,7 +24,7 @@ export function Register() {
       accept_terms: data.accept_terms,
     };
 
-    const response = await fetch('http://127.0.0.1:8000/api/register/', {
+    const response = await fetch('http://127.0.0.1:5000/api/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,13 +36,19 @@ export function Register() {
     console.log(result);
   };
 
+  // دالة لانتقال إلى صفحة اللوجن
+  const goToLogin = () => {
+    navigate('/login');
+  };
+
   return (
+    <div className={styles.bodylike}>
     <Container fluid className="d-flex justify-content-center align-items-center min-vh-100">
       <Row className="w-100 justify-content-center px-2">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
           <Card className={`${styles.cardCustom} w-100`}>
             <Card.Body>
-              <Card.Title className="text-center mb-3">Sign Up</Card.Title>
+              <Card.Title className="text-center mb-3 txt" >Sign Up</Card.Title>
               <p className="text-center text-muted mb-4">Create your account in seconds</p>
 
               <Form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -106,6 +113,9 @@ export function Register() {
                 <Button variant="primary" type="submit" className={styles.createAccountButton}>
                   Create Account
                 </Button>
+                <Button variant="link" onClick={goToLogin} className={styles.createAccountButton}>
+                  Login
+                </Button>
               </Form>
 
               <p className="text-center text-muted mt-4">or continue with</p>
@@ -119,6 +129,7 @@ export function Register() {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 }
 

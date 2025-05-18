@@ -1,8 +1,8 @@
 
-body {
+.bodylike {
     margin: 0;
     padding: 0;
-    background-image: url('../../assets/natural.jpg');
+    background-image: url('../../assets/natural.jpg'); 
     background-size: cover;
   
     background-repeat:no-repeat;
@@ -11,6 +11,8 @@ body {
     width: 100%;
   }
   
+
+
 
 
   .propertyWrapper {

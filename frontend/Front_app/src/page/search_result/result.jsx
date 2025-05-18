@@ -1,0 +1,76 @@
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import styles from "./result.module.css"
+import HotelsCard from '../../components/hotel_card/hotels_card';
+import { FilterSide } from '../../components/filter_side/FilterSide';
+import { useHotel } from '../../context/HotelContext.jsx';
+
+export function SearchResult() {
+  const { hotels } = useHotel();
+  function valuetext(value) {
+    return `${value}$`;
+  }
+
+  return (<>
+
+    
+    <div className={`${styles.price_slider}`} >
+      <TextField id="min" label="Min" variant="outlined" style={{ width: '150px', height: '50px' }} />
+      <Box sx={{ width: 700 }} style={{ margin: 'auto', paddingTop: '0px' }}>
+        <Slider
+          aria-label="Temperature"
+          defaultValue={30}
+          getAriaValueText={valuetext}
+          valueLabelDisplay="auto"
+          shiftStep={30}
+          step={10}
+          marks
+          min={10}
+          max={110}
+        />
+      </Box>
+      <TextField id="max" label="Max" variant="outlined" style={{ width: '150px', height: '50px' }} />
+    </div>
+
+
+
+    <div className={` d-flex ${styles.page_container}`}>
+
+   
+        <div className={`d-none d-lg-block d-md-block ${styles.fliter_container}`}>
+          <FilterSide></FilterSide>
+        </div>
+
+     
+        <div className={`col-11 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
+          {
+            hotels.map((hotel) => {
+              return (
+                <HotelsCard hotel={hotel} key={hotel.id}></HotelsCard>
+              )
+            })
+          }
+          {
+            hotels.length === 0 && <div className={styles.no_result}>No Result Found</div>
+          }
+          
+          
+        </div>
+
+
+
+
+
+
+
+      </div>
+
+  
+
+
+  </>
+  );
+
+}

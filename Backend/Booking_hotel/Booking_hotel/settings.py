@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     
+    
 ]
 
 REST_USE_JWT = True
@@ -113,9 +114,9 @@ WSGI_APPLICATION = 'Booking_hotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'booking_db',          
+        'NAME': 'booking',          
         'USER': 'postgres',             
-        'PASSWORD': '123456',            
+        'PASSWORD': '123',            
         'HOST': 'localhost',             
         'PORT': '5432',                  
     }
@@ -168,3 +169,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         'rest_framework_simplejwt.authentication.JWTAuthentication',
 #     )
 # }
+import os
+
+MEDIA_URL = '/hotel_images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'hotel_images')

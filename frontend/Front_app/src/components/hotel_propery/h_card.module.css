@@ -1,0 +1,32 @@
+.dis_Card{
+    background-color: #FFF5F391;
+}
+.dis_Card h1 {
+    color: #4697A8 !important;
+    font-family: Inter;
+    font-size: 32px;
+}
+.Card_facilitis{
+       background-color: #FFF5F391;
+
+}
+.title_facilitis {
+     color: #4697A8 !important;
+    font-family: Inter;
+    font-size: 32px;
+
+}
+.Card_rate{
+ background-color: #FFF5F391;
+   color: #4697A8;
+    font-family: Inter;
+    font-size: 50px;
+    text-align: center;
+      
+
+}
+.location_card{
+     background-color: #FFF5F391;
+   color: #4697A8;
+   font-size: 10px;
+}

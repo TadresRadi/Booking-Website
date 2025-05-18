@@ -1,15 +1,17 @@
 from django.urls import path, include
-from .views import RegisterView
+from .views import HotelListView, RegisterView
 from django.contrib import admin
 from .views import LoginView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 
+from .views import RoomPhotosAPIView
+
+from .views import HotelDetailView
 
 urlpatterns = [
+    
     path('register/', RegisterView.as_view(), name='register'),
-
-
     path('auth/', include('dj_rest_auth.urls')),  
     path('auth/registration/', include('dj_rest_auth.registration.urls')),  
     path('auth/social/', include('allauth.socialaccount.urls')),
@@ -18,4 +20,11 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', views.register_user),
+    path('hotel-search/', HotelListView.as_view(), name='hotel_search_api'),
+    path('create-hotel/', views.HotelCreateView.as_view(), name='hotel_create_api'),
+    path('hotel/<int:id>/', HotelDetailView.as_view(), name='hotel-detail'),
+    path('api/rooms/<int:room_id>/photos/', RoomPhotosAPIView.as_view(), name='room-photos'),
+
+
 ]
+

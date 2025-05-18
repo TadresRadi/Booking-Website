@@ -1,0 +1,15 @@
+.fliter_container{
+    width: 100%;
+    padding: 5%;
+    background-color:rgba(255, 245, 243, 0.57);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+.fiter_by{
+    font-size: 30px;
+    font-weight: 600;
+    color: rgba(57, 157, 191, 1);
+    margin-bottom: 10px;
+    text-align: center;
+}
