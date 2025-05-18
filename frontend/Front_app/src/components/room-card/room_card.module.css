@@ -3,3 +3,16 @@
     font-family: Inter;
     font-size: 30px;
 }
+.serverbutton{
+
+    background-color: #4697A8; 
+    border: none;
+}
+.serverbutton:hover{
+
+background-color: #65878f; 
+}
+.avilablespan{
+    color: #4697A8 ;
+    font-size: 20px;
+}

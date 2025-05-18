@@ -33,7 +33,7 @@ function App() {
           <Route path="/booking" element={<Add_property />} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/search" element={<SearchResult />} />
-          <Route path="/details/:id" element={<Details />} />
+          <Route path="/hotel/:id" element={<Details />} />
           <Route path="fav" element={<Fav />} />
           <Route path="*" element={<Register />} />
         </Routes>

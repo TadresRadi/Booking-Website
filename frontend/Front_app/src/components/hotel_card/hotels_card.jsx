@@ -12,10 +12,9 @@ export default function HotelsCard({ hotel }) {
   const navigate = useNavigate();
   const favoritehotel = useSelector((state) => state.favorites.favoriteHotels);
 
-  const handleClick = () => {
-    console.log('Hotel clicked:', hotel);
+   const handleClick = (hotelId) => {
+     navigate(`/hotel/${hotel.id}`);
 
-    navigate(`/details/${hotel.id}`); 
   };
 
   const toggleHeart = (hotel) => {
