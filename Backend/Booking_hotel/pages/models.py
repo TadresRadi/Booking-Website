@@ -36,7 +36,7 @@ class Hotel(models.Model):
     hotel_name = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=300, null=True)
     description = models.TextField(null=True)
-    star_rating = models.IntegerField(null=True)  # Remove max_length, not valid on IntegerField
+    star_rating = models.IntegerField(null=True)  
     country = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=100, null=True)
     street_address = models.CharField(max_length=255, null=True)

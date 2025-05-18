@@ -35,10 +35,11 @@ class RoomSerializer(serializers.ModelSerializer):
         ]
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user_name = serializers.CharField(source='user.username', read_only=True)
+    user = serializers.CharField(source='user.username', read_only=True)  # overwrite user field
+
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ['id', 'user', 'comment', 'rating', 'created_at']
 
 
 class DetailsSerializer(serializers.ModelSerializer):
@@ -140,7 +141,7 @@ class HotelDetailSerializer(serializers.ModelSerializer):
             'id', 'hotel_name', 'location', 'description', 'star_rating',
             'country', 'city', 'street_address', 'postal_code', 'check_in_from',
             'check_in_until', 'check_out_from', 'check_out_until', 'parking',
-            'created_at', 'latitude', 'longitude',  # ✅ Add these
+            'created_at', 'latitude', 'longitude',
             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
         ]
 

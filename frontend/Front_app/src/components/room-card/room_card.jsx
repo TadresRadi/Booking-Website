@@ -28,7 +28,7 @@ export default function Room_card({ rooms = [], hotelImages = [], onSelectRoom }
                   <Col md={5}>
                     <h6 style={{ color: "#4697A8",marginTop: 50, marginLeft:20 ,fontSize:25}}>Room Amenities</h6>
                   <ul  style={{ color: "#4697A8" }}>
-<ul className="ps-3 fs-3">
+<ul className="ps-3 fs-5">
   {room.animations && room.animations.length > 0 ? (
     room.animations.map((amenity) => (
       <li key={amenity.id}>{amenity.animation_name}</li>

@@ -8,7 +8,7 @@ function formatDate(dateString) {
 }
 
 export default function ReviewSection({ reviews }) {
-  // Calculate average rating if you want to display overall rating
+
   const avgRating = reviews.length
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
     : 0;
@@ -32,20 +32,20 @@ export default function ReviewSection({ reviews }) {
         <Col md={10}>
           <Row className="g-3">
             {reviews.map((review) => (
-              <Col md={6} key={review.id}>
-                <Card className="p-3 shadow-sm">
-                  <p className="text-muted mb-2">{review.comment}</p>
-                  <div className="d-flex justify-content-between">
-                    <a href="#" style={{ color: '#4697A8' }}>
-                   
-                    </a>
-                    <div className="text-end">
-                      <div className="fw-semibold">{review.user}</div>
-                      <small className="text-muted">{formatDate(review.created_at)}</small>
-                    </div>
-                  </div>
-                </Card>
-              </Col>
+             <Col md={6} key={review.id}>
+  <Card className="p-3 shadow-sm">
+    {/* User name on the first line */}
+    <div className="fw-semibold mb-2 text-start">{review.user}</div>
+
+    {/* Comment centered on the next line */}
+    <p className="text-muted text-center mb-2">{review.comment}</p>
+
+    {/* Date aligned to the right */}
+    <div className="text-end">
+      <small className="text-muted">{formatDate(review.created_at)}</small>
+    </div>
+  </Card>
+</Col>
             ))}
           </Row>
         </Col>
