@@ -6,6 +6,10 @@ import { Login } from './page/login/login';
 import { SearchResult } from './page/search_result/result';
 import { Homepage } from './page/home/home';
 import { Details } from './page/horel_details/details';
+import AddPhotosPage from './page/Add_images/add_images.jsx';
+import AddRoomForm from './page/Add_room/add_room.jsx';
+import  AddHotelForm  from './page/Add_hotel/add_hotel.jsx';
+
 
 import { Provider } from 'react-redux';
 import store from './store/store';
@@ -14,6 +18,8 @@ import SearchBar from './components/search_input/searchInput.jsx';
 import Header from './components/header/header'; 
 import Footer from './components/footer/footer';
 import Fav from './page/fav/fav.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   const location = useLocation();
@@ -36,6 +42,11 @@ function App() {
           <Route path="/hotel/:id" element={<Details />} />
           <Route path="fav" element={<Fav />} />
           <Route path="*" element={<Register />} />
+          <Route path='add-hotel' element={<AddHotelForm/>}/>
+          <Route path='add-room' element={<AddRoomForm/>}/>
+          <Route path='add-images' element={<AddPhotosPage />} />
+          <Route path='add-property' element={<Add_property/>} />
+          
         </Routes>
         
         {!hideHeaderFooter && <Footer />}
