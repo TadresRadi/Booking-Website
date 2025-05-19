@@ -4,7 +4,7 @@ import styles from './AddHotelForm.module.css';
 import backgroundImage from '../../assets/images/natural.jpg';
 import { facilityMap } from '../../assets/hoteldata/facilityMap';
 import { useNavigate } from 'react-router-dom';
-import { useHotelContext } from '../../contexts/HotelContext';
+import { useHotel } from "../../context/HotelContext";
 
 
 
@@ -74,7 +74,7 @@ const AddHotelForm = () => {
 
 
 const navigate = useNavigate();
-const { setHotelId } = useHotelContext(); 
+const { setHotelId } = useHotel(); 
 
 const handleSubmit = async (e) => {
   e.preventDefault();
