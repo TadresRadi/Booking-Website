@@ -6,6 +6,7 @@ const store = configureStore({
   reducer: {
     favorites: favReducer,          // ✅ must match the key you use in useSelector
     recentSearch: recentSearchReducer,
+    
     // other reducers if any
   },
 });

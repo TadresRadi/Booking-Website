@@ -2,18 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 
-
-
-
 const counter=createSlice({
     name:'counter',
     initialState:{counter:0},
     reducers:{
        
-       inctrasecounter:(state,action)=>{
+       inctrasecounter:(state)=>{
           state.counter++
         },
-       dicreasecounter:(state,action)=>{
+       dicreasecounter:(state)=>{
           state.counter--
         },
        

@@ -18,3 +18,10 @@
 .fliter_container{
     width: 20%;
 }
+.no_result{
+    display: flex;
+    justify-content: center;
+    height: 50vh;
+    font-size: 2rem;
+    color: #888888;
+}

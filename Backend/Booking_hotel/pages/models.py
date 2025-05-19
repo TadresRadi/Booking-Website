@@ -1,73 +1,60 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+# facilites for every hotel 
 class Facility (models.Model):
     id = models.AutoField(primary_key=True)
     FACILITY_CHOICES = [
         ('wifi', 'WiFi'),
-        ('parking', 'Parking'),
-        ('pool', 'Pool'),
-        ('gym', 'Gym'),
-        ('spa', 'Spa'),
-        ('restaurant', 'Restaurant'),
-        ('bar', 'Bar'),
-        ('room_service', 'Room Service'),
-        ('laundry', 'Laundry'),
-        ('business_center', 'Business Center'),
-        ('conference_room', 'Conference Room'),
-        ('pet_friendly', 'Pet Friendly'),
-        ('airport_shuttle', 'Airport Shuttle'),
-        ('beach_access', 'Beach Access'),
-        ('family_friendly', 'Family Friendly'),
-        ('non_smoking_rooms', 'Non Smoking Rooms')
+        ('Parking', 'Parking'),
+        ('Pool', 'Pool'),
+        ('Gym', 'Gym'),
+        ('Spa', 'Spa'),
+        ('Restaurant', 'Restaurant'),
+        ('Bar', 'Bar'),
+        ('Room Service', 'Room Service'),
+        ('Laundry', 'Laundry'),
+        ('Business Center', 'Business Center'),
+        ('Conference Room', 'Conference Room'),
+        ('Pet Friendly', 'Pet Friendly'),
+        ('Airport shuttle', 'Airport Shuttle'),
+        ('Beach Access', 'Beach Access'),
+        ('Family Friendly', 'Family Friendly'),
+        ('Non Smoking Rooms', 'Non Smoking Rooms')
     ]
     facility_name = models.CharField(max_length=100, choices = FACILITY_CHOICES )
 
     
-
-
-
-
-
-
-class Hotel(models.Model):
+# hotel model to store hotel information
+class Hotel (models.Model):
     id = models.AutoField(primary_key=True)
-    hotel_name = models.CharField(max_length=100, null=True)
-    location = models.CharField(max_length=300, null=True)
-    description = models.TextField(null=True)
-    star_rating = models.IntegerField(null=True)  
-    country = models.CharField(max_length=100, null=True)
-    city = models.CharField(max_length=100, null=True)
-    street_address = models.CharField(max_length=255, null=True)
-    postal_code = models.CharField(max_length=20, null=True)
-    check_in_from = models.TimeField(default='14:00')
-    check_in_until = models.TimeField(default='14:00')
-    check_out_from = models.TimeField(default='14:00')
-    check_out_until = models.TimeField(default='14:00')
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-   
-
+    hotel_name = models.CharField(max_length=100)
+    location = models.CharField(max_length=300)
+    description = models.TextField()
+    star_rating = models.IntegerField()
+    country = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    street_address = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=20)
+    # check_in_from = models.TimeField()
+    # check_in_until = models.TimeField()
+    # check_out_from = models.TimeField()
+    # check_out_until = models.TimeField()
     PARKING_CHOICES = [
         ('free', 'Yes, free'),
         ('paid', 'Yes, paid'),
         ('no', 'No'),
     ]
     parking = models.CharField(max_length=10, choices=PARKING_CHOICES, default='no')
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     facilities = models.ManyToManyField(Facility, related_name='hotels')
+    def __str__(self):
+        return self.hotel_name
 
-    def _str_(self):
-        return self.hotel_name or "Unnamed Hotel"
-
+# hotel image
 class HotelPhoto(models.Model):
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_images')
-    image = models.ImageField(upload_to='hotel_images/')
-    
-
-    def _str_(self):
-        return f"{self.hotel.hotel_name} Photo"
+    hotel = models.ForeignKey(Hotel, related_name="hotel_images",on_delete=models.CASCADE)
+    image = models.ImageField( upload_to='hotel_images/' ,height_field=None, width_field=None, max_length=None, null=True, blank=True)
 
 class Room_animates(models.Model):
     id = models.AutoField(primary_key=True)
@@ -101,7 +88,7 @@ class Room_animates(models.Model):
     ]
     animation_name = models.CharField(max_length=100, choices= ANIMATION_CHOICES)
 
-
+# room model to store room information
 class Room (models.Model):    
     hotel = models.ForeignKey(Hotel, related_name='rooms', on_delete=models.CASCADE)
     
@@ -110,12 +97,14 @@ class Room (models.Model):
         ('terrace', 'Terrace'),
         ('view', 'View'),
     ]
-    name = models.CharField(max_length=100,null=True)
-    price_per_night = models.DecimalField(max_digits=10, decimal_places=2,null=True)
-    available_rooms = models.IntegerField(null=True)
-    adult_capacity = models.IntegerField(null=True)
-    room_size = models.CharField(max_length=50 ,null=True)
-    animations = models.ManyToManyField(Room_animates, blank=True)
+    name = models.CharField(max_length=100)
+    price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    available_rooms = models.IntegerField()
+    adult_capacity = models.IntegerField()
+    room_size = models.CharField(max_length=50)
+    room_facilities = models.ManyToManyField(Room_animates, related_name='rooms')
+
+
 
 class RoomPhoto(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -124,19 +113,18 @@ class RoomPhoto(models.Model):
     def __str__(self):
         return f"Image for {self.room.name}"
 
+# review model to store user reviews for hotels 
 class Review(models.Model):
     hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+    rating = models.IntegerField() # Example: 1 to 5
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='room_images/')
 
-    class Meta:
-        unique_together = ('hotel', 'user')  
+    def __str__(self):
+        return f"Image for {self.room.name}"
 
-    def _str_(self):
-        return f"{self.user.username} review on {self.hotel.hotel_name}"
-    
 
 class Details(models.Model):
     hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE, related_name='details')
