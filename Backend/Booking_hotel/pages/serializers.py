@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review, Details
 
-from .models import RoomPhoto
+from .models import RoomPhoto,FavoriteHotel
 
 
 class HotelPhotoSerializer(serializers.ModelSerializer):
@@ -145,3 +145,9 @@ class HotelDetailSerializer(serializers.ModelSerializer):
             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
         ]
 
+class FavoriteHotelSerializer(serializers.ModelSerializer):
+    hotel = HotelSerializer() 
+
+    class Meta:
+        model = FavoriteHotel
+        fields = ['id', 'hotel']

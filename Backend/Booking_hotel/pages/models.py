@@ -156,3 +156,11 @@ class Details(models.Model):
 
     def _str_(self):
         return f"Details for {self.hotel.name}"
+    
+    
+class FavoriteHotel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'hotel')

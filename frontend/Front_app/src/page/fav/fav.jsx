@@ -1,22 +1,27 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
-import styles from './fav.module.css';
 import HotelsCard from '../../components/hotel_card/hotels_card';
 
-export default function Fav() {
-  const favoriteHotels = useSelector((state) => state.favorites.favoriteHotels);
+export default function FavoritesPage() {
+  const favoriteHotels = useSelector(state => state.favorites.favoriteHotels);
+  const counter = useSelector((state) => state.counter.counter);
 
-  const countteHotels = useSelector((state) => state.favorites.favoriteHotels);
   return (
-    <div className={styles.fav_container}>
-      <h2 className={styles.title}>My Favorite Hotels</h2>
+    <div style={styles.pageWrapper}>
+      <div style={styles.headerSection}>
+        <h2 style={styles.title}>
+          ❤️ Favorite Hotels 
+          <span style={styles.counterBadge}>{counter}</span>
+        </h2>
+      </div>
 
       {favoriteHotels.length === 0 ? (
-        <p className={styles.empty_message}>You have no favorite hotels yet.</p>
+        <p style={styles.emptyMessage}>
+          😔 You have no favorite hotels yet. Explore and start adding some!
+        </p>
       ) : (
-        <div className={styles.fav_grid}>
-          {favoriteHotels.map((hotel) => (
+        <div style={styles.verticalList}>
+          {favoriteHotels.map(hotel => (
             <HotelsCard key={hotel.id} hotel={hotel} />
           ))}
         </div>
@@ -24,3 +29,47 @@ export default function Fav() {
     </div>
   );
 }
+
+const styles = {
+  pageWrapper: {
+    padding: '3rem 2rem',
+    background: '#fff9f8',
+    minHeight: '100vh',
+    fontFamily: "'Inter', sans-serif",
+  },
+  headerSection: {
+    marginBottom: '2rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1rem',
+  },
+  title: {
+    fontSize: '2.2rem',
+    fontWeight: 'bold',
+    color: 'crimson',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+  },
+  counterBadge: {
+    backgroundColor: 'crimson',
+    color: 'white',
+    fontSize: '1rem',
+    padding: '0.2rem 0.75rem',
+    borderRadius: '50px',
+    marginLeft: '0.8rem',
+    fontWeight: 'bold',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+  },
+  emptyMessage: {
+    fontSize: '1.3rem',
+    color: '#999',
+    textAlign: 'center',
+    marginTop: '3rem',
+  },
+  verticalList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1.5rem',
+  },
+};
