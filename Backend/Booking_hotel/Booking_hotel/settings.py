@@ -115,11 +115,7 @@ WSGI_APPLICATION = 'Booking_hotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< HEAD
-        'NAME': 'booking',          
-=======
         'NAME': 'book',          
->>>>>>> list_hotels
         'USER': 'postgres',             
         'PASSWORD': '123',            
         'HOST': 'localhost',             
@@ -174,12 +170,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         'rest_framework_simplejwt.authentication.JWTAuthentication',
 #     )
 # }
-<<<<<<< HEAD
-import os
-
-MEDIA_URL = '/hotel_images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'hotel_images')
-=======
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -188,4 +178,3 @@ DEBUG = True  # Must be True for local media serving
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
->>>>>>> list_hotels

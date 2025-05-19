@@ -120,7 +120,6 @@ class Review(models.Model):
     rating = models.IntegerField() # Example: 1 to 5
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='room_images/')
 
     def __str__(self):
         return f"Image for {self.room.name}"

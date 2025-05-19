@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite, removeFavorite } from "../../store/slice/fav";
 import { BsHeart } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
-import { decreaseCounter } from "../../store/store";
 
 
 export default function HotelsCard({ hotel }) {
@@ -31,7 +30,7 @@ export default function HotelsCard({ hotel }) {
     if (isFavorite) {
       dispatch(removeFavorite(hotel)); 
       
-      dispatch(decreaseCounter());
+      // dispatch(decreaseCounter());
     } else {
       dispatch(addFavorite(hotel)); 
    

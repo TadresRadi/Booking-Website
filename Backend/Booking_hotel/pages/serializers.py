@@ -225,8 +225,7 @@ class RoomAnimatesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ['animation_name']
-        model = Hotel
-        fields = ['id', 'hotel_name', 'location', 'star_rating', 'description']
+       
 
     def create(self, validated_data):
         return Hotel.objects.create(**validated_data)
