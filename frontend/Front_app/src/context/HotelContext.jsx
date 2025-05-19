@@ -7,10 +7,12 @@ export const useHotel = () => {
 
 export  const HotelProvider = ({ children }) => {
     const [hotels, setHotels] = useState([]);
+    const [hotelId, setHotelId] = useState(null);
+    const [roomId, setRoomId] = useState(null);
 
     return (
 
-        <HotelContext.Provider value={{ hotels, setHotels }}>
+        <HotelContext.Provider value={{ hotels, setHotels, hotelId, setHotelId ,roomId, setRoomId }}>
             {children}
         </HotelContext.Provider>
     );
