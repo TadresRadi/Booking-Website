@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './add_room.module.css';
-import { useHotelContext } from '../../contexts/HotelContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useHotel } from "../../context/HotelContext";
 
 
 
@@ -28,7 +28,7 @@ const AddRoomForm = () => {
     
    
 
-  const { hotelId, setRoomId} = useHotelContext();
+  const { hotelId, setRoomId} = useHotel();
   const [formData, setFormData] = useState({
     hotel: '',
     name: '',
