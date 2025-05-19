@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './AddHotelForm.module.css';
-import backgroundImage from '../../assets/images/natural.jpg';
+import backgroundImage from '../../assets/natural.jpg';
 import { facilityMap } from '../../assets/hoteldata/facilityMap';
 import { useNavigate } from 'react-router-dom';
 import { useHotel } from "../../context/HotelContext";
