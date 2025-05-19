@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer
+from .serializers import FacilitiesSerializer, RegisterSerializer, RoomAnimatesSerializer, RoomPhotoSerializer
 from .serializers import LoginSerializer
 from rest_framework.decorators import api_view
 from .serializers import UserSerializer 
 from .serializers import  HotelSerializer
+from .models import Hotel, Room, Facility, Room_animates
 from .models import Hotel
 from rest_framework.generics import RetrieveAPIView
 from .serializers import HotelDetailSerializer
@@ -57,26 +58,64 @@ class HotelCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-# list filtered hotel by location    
-class HotelListView(APIView):
 
+
+
+
+# list filtered hotel by location    
+from django.db.models import Q
+from datetime import datetime
+
+class HotelListView(APIView):
     def get(self, request):
         country = request.GET.get('country')
         location = request.GET.get('location')
+        adults = request.GET.get('adults')
+        check_in = request.GET.get('check_in')  
+        check_out = request.GET.get('check_out')
 
-        hotels = Hotel.objects.all()
+        if not location:
+            return Response({"error": "Location is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        hotels = Hotel.objects.filter(location__icontains=location)
 
-        if country:
-            hotels = hotels.filter(country__icontains=country)
-        if location:
-            hotels = hotels.filter(location__icontains=location)
+        rooms = Room.objects.all()
+        if adults:
+            rooms = rooms.filter(adult_capacity__gte= adults)
+
+        # Optional: filter rooms available for the date range
+        if check_in and check_out:
+            # You'd need a Booking model to check for availability
+            check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
+            check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
+            # rooms = rooms.exclude(
+            #     bookings__check_in__lt=check_out_date,
+            #     bookings__check_out__gt=check_in_date
+            # )
+
+        hotel_ids = rooms.values_list('hotel_id', flat=True).distinct()
+        hotels = hotels.filter(id__in=hotel_ids)
 
         if not hotels.exists():
-            return Response({"message": "No hotels found matching the filters"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "No hotels found"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = HotelSerializer(hotels, many=True)
+        serializer = HotelSerializer(hotels, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+# falities view to get all facilities
+class FacilitiesListView(APIView):
+    def get(self, request):
+        facilities = Facility.objects.all()
+        serializer = FacilitiesSerializer(facilities, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# animated room view to get all animate to fiter by=it the room
+class RoomAnimatesListView(APIView):
+    def get(self, request):
+        room_animations = Room_animates.objects.all()
+        serializer = RoomAnimatesSerializer(room_animations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
         
  

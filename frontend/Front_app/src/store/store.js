@@ -8,9 +8,14 @@ const store = configureStore({
   reducer: {
     favorites: favReducer,        
     recentSearch: recentSearchReducer,
+<<<<<<< HEAD
     counter:countereducer,
     loader:loaderreducer
 
+=======
+    
+    // other reducers if any
+>>>>>>> origin/main
   },
 });
 
