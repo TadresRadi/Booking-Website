@@ -1,20 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import FacilitiesSerializer, RegisterSerializer, RoomAnimatesSerializer, RoomPhotoSerializer
+from .serializers import FacilitiesSerializer, RegisterSerializer, RoomAnimateSerializer, RoomPhotoSerializer
 from .serializers import LoginSerializer
 from rest_framework.decorators import api_view
 from .serializers import UserSerializer 
 from .serializers import  HotelSerializer
 from .models import Hotel, Room, Facility, Room_animates
-from .models import Hotel
 from rest_framework.generics import RetrieveAPIView
 
 from .serializers import HotelDetailSerializer
 from rest_framework import viewsets
-from .models import Room
-from .serializers import RoomSerializer
 
+from .serializers import RoomSerializer
 from .models import RoomPhoto
 
 
@@ -109,11 +107,10 @@ class FacilitiesListView(APIView):
         serializer = FacilitiesSerializer(facilities, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-# animated room view to get all animate to fiter by=it the room
 class RoomAnimatesListView(APIView):
-    def get(self, request):
-        room_animations = Room_animates.objects.all()
-        serializer = RoomAnimatesSerializer(room_animations, many=True)
+    def get(self, request, room_id):
+        animates = Room_animates.objects.filter(room_id=room_id)
+        serializer = RoomAnimateSerializer(animates, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
         

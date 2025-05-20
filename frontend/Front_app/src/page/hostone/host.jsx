@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from './host.module.css';
+import styles from './hostone.module.css';
 import { useNavigate } from 'react-router-dom';
 
 

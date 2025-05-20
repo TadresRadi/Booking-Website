@@ -111,7 +111,7 @@ class Room (models.Model):
     adult_capacity = models.IntegerField()
     room_size = models.CharField(max_length=50)
     room_facilities = models.ManyToManyField(Room_animates, related_name='rooms')
-
+    animations = models.ManyToManyField(Room_animates, blank=True)
 
 
 class RoomPhoto(models.Model):
@@ -125,12 +125,15 @@ class RoomPhoto(models.Model):
 class Review(models.Model):
     hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField() # Example: 1 to 5
+    rating = models.IntegerField()
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Image for {self.room.name}"
+    class Meta:
+        unique_together = ('hotel', 'user')  
+
+    def _str_(self):
+        return f"{self.user.username} review on {self.hotel.hotel_name}"
 
 
 class Details(models.Model):
