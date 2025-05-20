@@ -167,7 +167,7 @@ class HotelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hotel
-        fields = ['hotel_name', 'location', 'star_rating', 
+        fields = [ 'id','hotel_name', 'location', 'star_rating', 
                   'rooms', 'hotel_images', 'reviews_count',
                   'largest_rating_percentage', 'largest_rating_category','facilities']
     def get_facilities(self, obj):
@@ -243,8 +243,7 @@ class HotelDetailSerializer(serializers.ModelSerializer):
         model = Hotel
         fields = [
             'id', 'hotel_name', 'location', 'description', 'star_rating',
-            'country', 'city', 'street_address', 'postal_code', 'check_in_from',
-            'check_in_until', 'check_out_from', 'check_out_until', 'parking',
+            'country', 'city', 'street_address', 'postal_code', 'parking',
             'created_at', 'latitude', 'longitude',
             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
         ]
