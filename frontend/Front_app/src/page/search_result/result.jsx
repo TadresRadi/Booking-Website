@@ -15,7 +15,7 @@ export function SearchResult() {
 
   return (<>
 
-    {/* price slider */}
+    
     <div className={`${styles.price_slider}`} >
       <TextField id="min" label="Min" variant="outlined" style={{ width: '150px', height: '50px' }} />
       <Box sx={{ width: 700 }} style={{ margin: 'auto', paddingTop: '0px' }}>
@@ -35,15 +35,15 @@ export function SearchResult() {
     </div>
 
 
-    {/* main content  */}
+
     <div className={` d-flex ${styles.page_container}`}>
 
-        {/* filter */}
+   
         <div className={`d-none d-lg-block d-md-block ${styles.fliter_container}`}>
           <FilterSide></FilterSide>
         </div>
 
-        {/* hotel cards  */}
+     
         <div className={`col-11 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4  ${styles.search_result_cards}`}>
           {
             hotels.map((hotel) => {

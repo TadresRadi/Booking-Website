@@ -5,6 +5,10 @@ from .views import LoginView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 
+from .views import RoomPhotosAPIView
+
+from .views import HotelDetailView
+from .views import FavoriteHotelList, AddRemoveFavorite
 
 urlpatterns = [
     
@@ -19,6 +23,10 @@ urlpatterns = [
     path('api/register/', views.register_user),
     path('hotel-search/', HotelListView.as_view(), name='hotel_search_api'),
     path('create-hotel/', views.HotelCreateView.as_view(), name='hotel_create_api'),
+    path('hotel/<int:id>/', HotelDetailView.as_view(), name='hotel-detail'),
+    path('api/rooms/<int:room_id>/photos/', RoomPhotosAPIView.as_view(), name='room-photos'),
+    path('favorites/', FavoriteHotelList.as_view()),
+    path('favorites/<int:hotel_id>/toggle/', AddRemoveFavorite.as_view()),
 
 
 ]

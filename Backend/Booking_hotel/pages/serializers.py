@@ -1,12 +1,60 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework import serializers
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import Hotel, Room, Facilities, HotelFacilities, RoomImage, HotelImage
+from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review, Details
+
+from .models import RoomPhoto,FavoriteHotel
 
 
-# This serializer is used for user registration
+class HotelPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotelPhoto
+        fields = ['id', 'image']  
+        
+class RoomAnimateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room_animates
+        fields = ['id', 'animation_name']
+
+
+
+class RoomPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomPhoto
+        fields = ['id', 'image']
+
+class RoomSerializer(serializers.ModelSerializer):
+    images = RoomPhotoSerializer(source='roomphoto_set', many=True, read_only=True)
+    animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
+
+    class Meta:
+        model = Room
+        fields = [
+            'id', 'name', 'price_per_night', 'available_rooms', 
+            'adult_capacity', 'room_size', 'images', 'animations'  # <-- include it here
+        ]
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)  # overwrite user field
+
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'comment', 'rating', 'created_at']
+
+
+class DetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Details
+        fields = '__all__'
+
+
+class FacilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Facility
+        fields = '__all__'
+
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -30,17 +78,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('accept_terms')
-
-        
         first_name = validated_data['first_name'].strip().lower()
         last_name = validated_data['last_name'].strip().lower()
-        base_username = f"{first_name} {last_name}"
+        base_username = f"{first_name}{last_name}"
         username = base_username
         counter = 1
 
         while User.objects.filter(username=username).exists():
-           username = f"{base_username}{counter}"
-           counter += 1
+            username = f"{base_username}{counter}"
+            counter += 1
 
         user = User.objects.create_user(
             username=username,
@@ -50,52 +96,58 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
-    
-#  This serializer is used for user login   
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
     def validate(self, data):
-        username = data.get('username')
-        password = data.get('password')
-
-        # Check if the credentials are correct
-        user = authenticate (username=username, password=password)
+        user = authenticate(
+            username=data.get('username'),
+            password=data.get('password')
+        )
         if not user:
-            raise serializers.ValidationError("Invalid username or password")
-
-        return {
-            'user': user,
-            'username': username,
-        }
-    
+            raise serializers.ValidationError("Invalid username or password.")
+        return {'user': user, 'username': user.username}
 
 
-# This serializer is used to get user details
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = ['id', 'username']
 
 
-
-
-
-
-# this serializer is used to hotel
 class HotelSerializer(serializers.ModelSerializer):
-    hotel_name = serializers.CharField()
-    location = serializers.CharField()
-    star_rating = serializers.IntegerField()
-    description = serializers.CharField()
     class Meta:
-        
-        model =  Hotel
-        fields = [ 'hotel_name', 'location', 'star_rating', 'description']
+        model = Hotel
+        fields = ['id', 'hotel_name', 'location', 'star_rating', 'description']
 
     def create(self, validated_data):
-        hotel = Hotel.objects.create(**validated_data)
-        return hotel    
+        return Hotel.objects.create(**validated_data)
 
-    
+
+
+class HotelDetailSerializer(serializers.ModelSerializer):
+    hotel_images = HotelPhotoSerializer(many=True, read_only=True)
+    rooms = RoomSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
+    details = DetailsSerializer(read_only=True)
+    facilities = FacilitySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Hotel
+        fields = [
+            'id', 'hotel_name', 'location', 'description', 'star_rating',
+            'country', 'city', 'street_address', 'postal_code', 'check_in_from',
+            'check_in_until', 'check_out_from', 'check_out_until', 'parking',
+            'created_at', 'latitude', 'longitude',
+            'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
+        ]
+
+class FavoriteHotelSerializer(serializers.ModelSerializer):
+    hotel = HotelSerializer() 
+
+    class Meta:
+        model = FavoriteHotel
+        fields = ['id', 'hotel']

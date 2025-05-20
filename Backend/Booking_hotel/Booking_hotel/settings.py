@@ -169,3 +169,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         'rest_framework_simplejwt.authentication.JWTAuthentication',
 #     )
 # }
+import os
+
+MEDIA_URL = '/hotel_images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'hotel_images')

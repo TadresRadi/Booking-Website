@@ -1,171 +1,103 @@
-
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
-import {  Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form } from 'react-bootstrap';
 import styles from './room_card.module.css';
-import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import PhotoGallery from '../popup/popup';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
-export default function Room_card({ onSelectRoom }){
-
-const [deluxeRooms, setDeluxeRooms] = useState(1);
-const [singleRooms, setSingleRooms] = useState(1);
-
-const [pricePerNight] = useState(30);
-const total = pricePerNight * (deluxeRooms + singleRooms);
-
-
+export default function Room_card({ rooms = [], hotelImages = [], onSelectRoom }) {
   return (
+    <div>
+      {rooms.length === 0 ? (
+        <p>No rooms available.</p>
+      ) : (
+        rooms.map((room) => {
+          const total = room.price_per_night* room.available_rooms;
 
+          return (
+            <div key={room.id} className={`${styles["room_card"]} mb-4`}>
+              <Card className="p-3 shadow">
+                <h5 className="fw-bold" style={{ color: "#4697A8" }}>
+                  {room.type || room.name}
+                </h5>
+                <Row>
+                  <Col md={4}>
+    <PhotoGallery photos={room.images || []} />
+                  </Col>
+                  <Col md={5}>
+                    <h6 style={{ color: "#4697A8",marginTop: 50, marginLeft:20 ,fontSize:25}}>Room Amenities</h6>
+                  <ul  style={{ color: "#4697A8" }}>
+<ul className="ps-3 fs-5">
+  {room.animations && room.animations.length > 0 ? (
+    room.animations.map((amenity) => (
+      <li key={amenity.id}>{amenity.animation_name}</li>
+    ))
+  ) : (
+    <li>No amenities listed</li>
+  )}
+</ul>
+
+</ul>  <a href="#" className="fs-5" style={{ color: "#4697A8" }}> </a>
+ </Col>
+ <Col md={3} className="text-center">
   <div>
-
- <div className={`${styles["dublex_room"]}  `} >
- <Card className="p-3 shadow">
- <h5 className="fw-bold"  style={{color: '#4697A8' }}>Deluxe Queen Room</h5>
-      <Row>
-        {/* Left: Images */}
-        <Col md={4}>
-          <div className="position-relative">
-            
-             <PhotoGallery/>
-          </div>
-         
-        </Col>
-        <Col md={5} className=''>
-     
-          <h6 className=" " style={{color: '#4697A8' }} >Room Animates</h6>
-          <ul className="ps-3 fs-6">
-            <li>538 sq ft</li>
-            <li>Sleeps 2</li>
-            <li>1 Queen Bed</li>
-            <li>Free welcome drink</li>
-            <li>Free airport shuttle</li>
-            <li>Free WiFi</li>
-          </ul>
-          <a href="#" className="fs-5" style={{color: '#4697A8' }}>More details...</a>
-        </Col>
-
-        <Col md={3} className="text-center">
-          <Form.Group controlId="roomCount">
-            <Form.Label className=" fs-5" style={{color: '#4697A8' }}>How many rooms do you need :</Form.Label>
-          <Form.Control
-  type="number"
-  min={1}
-  value={deluxeRooms}
-  onChange={(e) => setDeluxeRooms(Number(e.target.value))}
-/>
-          </Form.Group>
-          <div className="mt-2 ">
-            <span className="fw-bold  fs-4" style={{color: '#4697A8' }}>{pricePerNight}$</span>{" "}
-            <span className=" fs-6">For Night</span>
-          </div>
-          <div className="mt-3">
-            <span className="text-muted fs-6">TOTAL:</span>{" "}
-            <span className="fw-bold -5 fs-4" style={{color: '#4697A8' }}>{total}$</span>
-          </div>
-<Button
-
-  onClick={() =>
-    onSelectRoom({
-      type: "Deluxe Queen Room",
-      count: deluxeRooms,
-      pricePerNight: pricePerNight,
-      total: pricePerNight * deluxeRooms,
-    })
-  }
->
-  Reserve
-</Button>
-        </Col>
-      </Row>
-    </Card>
-
-
-
-
-
-</div>
-
-
-
- <div className={`${styles["single_room"]} mt-5 `} >
- <Card className="p-3 shadow">
- <h5 className="fw-bold"  style={{color: '#4697A8' }}>Single Queen Room</h5>
-      <Row>
-     
-        <Col md={4}>
-          <div className="position-relative">
-         
-          
-        <PhotoGallery/>
-        </div>
-        </Col>
-        <Col md={5}>
-     
-          <h6 className=" " style={{color: '#4697A8' }} >Room Animates</h6>
-          <ul className="ps-3 fs-6">
-            <li>538 sq ft</li>
-            <li>Sleeps 2</li>
-            <li>1 Queen Bed</li>
-            <li>Free welcome drink</li>
-            <li>Free airport shuttle</li>
-            <li>Free WiFi</li>
-          </ul>
-          <a href="#" className="fs-5" style={{color: '#4697A8' }}>More details...</a>
-        </Col>
-
-        <Col md={3} className="text-center">
-          <Form.Group controlId="roomCount">
-            <Form.Label className=" fs-5" style={{color: '#4697A8' }}>How many rooms do you need :</Form.Label>
-           <Form.Control
-  type="number"
-  min={1}
-  value={singleRooms}
-  onChange={(e) => setSingleRooms(Number(e.target.value))}
-/>
-          </Form.Group>
-          <div className="mt-2 ">
-            <span className="fw-bold  fs-4" style={{color: '#4697A8' }}>{pricePerNight}$</span>{" "}
-            <span className=" fs-6">For Night</span>
-          </div>
-          <div className="mt-3">
-            <span className="text-muted fs-6">TOTAL:</span>{" "}
-            <span className="fw-bold -5 fs-4" style={{color: '#4697A8' }}>{total}$</span>
-          </div>
-          <Button
-  variant="info"
-  className="mt-3 px-4 text-white"
-  style={{ backgroundColor: '#4697A8' }}
-  onClick={() =>
-    onSelectRoom({
-      type: "Single Queen Room",
-      count: singleRooms,
-      pricePerNight: pricePerNight,
-      total: pricePerNight * singleRooms,
-    })
-  }
->
-  Reserve
-</Button>
-
-        </Col>
-      </Row>
-    </Card>
-
+    <span className={styles.avilablespan}>Available: </span>
+    <span className={styles.avilablespan}>{room.available_rooms}</span>
   </div>
 
+  <div className="mt-2">
+    <Form.Label className="fw-semibold">How many rooms needed:</Form.Label>
+    <Form.Select
+      value={room.selectedCount || 1}
+      onChange={(e) => {
+        const count = parseInt(e.target.value);
+        room.selectedCount = count;
+     
+        onSelectRoom({
+          type: room.type || room.name,
+          count,
+          pricePerNight: room.price_per_night,
+          total: count * room.price_per_night,
+        });
+      }}
+    >
+      {[...Array(room.available_rooms).keys()].map((i) => (
+        <option key={i + 1} value={i + 1}>
+          {i + 1}
+        </option>
+      ))}
+    </Form.Select>
+  </div>
 
-</div>
+  <div className="mt-2">
+    <span className="fw-bold fs-5" style={{ color: "#4697A8" }}>
+      Price: ${room.price_per_night}
+    </span>
+    <br />
+    <span className="fw-semibold fs-6">
+      Total: ${room.selectedCount ? room.selectedCount * room.price_per_night : room.price_per_night}
+    </span>
+  </div>
 
+  <Button
+    className={`mt-2 ${styles.serverbutton}`}
+    onClick={() =>
+      onSelectRoom({
+        type: room.type || room.name,
+        count: room.selectedCount || 1,
+        pricePerNight: room.price_per_night,
+        total: (room.selectedCount || 1) * room.price_per_night,
+      })
+    }
+  >
+    Reserve
+  </Button>
 
-
-
-
-   
-
+</Col>
+  </Row>
+  </Card>
+   </div> );  }) )}
+    </div>
   );
 }

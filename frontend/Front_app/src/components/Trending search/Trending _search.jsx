@@ -15,7 +15,10 @@ export function Trendinrserch() {
         {Array.from({ length: 4 }).map((_, idx) => (
               <Col key={idx}>
                 <Card>
-                  <Card.Img variant="top" src="holder.js/100px160" />
+                <Card.Img
+              variant="top"
+              src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=400"
+                 />
                   <Card.Body>
                     <Card.Title>Card title</Card.Title>
                     <Card.Text>

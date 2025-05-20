@@ -1,104 +1,117 @@
 import styles from './details.module.css';
-import Button from 'react-bootstrap/Button';
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
 
-import {  Row, Col, Form } from "react-bootstrap";
 import Hotel_card from '../../components/hotel_propery/hote_propeertty_card';
 import ReviewSection from '../../components/review/reviw';
 import Room_card from '../../components/room-card/room_card';
-import PhotoGallery from '../../components/popup/popup';
 import axiosInstance from '../../api/axiosInstance';
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-
-
 
 export function Details() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [details, setDetails] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
-  
+  useEffect(() => {
+    const fetchHotelDetails = async () => {
+      try {
+        const response = await axiosInstance.get(`/hotel/${id}/`);
+        console.log("Hotel images data:", response.data.hotel_images)
+        setDetails(response.data);
+        console.log("Hotel details fetched:", response.data);
+      } catch (error) {
+        console.error("Error fetching hotel details:", error);
+      }
+    };
 
-const navigate = useNavigate();
-const [selectedRoom, setSelectedRoom] = useState(null);
+    fetchHotelDetails();
+  }, [id]);
 
-const handleConfirmBooking = () => {
-  if (!selectedRoom || !details) {
-    alert("Please select a room before confirming.");
-    return;
-  }
-
-  navigate("/reservation", {
-    state: {
-      hotelId: details.id,
-      hotelName: details.name,
-      roomType: selectedRoom.type,
-      roomCount: selectedRoom.count,
-      pricePerNight: selectedRoom.pricePerNight,
-      total: selectedRoom.total,
-    },
-  });
-};
-
-  const param= useParams();
-  const [details, setdetails] = useState(null);
-  const  gethotelDetails = async () => {
-    try {
-     const response = await axiosInstance.get(`/hotel/${param.id}`);
-     setdetails(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error fetching hotel details:', error);
+  const handleConfirmBooking = () => {
+    if (!selectedRoom || !details) {
+      alert("Please select a room before confirming.");
+      return;
     }
 
-
+    navigate("/reservation", {
+      state: {
+        hotelId: details.id,
+        hotelName: details.hotel_name,
+        roomType: selectedRoom.type,
+        roomCount: selectedRoom.count,
+        pricePerNight: selectedRoom.pricePerNight,
+        total: selectedRoom.total,
+      },
+    });
   };
-  useEffect(() => {
-    gethotelDetails();
-  }, []);
-  
+
+  if (!details) {
+    return <p>Loading...</p>;
+  }
+  const getImageSrc = (image) => {
+  if (!image) return ''; 
+  if (image.startsWith('http')) {
+    return image; 
+  }
+  return `http://localhost:8000${image}`; 
+};
+
   return (
     <>
-    <div className={styles["main_container"]}>
-      <div className={styles["first_div"]}></div>
+      <div className={styles["main_container"]}>
+        <div className={styles["first_div"]}></div>
+<div className={`${styles["viewdhotel_div"]} container`}>
+{details.hotel_images?.map((photo, index) => (
+  <img
+    key={index}
+    src={getImageSrc(photo.image)}
+    alt={`Hotel Photo ${index + 1}`}
+    style={{ width: '300px', height: 'auto', margin: '10px' }}
+  />
+))}
 
-      <div className={`${styles["viewdhotel_div"]} container`}>
-        <div className={`${styles["viewdhotel_divv"]} row w-100 gx-3 gy-4`}>
-          
-          <div className={`${styles["leftside_div"]} col-3 col-md-4 col-lg-5`}></div>
+</div>
 
-          <div className={`${styles["midleside_div"]} col-4 col-md-2 col-lg-2`}>
-            <div className={styles["midleside_div1"]}></div>
-            <div className={styles["midleside_div2"]}></div>
-          </div>
-
-          <div className={`${styles["leftsode_div"]} col-3 col-md-4 col-lg-4`}></div>
-        </div>
-     
-     
       </div>
- </div>
-   
-    
-  <div className={`${styles["mainmain"]} container`}> <Hotel_card/></div>
 
+      <div className={`${styles["mainmain"]} container`}>
 
-  <div className={`${styles["selestroom"]}  container `}>
-  <p  className={styles["paragrh1"]}> select your room</p>
-  <p className={styles["paragrh2"]}> 2 type of room</p>
-   </div>
-<div className={`${styles["room"]} mb-5 container h-100`} > 
-<Room_card onSelectRoom={setSelectedRoom} />
-</div>
+        <Hotel_card hotel={details} />
+      </div>
 
-<div className={`${styles["Review"]} mt-5 container`} > 
-  <ReviewSection />
-</div>
+      <div className={`${styles["selestroom"]} container`}>
+        <p className={styles["paragrh1"]}>Select your room</p>
+        <p className={styles["paragrh2"]}>
+          {details.rooms?.length || 0} type{(details.rooms?.length || 0) !== 1 ? 's' : ''} of room
+        </p>
+      </div>
 
-<div className={`${styles["confirmbooking"]} mt-5 `}>
-  <button className={styles.confirmButton}   onClick={handleConfirmBooking}>Confirm Booking</button>
-</div>
+      <div className={`${styles["room"]} mb-5 container h-100`}>
+        {details.rooms?.length > 0 ? (
+   <Room_card
+  rooms={details.rooms}
 
-</>
+  onSelectRoom={setSelectedRoom}
+/>
+        ) : (
+          <p>No rooms available.</p>
+        )}
+      </div>
 
+      <div className={`${styles["Review"]} mt-5 container`}>
+        {details.reviews?.length > 0 ? (
+          <ReviewSection reviews={details.reviews} />
+        ) : (
+          <p>No reviews yet.</p>
+        )}
+      </div>
 
+      <div className={`${styles["confirmbooking"]} mt-6`}>
+        <button className={styles.confirmButton} onClick={handleConfirmBooking}>
+          Confirm Booking
+        </button>
+      </div>
+    </>
   );
 }
