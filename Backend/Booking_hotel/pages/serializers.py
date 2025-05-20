@@ -9,7 +9,7 @@ from .models import  Room_animates, RoomPhoto
 
 
 # User Registration Serializer
-from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review, Details
+from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review
 
 from .models import RoomPhoto
 
