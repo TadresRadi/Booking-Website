@@ -201,7 +201,8 @@ class HotelSerializer(serializers.ModelSerializer):
             'check_in_until',
             'check_out_from',
             'check_out_until','parking',
-            'created_at']
+            'created_at','latitude',
+            'longitude']
 
       
            
