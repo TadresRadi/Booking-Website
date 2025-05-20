@@ -249,13 +249,13 @@ class HotelSerializer(serializers.ModelSerializer):
             1: "Bad"
         }.get(rating, "Unknown")
 
-   def create(self, validated_data):
+    def create(self, validated_data):
         facilities = validated_data.pop('facilities', [])
         hotel = Hotel.objects.create(**validated_data)
         hotel.facilities.set(facilities)  
         return hotel
 
-   def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
         facilities = validated_data.pop('facilities', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
