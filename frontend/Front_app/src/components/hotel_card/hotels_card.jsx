@@ -6,36 +6,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite, removeFavorite } from "../../store/slice/fav";
 import { BsHeart } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
-
+import { dicreasecounter, increasecounter } from "../../store/slice/counter";
 
 export default function HotelsCard({ hotel }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const favoritehotel = useSelector((state) => state.favorites.favoriteHotels);
+   const counter = useSelector((state) => state.counter.counter);
   
-  // Calculate minimum price here, outside of handleClick
   const roomPrices = hotel.rooms.map(room => room.price_per_night);
   const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : 'N/A';
-   // Extract first image from hotel_images or use a fallback image
-    const imageUrl = hotel.hotel_images?.[0]?.image || 'fallback-image-url';
 
-  const favoritehotel = useSelector((state) => state.favorites.favoriteHotels);
+  const imageUrl = hotel.hotel_images?.[0]?.image || 'fallback-image-url';
+
+  
 
    const handleClick = () => {
      navigate(`/hotel/${hotel.id}`);
 
   };
 
-  const toggleHeart = (hotel) => {
-    const isFavorite = favoritehotel.some((favhotel) => favhotel.id === hotel.id);
-    if (isFavorite) {
-      dispatch(removeFavorite(hotel)); 
-      
-      // dispatch(decreaseCounter());
-    } else {
-      dispatch(addFavorite(hotel)); 
-   
-    }
-  };
+ const toggleHeart = (hotel) => {
+   const isFavorite = favoritehotel.some((favhotel) => favhotel.id === hotel.id);
+ 
+   if (isFavorite) {
+     dispatch(removeFavorite(hotel));
+     dispatch(dicreasecounter()); 
+   } else {
+     dispatch(addFavorite(hotel));
+     dispatch(increasecounter()); 
+   }
+ };
 
   return (
     <div className={styles.card} onClick={handleClick}>

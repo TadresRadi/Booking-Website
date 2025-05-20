@@ -1,20 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+
+
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   favoriteHotels: [],
 };
 
 const favSlice = createSlice({
-  name: "favorites",
+  name: 'favorites',
   initialState,
   reducers: {
-    addFavorite: (state, action) => {
-      if (!state.favoriteHotels.some((hotel) => hotel.id === action.payload.id)) {
+    addFavorite(state, action) {
+      
+        if (!state.favoriteHotels.some((hotel) => hotel.id === action.payload.id)) {
         state.favoriteHotels.push(action.payload);
       }
     },
     removeFavorite: (state, action) => {
-      state.favoriteHotels = state.favoriteHotels.filter((hotel) => hotel.id !== action.payload.id);
+
+state.favoriteHotels = state.favoriteHotels.filter((hotel) => hotel.id !== action.payload.id);
     },
   },
 });
