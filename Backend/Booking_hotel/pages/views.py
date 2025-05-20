@@ -12,6 +12,7 @@ from rest_framework.generics import RetrieveAPIView
 from .serializers import HotelDetailSerializer
 from rest_framework import viewsets
 from .serializers import RoomSerializer,RoomAnimateSerializer
+from .serializers import HotelDetailSerializer
 
 from .models import Facility, Hotel, Room, HotelPhoto, RoomPhoto
 from rest_framework.parsers import MultiPartParser, FormParser
