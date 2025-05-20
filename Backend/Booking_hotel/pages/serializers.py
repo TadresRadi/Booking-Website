@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Facility, Hotel, HotelPhoto, Review, Room
+from .models import Facility, Hotel, HotelPhoto, Review, Room ,Details
 from .models import  Room_animates, RoomPhoto
 
 
@@ -39,7 +39,7 @@ class RoomSerializer(serializers.ModelSerializer):
     animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
     room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
 
-   class Meta:
+    class Meta:
         model = Room
         fields = [
             'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities',
