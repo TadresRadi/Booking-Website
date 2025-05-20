@@ -9,7 +9,7 @@ from .models import  Room_animates, RoomPhoto
 
 
 # User Registration Serializer
-from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review, Details
+from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review
 
 from .models import RoomPhoto
 
@@ -39,27 +39,33 @@ class RoomSerializer(serializers.ModelSerializer):
     animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
     room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
 
-    class Meta:
+   class Meta:
         model = Room
         fields = [
-            'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities' 
+            'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities',
             'adult_capacity', 'room_size', 'images', 'animations'  # <-- include it here
         ]
 
+       
+
     def create(self, validated_data):
         room_facilities = validated_data.pop('room_facilities', [])
-       room = Room.objects.create(**validated_data)
-       room.room_facilities.set(room_facilities)
-     return room
+        room = Room.objects.create(**validated_data)
+        room.room_facilities.set(room_facilities)
+        return room
 
-   def update(self, instance, validated_data):
-      room_facilities = validated_data.pop('room_facilities', None)
-     for attr, value in validated_data.items():
-        setattr(instance, attr, value)
-     instance.save()
-     if room_facilities is not None:
-        instance.room_facilities.set(room_facilities)
-     return instance
+    
+
+    def update(self, instance, validated_data):
+       room_facilities = validated_data.pop('room_facilities', None)
+       for attr, value in validated_data.items():
+         setattr(instance, attr, value)
+       instance.save()
+       if room_facilities is not None:
+         instance.room_facilities.set(room_facilities)
+       return instance
+
+     
 
 
 class ReviewSerializer(serializers.ModelSerializer):
