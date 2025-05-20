@@ -23,6 +23,8 @@ class Facility (models.Model):
         ('Non Smoking Rooms', 'Non Smoking Rooms')
     ]
     facility_name = models.CharField(max_length=100, choices = FACILITY_CHOICES )
+    def __str__(self):
+        return self.get_facility_name_display()
 
     
 # hotel model to store hotel information
@@ -36,10 +38,10 @@ class Hotel (models.Model):
     city = models.CharField(max_length=100)
     street_address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=20)
-    # check_in_from = models.TimeField(default='14:00')
-    # check_in_until = models.TimeField(default='18:00')
-    # check_out_from = models.TimeField(default='08:00')
-    # check_out_until = models.TimeField(default='12:00')
+    check_in_from = models.TimeField()
+    check_in_until = models.TimeField()
+    check_out_from = models.TimeField()
+    check_out_until = models.TimeField()
 
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
@@ -58,11 +60,14 @@ class Hotel (models.Model):
 
     def __str__(self):
         return self.hotel_name
+        
 
 # hotel image
 class HotelPhoto(models.Model):
     hotel = models.ForeignKey(Hotel, related_name="hotel_images",on_delete=models.CASCADE)
     image = models.ImageField( upload_to='hotel_images/' ,height_field=None, width_field=None, max_length=None, null=True, blank=True)
+    def __str__(self):
+        return f"Photo for {self.hotel.hotel_name}"
 
 class Room_animates(models.Model):
     id = models.AutoField(primary_key=True)
@@ -95,6 +100,8 @@ class Room_animates(models.Model):
        
     ]
     animation_name = models.CharField(max_length=100, choices= ANIMATION_CHOICES)
+    def __str__(self):
+        return self.get_animation_name_display()
 
 # room model to store room information
 class Room (models.Model):    
@@ -111,6 +118,9 @@ class Room (models.Model):
     adult_capacity = models.IntegerField()
     room_size = models.CharField(max_length=50)
     room_facilities = models.ManyToManyField(Room_animates, related_name='rooms')
+
+    def __str__(self):
+        return f"{self.hotel.hotel_name} - {self.name}"
 
 
 
