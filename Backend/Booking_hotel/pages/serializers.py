@@ -3,13 +3,13 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Facility, Hotel, HotelPhoto, Review, Room
+from .models import Facility, Hotel, HotelPhoto, Review, Room 
 from .models import  Room_animates, RoomPhoto
 
 
 
 # User Registration Serializer
-from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review
+from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto
 
 from .models import RoomPhoto
 
@@ -38,28 +38,35 @@ class RoomSerializer(serializers.ModelSerializer):
     images = RoomPhotoSerializer(source='roomphoto_set', many=True, read_only=True)
     animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
     room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
+    hotel = serializers.PrimaryKeyRelatedField(queryset=Hotel.objects.all()) 
 
     class Meta:
         model = Room
         fields = [
-            'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities' 
+            'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities',
             'adult_capacity', 'room_size', 'images', 'animations'  # <-- include it here
         ]
 
+       
+
     def create(self, validated_data):
         room_facilities = validated_data.pop('room_facilities', [])
-       room = Room.objects.create(**validated_data)
-       room.room_facilities.set(room_facilities)
-     return room
+        room = Room.objects.create(**validated_data)
+        room.room_facilities.set(room_facilities)
+        return room
 
-   def update(self, instance, validated_data):
-      room_facilities = validated_data.pop('room_facilities', None)
-     for attr, value in validated_data.items():
-        setattr(instance, attr, value)
-     instance.save()
-     if room_facilities is not None:
-        instance.room_facilities.set(room_facilities)
-     return instance
+    
+
+    def update(self, instance, validated_data):
+       room_facilities = validated_data.pop('room_facilities', None)
+       for attr, value in validated_data.items():
+         setattr(instance, attr, value)
+       instance.save()
+       if room_facilities is not None:
+         instance.room_facilities.set(room_facilities)
+       return instance
+
+     
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -70,10 +77,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'comment', 'rating', 'created_at']
 
 
-class DetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Details
-        fields = '__all__'
+# class DetailsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Details
+#         fields = '__all__'
 
 
 class FacilitySerializer(serializers.ModelSerializer):
@@ -154,10 +161,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 # Room Serializer for hotel card
-class RoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Room
-        fields = ['name', 'price_per_night', 'available_rooms', 'adult_capacity']
+
 
 
 # Hotel Image Serializer for hotel card
@@ -192,7 +196,7 @@ class HotelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hotel
-        fields = [ 'id','hotel_name', 'location', 'star_rating', 
+        fields = [ 'id','hotel_name',  'star_rating', 
                   'rooms', 'hotel_images', 'reviews_count',
                   'largest_rating_percentage', 'largest_rating_category','facilities','description','country',
             'city',
@@ -202,7 +206,8 @@ class HotelSerializer(serializers.ModelSerializer):
             'check_out_from',
             'check_out_until','parking',
             'created_at','latitude',
-            'longitude']
+            'longitude','location']
+        read_only_fields = ['location']
 
       
            
@@ -243,13 +248,13 @@ class HotelSerializer(serializers.ModelSerializer):
             1: "Bad"
         }.get(rating, "Unknown")
 
-   def create(self, validated_data):
+    def create(self, validated_data):
         facilities = validated_data.pop('facilities', [])
         hotel = Hotel.objects.create(**validated_data)
         hotel.facilities.set(facilities)  
         return hotel
 
-   def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
         facilities = validated_data.pop('facilities', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -285,20 +290,19 @@ class RoomAnimatesSerializer(serializers.ModelSerializer):
 
 
 
-class HotelDetailSerializer(serializers.ModelSerializer):
-    hotel_images = HotelPhotoSerializer(many=True, read_only=True)
-    rooms = RoomSerializer(many=True, read_only=True)
-    reviews = ReviewSerializer(many=True, read_only=True)
-    details = DetailsSerializer(read_only=True)
-    facilities = FacilitySerializer(many=True, read_only=True)
+# class HotelDetailSerializer(serializers.ModelSerializer):
+#     hotel_images = HotelPhotoSerializer(many=True, read_only=True)
+#     rooms = RoomSerializer(many=True, read_only=True)
+#     reviews = ReviewSerializer(many=True, read_only=True)
+#     details = DetailsSerializer(read_only=True)
+#     facilities = FacilitySerializer(many=True, read_only=True)
 
-    class Meta:
-        model = Hotel
-        fields = [
-            'id', 'hotel_name', 'location', 'description', 'star_rating',
-            'country', 'city', 'street_address', 'postal_code', 'parking',
-            'created_at', 'latitude', 'longitude',
-            'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
-        ]
+#     class Meta:
+#         model = Hotel
+#         fields = [
+#             'id', 'hotel_name', 'location', 'description', 'star_rating',
+#             'country', 'city', 'street_address', 'postal_code', 'parking',
+#             'created_at', 'latitude', 'longitude',
+#             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
 
 
