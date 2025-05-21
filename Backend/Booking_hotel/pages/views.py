@@ -17,6 +17,8 @@ from .models import Facility, Hotel, Room, HotelPhoto, RoomPhoto
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from .serializers import FacilitySerializer
+from .serializers import HotelPhotoSerializer
+
 
 
 
