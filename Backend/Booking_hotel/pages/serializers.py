@@ -38,6 +38,7 @@ class RoomSerializer(serializers.ModelSerializer):
     images = RoomPhotoSerializer(source='roomphoto_set', many=True, read_only=True)
     animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
     room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
+    hotel = serializers.PrimaryKeyRelatedField(queryset=Hotel.objects.all()) 
 
     class Meta:
         model = Room
