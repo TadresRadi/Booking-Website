@@ -11,9 +11,15 @@ from rest_framework.generics import RetrieveAPIView
 
 from .serializers import HotelDetailSerializer
 from rest_framework import viewsets
+from .serializers import RoomSerializer,RoomAnimateSerializer
 
-from .serializers import RoomSerializer
-from .models import RoomPhoto
+from .models import Facility, Hotel, Room, HotelPhoto, RoomPhoto
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.shortcuts import get_object_or_404
+from .serializers import FacilitySerializer
+from .serializers import HotelPhotoSerializer
+
+
 
 
 
@@ -54,7 +60,99 @@ class HotelCreateView(APIView):
     status=status.HTTP_201_CREATED
 )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class AddFacilityView(APIView):
+    def post(self, request):
+        serializer = FacilitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddHotelView(APIView):
+    def post(self, request):
+        facilities_data = request.data.get('facilities', [])
+
+        
+        if not Facility.objects.filter(id__in=facilities_data).count() == len(facilities_data):
+            return Response({"error": "One or more facility IDs are invalid."}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = HotelSerializer(data=request.data)
+        if serializer.is_valid():
+            hotel = serializer.save()
+            hotel.facilities.set(facilities_data)  
+            return Response({"id": hotel.id, "message": "Hotel added successfully!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class AddRoomView(APIView):
+    def post(self, request):
+        hotel_id = request.data.get('hotel')
+        if not hotel_id:
+            return Response({"error": "Hotel ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        get_object_or_404(Hotel, id=hotel_id)
+
+        serializer = RoomSerializer(data=request.data)
+        if serializer.is_valid():
+            room = serializer.save()
+            return Response({"id": room.id, "message": "Room added successfully!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class UploadHotelPhotosView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        hotel_id = request.data.get("hotel")
+        images = request.FILES.getlist('images')
+
+        if not hotel_id:
+            return Response({"error": "Hotel ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        get_object_or_404(Hotel, id=hotel_id)
+
+        if not images:
+            return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        for image in images:
+            serializer = HotelPhotoSerializer(data={"hotel": hotel_id, "image": image})
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+
+class UploadRoomPhotosView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        room_id = request.data.get("room")
+        images = request.FILES.getlist('images')
+
+        if not room_id:
+            return Response({"error": "Room ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        get_object_or_404(Room, id=room_id)
+
+        if not images:
+            return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        for image in images:
+            serializer = RoomPhotoSerializer(data={"room": room_id, "image": image})
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Room photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+
+
+
 
 
 

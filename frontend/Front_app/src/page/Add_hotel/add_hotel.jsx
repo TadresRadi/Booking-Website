@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './AddHotelForm.module.css';
-import backgroundImage from '../../assets/natural.jpg';
+import backgroundImage from '../../assets/images/natural.jpg';
 import { facilityMap } from '../../assets/hoteldata/facilityMap';
 import { useNavigate } from 'react-router-dom';
-import { useHotel } from "../../context/HotelContext";
-
+import { useHotelContext } from '../../contexts/HotelContext';
+import { useEffect } from 'react';
 
 
 const amenities = [
@@ -72,48 +72,69 @@ const AddHotelForm = () => {
     });
   };
 
+const [latitude, setLatitude] = useState(null);
+const [longitude, setLongitude] = useState(null);
 
+useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+      }
+    );
+  }, []);
+  
 const navigate = useNavigate();
-const { setHotelId } = useHotel(); 
+const { setHotelId } = useHotelContext(); 
+
 
 const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await axios.post('http://localhost:8000/api/add-hotel/', formData);
-    const hotelId = res.data?.id;
+    e.preventDefault();
 
-    if (!hotelId) {
+    const payload = {
+      ...formData,
+      latitude,
+      longitude,
+    };
+
+    try {
+      const res = await axios.post('http://localhost:8000/api/add-hotel/', payload);
+      const hotelId = res.data?.id;
+
+      if (!hotelId) {
+        window.cuteAlert({
+          type: "error",
+          title: "Missing ID",
+          message: "Hotel ID is missing from the response",
+          buttonText: "OK"
+        });
+        return;
+      }
+
+      setHotelId(hotelId);
+
+      window.cuteAlert({
+        type: "success",
+        title: "Success!",
+        message: "Hotel added successfully!",
+        buttonText: "Continue"
+      }).then(() => {
+        navigate('/add-property');
+      });
+
+    } catch (error) {
+      console.error(error.response?.data || error.message);
       window.cuteAlert({
         type: "error",
-        title: "Missing ID",
-        message: "Hotel ID is missing from the response",
+        title: "Oops!",
+        message: "Something went wrong while adding the hotel.",
         buttonText: "OK"
       });
-      return;
     }
-
-    setHotelId(hotelId); 
-
-    // Show success alert
-    window.cuteAlert({
-      type: "success",
-      title: "Success!",
-      message: "Hotel added successfully!",
-      buttonText: "Continue"
-    }).then(() => {
-      navigate('/add-property');
-    });
-
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-    window.cuteAlert({
-      type: "error",
-      title: "Oops!",
-      message: "Something went wrong while adding the hotel.",
-      buttonText: "OK"
-    });
-  }
-};
+  };
 
   
 

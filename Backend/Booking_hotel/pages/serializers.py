@@ -3,7 +3,9 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Facility, Hotel, HotelPhoto, Review, Room
+from .models import Facility, Hotel, HotelPhoto, Review, Room ,Details
+from .models import  Room_animates, RoomPhoto
+
 
 
 
@@ -15,12 +17,14 @@ from .models import RoomPhoto
 class HotelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelPhoto
-        fields = ['id', 'image']  
+        fields = ['id','hotel', 'image']  
+
         
 class RoomAnimateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room_animates
         fields = ['id', 'animation_name']
+
 
 
 
@@ -35,13 +39,37 @@ class RoomPhotoSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     images = RoomPhotoSerializer(source='roomphoto_set', many=True, read_only=True)
     animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
+    room_facilities = serializers.PrimaryKeyRelatedField(queryset=Room_animates.objects.all(), many=True)
+    hotel = serializers.PrimaryKeyRelatedField(queryset=Hotel.objects.all()) 
 
     class Meta:
         model = Room
         fields = [
-            'id', 'name', 'price_per_night', 'available_rooms', 
+            'id', 'hotel', 'name', 'price_per_night', 'available_rooms','room_facilities',
             'adult_capacity', 'room_size', 'images', 'animations'  # <-- include it here
         ]
+
+       
+
+    def create(self, validated_data):
+        room_facilities = validated_data.pop('room_facilities', [])
+        room = Room.objects.create(**validated_data)
+        room.room_facilities.set(room_facilities)
+        return room
+
+    
+
+    def update(self, instance, validated_data):
+       room_facilities = validated_data.pop('room_facilities', None)
+       for attr, value in validated_data.items():
+         setattr(instance, attr, value)
+       instance.save()
+       if room_facilities is not None:
+         instance.room_facilities.set(room_facilities)
+       return instance
+
+     
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)  # overwrite user field
@@ -60,7 +88,7 @@ class DetailsSerializer(serializers.ModelSerializer):
 class FacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Facility
-        fields = '__all__'
+        fields = ['id', 'facility_name']
 
 
 
@@ -204,6 +232,21 @@ class HotelSerializer(serializers.ModelSerializer):
             1: "Bad"
         }.get(rating, "Unknown")
 
+    def create(self, validated_data):
+        facilities = validated_data.pop('facilities', [])
+        hotel = Hotel.objects.create(**validated_data)
+        hotel.facilities.set(facilities)  
+        return hotel
+
+    def update(self, instance, validated_data):
+        facilities = validated_data.pop('facilities', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if facilities is not None:
+            instance.facilities.set(facilities)
+        return instance
+
 
 # Facilities Serializer
 class FacilitiesSerializer(serializers.ModelSerializer):
@@ -245,4 +288,4 @@ class HotelDetailSerializer(serializers.ModelSerializer):
             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
         ]
 
-   
+

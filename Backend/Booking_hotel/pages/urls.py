@@ -10,6 +10,15 @@ from django.urls import path, include
 from .views import RoomPhotosAPIView
 from .views import HotelDetailView
 
+from pages.views import (
+    RegisterView,
+    AddFacilityView,
+    AddHotelView,
+    AddRoomView,
+    UploadHotelPhotosView,
+    UploadRoomPhotosView,
+)
+
 urlpatterns = [
     
     path('register/', RegisterView.as_view(), name='register'),
@@ -27,7 +36,12 @@ urlpatterns = [
     path('rooms/<int:room_id>/animates/', RoomAnimatesListView.as_view(), name='room-animates'),
     path('hotel/<int:id>/', HotelDetailView.as_view(), name='hotel-detail'),
     path('api/rooms/<int:room_id>/photos/', RoomPhotosAPIView.as_view(), name='room-photos'),
-    
+    path('add-facility/', AddFacilityView.as_view(), name='add-facility'),
+    path('add-hotel/', AddHotelView.as_view(), name='add-hotel'),
+    path('add-room/', AddRoomView.as_view(), name='add-room'),
+    path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
+    path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
+
 
 ]
 if settings.DEBUG:
