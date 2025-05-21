@@ -9,13 +9,15 @@ from .serializers import  HotelSerializer
 from .models import Hotel, Room, Facility, Room_animates
 from rest_framework.generics import RetrieveAPIView
 
-from .serializers import HotelDetailSerializer
+# from .serializers import HotelDetailSerializer
 from rest_framework import viewsets
 from .serializers import RoomSerializer,RoomAnimateSerializer
 
 from .models import Facility, Hotel, Room, HotelPhoto, RoomPhoto
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.shortcuts import get_object_or_404
+from .serializers import FacilitySerializer
+from .serializers import HotelPhotoSerializer
 
 
 class RegisterView(APIView):
@@ -146,11 +148,7 @@ class UploadRoomPhotosView(APIView):
 
         return Response({"message": "Room photos uploaded successfully"}, status=status.HTTP_201_CREATED)
 
-class RoomAnimatesListView(APIView):
-    def get(self, request):
-        features = Room_animates.objects.all()
-        serializer = RoomAnimateSerializer(features, many=True)
-        return Response(serializer.data)
+
 
 
 
@@ -214,10 +212,10 @@ class RoomAnimatesListView(APIView):
         
  
               
-class HotelDetailView(RetrieveAPIView):
-    queryset = Hotel.objects.all()
-    serializer_class = HotelDetailSerializer
-    lookup_field = 'id'
+# class HotelDetailView(RetrieveAPIView):
+#     queryset = Hotel.objects.all()
+#     serializer_class = HotelDetailSerializer
+#     lookup_field = 'id'
 
 
 
