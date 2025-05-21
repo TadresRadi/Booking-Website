@@ -35,7 +35,7 @@ class Facility (models.Model):
 class Hotel (models.Model):
     id = models.AutoField(primary_key=True)
     hotel_name = models.CharField(max_length=100)
-    location = models.CharField(max_length=300)
+    location = models.CharField(max_length=300, blank=True)
     description = models.TextField()
     star_rating = models.IntegerField()
     country = models.CharField(max_length=100)
@@ -61,6 +61,9 @@ class Hotel (models.Model):
 
     # Relations
     facilities = models.ManyToManyField(Facility, related_name='hotels')
+    def save(self, *args, **kwargs):
+        self.location = f"{self.street_address}, {self.city}, {self.postal_code}, {self.country}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.hotel_name
