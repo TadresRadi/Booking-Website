@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# facilites for every hotel 
 class Facility (models.Model):
     id = models.AutoField(primary_key=True)
     FACILITY_CHOICES = [
@@ -46,7 +45,6 @@ class Hotel (models.Model):
     check_in_until = models.TimeField()
     check_out_from = models.TimeField()
     check_out_until = models.TimeField()
-
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
@@ -61,6 +59,10 @@ class Hotel (models.Model):
 
     # Relations
     facilities = models.ManyToManyField(Facility, related_name='hotels')
+    
+    def save(self, *args, **kwargs):
+        self.location = f"{self.street_address}, {self.city}, {self.postal_code}, {self.country}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.hotel_name
@@ -110,7 +112,7 @@ class Room (models.Model):
     adult_capacity = models.IntegerField()
     room_size = models.CharField(max_length=50)
     room_facilities = models.ManyToManyField(Room_animates, related_name='rooms')
-
+    animations = models.ManyToManyField(Room_animates, blank=True)
     def __str__(self):
         return f"{self.hotel.hotel_name} - {self.name}"
 
@@ -135,3 +137,21 @@ class Review(models.Model):
         return f"Image for {self.room.name}"
 
 
+class Details(models.Model):
+    hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE, related_name='details')
+
+    visa = models.BooleanField(default=False)
+    mastercard = models.BooleanField(default=False)
+    meeza_card = models.BooleanField(default=False)
+    cash_on_delivery = models.BooleanField(default=False)
+    etsalat_cash = models.BooleanField(default=False)
+    aman_payment = models.BooleanField(default=False)
+    orange_cash = models.BooleanField(default=False)
+    vodafone_cash = models.BooleanField(default=False)
+    fawny_pay = models.BooleanField(default=False)
+
+    allow_children = models.BooleanField(default=False)
+    allow_pets = models.BooleanField(default=False)
+
+    def _str_(self):
+        return f"Details for {self.hotel.name}"

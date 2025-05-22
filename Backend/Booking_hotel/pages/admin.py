@@ -24,7 +24,7 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'hotel', 'price_per_night', 'available_rooms')
     search_fields = ('name', 'hotel__hotel_name')
     list_filter = ('hotel',)
-    filter_horizontal = ('animations',)
+    filter_horizontal = ('room_facilities',)
 
 @admin.register(RoomPhoto)
 class RoomPhotoAdmin(admin.ModelAdmin):

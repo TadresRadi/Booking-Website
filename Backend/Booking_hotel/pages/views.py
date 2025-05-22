@@ -8,11 +8,9 @@ from .serializers import UserSerializer
 from .serializers import  HotelSerializer
 from .models import Hotel, Room, Facility, Room_animates
 from rest_framework.generics import RetrieveAPIView
-
 from .serializers import HotelDetailSerializer
 from rest_framework import viewsets
 from .serializers import RoomSerializer,RoomAnimateSerializer
-
 from .models import Facility, Hotel, Room, HotelPhoto, RoomPhoto
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404

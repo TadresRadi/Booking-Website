@@ -15,63 +15,42 @@ export default function AddPhotosPage() {
   
 const navigate = useNavigate();
 
-
 const handleSubmit = async () => {
-    if (!hotelId || !roomId) {
-      return window.cuteAlert({
-        type: "error",
-        title: "Error",
-        message: "Hotel ID or Room ID is missing!",
-        buttonText: "OK",
-      });
-    }
-  
-    if (hotelFiles.length < 5 || roomFiles.length < 5) {
-      return window.cuteAlert({
-        type: "warning",
-        title: "Warning",
-        message: "Please upload at least 5 photos for hotel and room.",
-        buttonText: "OK",
-      });
-    }
-  
-    try {
-      const hotelFormData = new FormData();
-      hotelFormData.append("hotel", hotelId);
-      hotelFiles.forEach((file) => hotelFormData.append("images", file));
-  
-      await axios.post("http://localhost:8000/api/AddHotelImages/", hotelFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-  
-      const roomFormData = new FormData();
-      roomFormData.append("room", roomId);
-      roomFiles.forEach((file) => roomFormData.append("images", file));
-  
-      await axios.post("http://localhost:8000/api/AddRoomImages/", roomFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-  
-      await window.cuteAlert({
-        type: "success",
-        title: "Success",
-        message: "✅ Images uploaded successfully!",
-        buttonText: "Great",
-      });
-      navigate("/add-property"); 
-  
-     
-  
-    } catch (error) {
-      console.error("❌ Error while uploading images:", error);
-      window.cuteAlert({
-        type: "error",
-        title: "Failed",
-        message: "An error occurred while uploading images.",
-        buttonText: "OK",
-      });
-    }
-  };
+  if (!hotelId || !roomId) {
+    alert("Hotel ID or Room ID is missing!");
+    return;
+  }
+
+  if (hotelFiles.length < 5 || roomFiles.length < 5) {
+    alert("Please upload at least 5 photos for hotel and room.");
+    return;
+  }
+
+  try {
+    const hotelFormData = new FormData();
+    hotelFormData.append("hotel", hotelId);
+    hotelFiles.forEach((file) => hotelFormData.append("images", file));
+
+    await axios.post("http://localhost:8000/api/AddHotelImages/", hotelFormData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    const roomFormData = new FormData();
+    roomFormData.append("room", roomId);
+    roomFiles.forEach((file) => roomFormData.append("images", file));
+
+    await axios.post("http://localhost:8000/api/AddRoomImages/", roomFormData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    alert("✅ Images uploaded successfully!");
+    navigate("/add-property");
+
+  } catch (error) {
+    console.error("❌ Error while uploading images:", error);
+    alert("An error occurred while uploading images.");
+  }
+};
   
 
 
