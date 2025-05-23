@@ -1,3 +1,6 @@
+
+
+
 .main_container {
   display: flex;
   flex-direction: column;
@@ -9,7 +12,7 @@
   background-image: url('../../assets/natural.jpg');
   background-size: cover;
   background-position: center;
-  height: 80vh;
+  height: 55vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,21 +21,72 @@
 .guest-wrapper11{
   width: 600px;
 }
+.booking-input{
+  width: 20%;
 
+}
+.location-input{
+  width: 35%;
+}
+.guest-text{
+  margin-right: 7px;
+  font-size: 16px;
+  color: #a39d9d;
+}
 
+.booking-search-button {
+  background-color: #67bfd1;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 70%;
+  cursor: pointer;
+  margin: auto;
+  transition: background-color 0.3s ease;
+  font-size: 18px;
+  font-weight: bold;
+}
 .home_text {
   color: white;
-  font-size: 4rem;
+  font-size: 5rem;
   text-align: center;
   text-shadow: 2px 2px 5px black;
   z-index: 1;
   margin-top: 200px;
 }
 
-@media (max-width: 400px) {
+
+
+
+@media  (max-width: 767px){
+  
   .home_text {
-    font-size: 2rem;
+    font-size: 4rem;
     padding: 0 20px;
+  }
+
+  .booking-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  }
+
+  .booking-input{
+    width: 100%;
+
+  }
+  .location-input{
+    width: 100%;
+  }
+  .booking-search-button {
+    width: 100%;
+    margin: auto;
+  }
+
+  .react-datepicker-wrapper  {
+      width: 100%  !important;
   }
 }
 
@@ -171,18 +225,7 @@
   background-color: #61a5b3;
 }
 
-.booking-search-button {
-  background-color: #67bfd1;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  width: 400px;
-  cursor: pointer;
 
-  transition: background-color 0.3s ease;
-}
 
 .booking-input2 {
   margin-right: -30px;
@@ -219,23 +262,11 @@
  
   }
 
-  .booking-input1,
-  .booking-input2,
-  .booking-input3,
-  .booking-input11 {
-    width: 50% !important;
-  }
-
+  
   .booking-search-button {
     width: 50%;
     margin-right: 0;
   }
 
-  .para,
-  .para2,
-  .para3,
-  .para4 {
-    font-size: 28px;
-    text-align: center;
-  }
+
 }

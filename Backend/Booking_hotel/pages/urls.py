@@ -7,10 +7,17 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-
 from .views import RoomPhotosAPIView
-
 from .views import HotelDetailView
+
+from pages.views import (
+    RegisterView,
+    AddFacilityView,
+    AddHotelView,
+    AddRoomView,
+    UploadHotelPhotosView,
+    UploadRoomPhotosView,
+)
 
 urlpatterns = [
     
@@ -26,9 +33,14 @@ urlpatterns = [
     path('search/', HotelListView.as_view(), name='hotel_search_api'),
     path('create-hotel/', views.HotelCreateView.as_view(), name='hotel_create_api'),
     path('facilities/', views.FacilitiesListView.as_view(), name='facilities_list_api'),
-    path('animates/', views.RoomAnimatesListView.as_view(), name='room_animates_list_api'),
+    path('rooms/<int:room_id>/animates/', RoomAnimatesListView.as_view(), name='room-animates'),
     path('hotel/<int:id>/', HotelDetailView.as_view(), name='hotel-detail'),
     path('api/rooms/<int:room_id>/photos/', RoomPhotosAPIView.as_view(), name='room-photos'),
+    path('add-facility/', AddFacilityView.as_view(), name='add-facility'),
+    path('add-hotel/', AddHotelView.as_view(), name='add-hotel'),
+    path('add-room/', AddRoomView.as_view(), name='add-room'),
+    path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
+    path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
 
 
 ]

@@ -5,17 +5,14 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import Facility, Hotel, HotelPhoto, Review, Room
 
+from .models import  Room_animates, RoomPhoto, Details
 
-# User Registration Serializer
-from .models import Hotel, Room, Facility, Room_animates, RoomPhoto, HotelPhoto, Review, Details
-
-from .models import RoomPhoto
 
 
 class HotelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelPhoto
-        fields = ['id', 'image']  
+        fields = ['id', 'image','hotel']  
         
 class RoomAnimateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,17 +24,21 @@ class RoomAnimateSerializer(serializers.ModelSerializer):
 class RoomPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomPhoto
-        fields = ['id', 'image']
+        fields = ['id', 'image', 'room']
+
+
+
 
 class RoomSerializer(serializers.ModelSerializer):
     images = RoomPhotoSerializer(source='roomphoto_set', many=True, read_only=True)
-    animations = RoomAnimateSerializer(many=True, read_only=True)  # <-- add this line
+    animations = RoomAnimateSerializer(many=True, read_only=True) # <-- add this line
+    hotel = serializers.PrimaryKeyRelatedField(queryset=Hotel.objects.all())
 
     class Meta:
         model = Room
         fields = [
             'id', 'name', 'price_per_night', 'available_rooms', 
-            'adult_capacity', 'room_size', 'images', 'animations'  # <-- include it here
+            'adult_capacity', 'room_size', 'images', 'animations','hotel'  # <-- include it here
         ]
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -131,14 +132,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username']
 
 
-# Room Serializer for hotel card
-class RoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Room
-        fields = ['name', 'price_per_night', 'available_rooms', 'adult_capacity']
 
 
-# Hotel Image Serializer for hotel card
+
 class HotelImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True)
 
@@ -149,12 +145,11 @@ class HotelImageSerializer(serializers.ModelSerializer):
 
 # Review Serializer for hotel 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username')
+     user = serializers.CharField(source='user.username', read_only=True)  # overwrite user field
 
-    class Meta:
+     class Meta:
         model = Review
-        fields = ['user', 'rating', 'comment']
-
+        fields = ['id', 'user', 'comment', 'rating', 'created_at']
 
 # Hotel Serializer
 class HotelSerializer(serializers.ModelSerializer):
@@ -169,7 +164,12 @@ class HotelSerializer(serializers.ModelSerializer):
         model = Hotel
         fields = [ 'id','hotel_name', 'location', 'star_rating', 
                   'rooms', 'hotel_images', 'reviews_count',
-                  'largest_rating_percentage', 'largest_rating_category','facilities']
+                  'largest_rating_percentage', 'largest_rating_category',
+                  'facilities','description',
+                  'country','city','street_address','postal_code', 
+                  'check_in_from','check_in_until','check_out_from',
+                  'check_out_until','parking', 'created_at','latitude', 'longitude']
+        read_only_fields = ['location']
     def get_facilities(self, obj):
         return [f.get_facility_name_display() for f in obj.facilities.all()]
 
@@ -206,7 +206,7 @@ class HotelSerializer(serializers.ModelSerializer):
         }.get(rating, "Unknown")
 
 
-# Facilities Serializer
+
 class FacilitiesSerializer(serializers.ModelSerializer):
     facility_name = serializers.CharField(source='get_facility_name_display')
 
@@ -219,13 +219,11 @@ class FacilitiesSerializer(serializers.ModelSerializer):
 
 
 # rooom animate serializer
-class RoomAnimatesSerializer(serializers.ModelSerializer):
-    animation_name = serializers.CharField()
-
+    
+class RoomAnimateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Room
-        fields = ['animation_name']
-       
+        model = Room_animates
+        fields = ['id', 'animation_name']
 
     def create(self, validated_data):
         return Hotel.objects.create(**validated_data)
@@ -249,3 +247,4 @@ class HotelDetailSerializer(serializers.ModelSerializer):
         ]
 
    
+

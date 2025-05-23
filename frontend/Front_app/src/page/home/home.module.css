@@ -3,6 +3,8 @@
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .first_container {

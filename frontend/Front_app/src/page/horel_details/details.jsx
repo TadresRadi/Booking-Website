@@ -17,7 +17,7 @@ export function Details() {
     const fetchHotelDetails = async () => {
       try {
         const response = await axiosInstance.get(`/hotel/${id}/`);
-              console.log("Hotel images data:", response.data.hotel_images)
+        console.log("Hotel images data:", response.data.hotel_images)
         setDetails(response.data);
         console.log("Hotel details fetched:", response.data);
       } catch (error) {

@@ -68,52 +68,32 @@ const AddRoomForm = () => {
 
 
 const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    if (!formData.room_facilities.length) {
-      window.cuteAlert({
-        type: 'warning',
-        title: 'Missing Feature',
-        message: 'Please select at least one feature.',
-        buttonText: 'Okay'
-      });
-      return;
+  e.preventDefault();
+
+  if (!formData.room_facilities.length) {
+    alert("Please select at least one feature.");
+    return;
+  }
+
+  try {
+    const res = await axios.post('http://localhost:8000/api/add-room/', formData, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    alert("Room added successfully!");
+    setRoomId(res.data.id);
+    navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
+
+  } catch (error) {
+    console.error(error);
+    if (error.response && error.response.data) {
+      alert("Error: " + JSON.stringify(error.response.data));
+    } else {
+      alert("An error occurred while saving the room.");
     }
+  }
+};
   
-    try {
-      const res = await axios.post('http://localhost:8000/api/add-room/', formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-      await window.cuteAlert({
-        type: 'success',
-        title: 'Success',
-        message: 'Room added successfully!',
-        buttonText: 'Continue',
-      });
-      setRoomId(res.data.id);
-  
-      navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
-      
-    } catch (error) {
-      console.error(error);
-      if (error.response && error.response.data) {
-        window.cuteAlert({
-          type: 'error',
-          title: 'Error',
-          message: JSON.stringify(error.response.data),
-          buttonText: 'Close',
-        });
-      } else {
-        window.cuteAlert({
-          type: 'error',
-          title: 'Oops!',
-          message: 'An error occurred while saving the room.',
-          buttonText: 'Close',
-        });
-      }
-    }
-  };
   
 
   return (
