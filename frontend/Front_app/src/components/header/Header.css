@@ -1,5 +1,5 @@
 .header {
-  background-color:  #53b1c4;
+  background-color:  #faefe3;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -42,12 +42,13 @@
 }
 
 .login-btn, .create-account-btn {
-  background-color:rgb(240, 224, 210);
+  background-color:#67bfd1;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 5px 15px;
   font-size: 1rem;
   cursor: pointer;
+  color: #fcfafa;
 }
 
 .login-btn:hover, .create-account-btn:hover {

@@ -162,7 +162,7 @@ from datetime import datetime
 
 class HotelListView(APIView):
     def get(self, request):
-        location = request.GET.get('location')
+        location = request.GET.get('location-or-hotel')
         adults = request.GET.get('adults')
         check_in = request.GET.get('check_in')  
         check_out = request.GET.get('check_out')
@@ -170,7 +170,9 @@ class HotelListView(APIView):
         if not location:
             return Response({"error": "Location is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        hotels = Hotel.objects.filter(location__icontains=location)
+        hotels = Hotel.objects.filter(Q(location__icontains=location) | Q(hotel_name__icontains=location))
+        
+
 
         rooms = Room.objects.all()
         if adults:
