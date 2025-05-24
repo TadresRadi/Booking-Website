@@ -1,23 +1,16 @@
 from django.urls import path, include
-from .views import HotelListView, RegisterView ,RoomAnimatesListView
 from django.contrib import admin
-from .views import LoginView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from .views import RoomPhotosAPIView
-from .views import HotelDetailView
+from pages.views.hotel_views import HotelCreateView, HotelListView, HotelDetailView, AddHotelView, UploadHotelPhotosView
+from pages.views.rooms_views import RoomAnimatesListView, RoomPhotosAPIView, AddRoomView, UploadRoomPhotosView
+from pages.views.facility_views import  AddFacilityView , FacilitiesListView
+from pages.views.auth_views import RegisterView, LoginView, register_user
+from dj_rest_auth.registration.views import RegisterView as DJRegisterView
 
-from pages.views import (
-    RegisterView,
-    AddFacilityView,
-    AddHotelView,
-    AddRoomView,
-    UploadHotelPhotosView,
-    UploadRoomPhotosView,
-)
 
 urlpatterns = [
     
@@ -29,10 +22,10 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/register/', views.register_user),
+    path('api/register/', register_user, name='register_api'),
     path('search/', HotelListView.as_view(), name='hotel_search_api'),
-    path('create-hotel/', views.HotelCreateView.as_view(), name='hotel_create_api'),
-    path('facilities/', views.FacilitiesListView.as_view(), name='facilities_list_api'),
+    path('create-hotel/', HotelCreateView.as_view(), name='hotel_create_api'),
+    path('facilities/', FacilitiesListView.as_view(), name='facilities_list_api'),
     path('rooms/<int:room_id>/animates/', RoomAnimatesListView.as_view(), name='room-animates'),
     path('hotel/<int:id>/', HotelDetailView.as_view(), name='hotel-detail'),
     path('api/rooms/<int:room_id>/photos/', RoomPhotosAPIView.as_view(), name='room-photos'),

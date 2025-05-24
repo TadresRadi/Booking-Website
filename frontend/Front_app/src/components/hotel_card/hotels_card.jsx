@@ -12,7 +12,6 @@ export default function HotelsCard({ hotel }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const favoritehotel = useSelector((state) => state.favorites.favoriteHotels);
-   const counter = useSelector((state) => state.counter.counter);
   
   const roomPrices = hotel.rooms.map(room => room.price_per_night);
   const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : 'N/A';

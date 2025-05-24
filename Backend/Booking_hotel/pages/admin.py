@@ -1,7 +1,17 @@
 from django.contrib import admin
 
+from .models.detailes import Details
+from .models.facility import Facility
+from .models.hotel_image import HotelPhoto
+from .models.room import Room
+from .models.room_image import RoomPhoto
+from .models.room_animate import Room_animates
+from .models.reviews import Review
+from .models.hotel import Hotel
+
+
 # Register your models here.
-from .models import Details, Hotel, HotelPhoto, Room, RoomPhoto,Review , Facility, Room_animates
+
 
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
