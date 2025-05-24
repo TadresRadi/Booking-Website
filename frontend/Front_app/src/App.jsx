@@ -19,6 +19,7 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Fav from './page/fav/fav.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import RegisterSuccess from './page/register/RegisterSuccess.jsx';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path='add-room' element={<AddRoomForm/>}/>
           <Route path='add-images' element={<AddPhotosPage />} />
           <Route path='add-property' element={<Add_property/>} />
+          <Route path="/register-success" element={<RegisterSuccess />} />
           
         </Routes>
         
