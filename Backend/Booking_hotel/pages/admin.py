@@ -55,4 +55,11 @@ class ReviewAdmin(admin.ModelAdmin):
 class DetailsAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'allow_children', 'allow_pets', 'visa', 'cash_on_delivery')
 
+from django.contrib import admin
+from pages.models.fav import Favorite
 
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'hotel')
+   
+   

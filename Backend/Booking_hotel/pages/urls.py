@@ -10,7 +10,7 @@ from pages.views.rooms_views import RoomAnimatesListView, RoomPhotosAPIView, Add
 from pages.views.facility_views import  AddFacilityView , FacilitiesListView
 from pages.views.auth_views import RegisterView, LoginView, register_user
 from dj_rest_auth.registration.views import RegisterView as DJRegisterView
-
+from pages.views.fav import list_favorites, add_favorite, remove_favorite
 
 urlpatterns = [
     
@@ -34,7 +34,9 @@ urlpatterns = [
     path('add-room/', AddRoomView.as_view(), name='add-room'),
     path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
-
+    path('favorites/', list_favorites, name='list_favorites'),          # GET all favorites
+    path('favorites/add/', add_favorite, name='add_favorite'),          # POST to add favorite
+    path('favorites/remove/', remove_favorite, name='remove_favorite'), 
 
 ]
 if settings.DEBUG:

@@ -1,17 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import HotelsCard from '../../components/hotel_card/hotels_card';
+import { fetchFavorites } from '../../store/slice/fav';
 
 export default function FavoritesPage() {
   const favoriteHotels = useSelector(state => state.favorites.favoriteHotels);
-  const counter = useSelector((state) => state.counter.counter);
+ 
+    const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]);
 
   return (
     <div style={styles.pageWrapper}>
       <div style={styles.headerSection}>
         <h2 style={styles.title}>
           ❤️ Favorite Hotels 
-          <span style={styles.counterBadge}>{counter}</span>
+       
         </h2>
       </div>
 

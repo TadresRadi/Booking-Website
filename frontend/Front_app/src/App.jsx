@@ -22,6 +22,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {
+
+
+  
   const location = useLocation();
 
   const showSearchBar = location.pathname === "/home" || location.pathname === "/search";
