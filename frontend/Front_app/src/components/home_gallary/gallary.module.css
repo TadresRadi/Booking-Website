@@ -1,0 +1,10 @@
+.roompho{
+
+    width: 100px;
+    height: 100px;
+}
+.room-photo-gallery {
+ /* Adjust the value as needed */
+  max-width: 80rem;
+
+}
