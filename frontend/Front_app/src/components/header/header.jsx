@@ -12,6 +12,7 @@ const Header = () => {
     const storedUsername = localStorage.getItem("username");
     setUsername(storedUsername);
   }, []);
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -28,27 +29,35 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-  function handleFav() {
+  // Navigation handlers adapted to work with <a> tags
+  function handleFav(e) {
+    e.preventDefault();
     navigate('/fav');
   }
-  function handleLogin() {
+  function handleLogin(e) {
+    e.preventDefault();
     navigate('/login');
   }
-  function handleRegister() {
+  function handleRegister(e) {
+    e.preventDefault();
     navigate('/register');
   }
-  function handleHome() {
+  function handleHome(e) {
+    e.preventDefault();
     navigate('/home'); 
   }
-  function handleProfile() {
+  function handleProfile(e) {
+    e.preventDefault();
     setMenuOpen(false);
     navigate('/profile');
   }
-  function handleSettings() {
+  function handleSettings(e) {
+    e.preventDefault();
     setMenuOpen(false);
     navigate('/settings');
   }
-  function handleLogout() {
+  function handleLogout(e) {
+    e.preventDefault();
     setMenuOpen(false);
     localStorage.removeItem("username");
     localStorage.removeItem("access");
@@ -58,33 +67,35 @@ const Header = () => {
   }
 
   return (
-    <header className="header">
+    <header className="header" style={{ backgroundColor: 'white' }}>
       <div className="header-content">
         <div className="logo" style={{ cursor: 'pointer' }} onClick={handleHome}>Logo</div>
         <div className="auth-buttons">
-          <button className="login-btn" onClick={handleFav}>Favorite</button>
-          <button className="login-btn" onClick={handleHome}>Home</button>
+          <a href="/fav" onClick={handleFav} className="login-btn" role="button">Favorite</a>
+          <a href="/home" onClick={handleHome} className="login-btn" role="button">Home</a>
           {!username ? (
             <>
-              <button className="login-btn" onClick={handleLogin}>Log in</button>
-              <button className="create-account-btn" onClick={handleRegister}>Create Account</button>
+              <a href="/login" onClick={handleLogin} className="login-btn" role="button">Log in</a>
+              <a href="/register" onClick={handleRegister} className="create-account-btn" role="button">Create Account</a>
             </>
           ) : (
             <div className="user-menu-wrapper" ref={menuRef}>
-              <button
+              <a
+                href="#"
                 className="login-btn"
                 style={{ backgroundColor: "#f7c873", color: "#3e3e3e", position: "relative" }}
-                onClick={() => setMenuOpen((prev) => !prev)}
+                onClick={(e) => { e.preventDefault(); setMenuOpen(prev => !prev); }}
+                role="button"
               >
                 {username}
                 <span style={{marginLeft: 8, fontSize: 12}}>▼</span>
-              </button>
+              </a>
               {menuOpen && (
                 <div className="user-dropdown-menu">
-                  <button onClick={handleProfile} className="dropdown-item">My Profile</button>
-                  <button onClick={handleSettings} className="dropdown-item">Setting</button>
+                  <a href="/profile" onClick={handleProfile} className="dropdown-item" role="button">My Profile</a>
+                  <a href="/settings" onClick={handleSettings} className="dropdown-item" role="button">Setting</a>
                   <hr className="dropdown-divider" />
-                  <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
+                  <a href="/logout" onClick={handleLogout} className="dropdown-item logout-btn" role="button">Logout</a>
                 </div>
               )}
             </div>
