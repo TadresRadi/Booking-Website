@@ -90,7 +90,10 @@ export function Details() {
       <div className={`${styles["room"]} mb-5 container h-100`}>
         {details.rooms?.length > 0 ? (
    <Room_card
-  rooms={details.rooms}
+   hotalName={details.hotel_name}
+   hotelLocation={details.location}
+   hotalRating={details.star_rating}
+   rooms={details.rooms}
 
   onSelectRoom={setSelectedRoom}
 />

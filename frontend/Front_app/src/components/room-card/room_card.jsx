@@ -5,8 +5,15 @@ import { Row, Col, Form } from 'react-bootstrap';
 import styles from './room_card.module.css';
 import PhotoGallery from '../popup/popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function Room_card({ rooms = [], hotelImages = [], onSelectRoom }) {
+export default function Room_card({hotalName,hotalLocation,hotalRating, rooms = [], hotelImages = [], onSelectRoom }) {
+  const navigate = useNavigate();
+
+ const onRecerveRoom = () => {
+  navigate(`/booking/`, {state : { hotalName, hotalLocation, hotalRating } });
+ }
+ 
   return (
     <div>
       {rooms.length === 0 ? (
@@ -82,14 +89,15 @@ export default function Room_card({ rooms = [], hotelImages = [], onSelectRoom }
 
   <Button
     className={`mt-2 ${styles.serverbutton}`}
-    onClick={() =>
+    onClick={() => {
       onSelectRoom({
         type: room.type || room.name,
         count: room.selectedCount || 1,
         pricePerNight: room.price_per_night,
         total: (room.selectedCount || 1) * room.price_per_night,
-      })
-    }
+      });
+      onRecerveRoom();
+    }}
   >
     Reserve
   </Button>

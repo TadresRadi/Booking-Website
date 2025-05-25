@@ -19,6 +19,7 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Fav from './page/fav/fav.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Booking } from './page/booking/booking.jsx';
 
 
 function App() {
@@ -36,16 +37,17 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/booking" element={<Add_property />} />
+          <Route path="/Add_property" element={<Add_property />} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/search" element={<SearchResult />} />
           <Route path="/hotel/:id" element={<Details />} />
           <Route path="fav" element={<Fav />} />
-          <Route path="*" element={<Register />} />
+          <Route path="*" element={<Homepage />} />
           <Route path='add-hotel' element={<AddHotelForm/>}/>
           <Route path='add-room' element={<AddRoomForm/>}/>
           <Route path='add-images' element={<AddPhotosPage />} />
           <Route path='add-property' element={<Add_property/>} />
+          <Route path='booking' element={<Booking/>} />
           
         </Routes>
         
