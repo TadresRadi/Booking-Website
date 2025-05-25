@@ -15,6 +15,7 @@ from pages.serializers.hotel_detailes import HotelDetailSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 
 class HotelCreateView(APIView):
     def post(self, request):
@@ -121,3 +122,13 @@ class HotelDetailView(RetrieveAPIView):
     lookup_field = 'id'
 
 
+
+class AllHotelsView(APIView):
+    pagination_class = PageNumberPagination  # تعيين نوع pagination
+
+    def get(self, request):
+        hotels = Hotel.objects.all().order_by('id')  # ممكن ترتب حسب id أو حسب حاجة تانية
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(hotels, request, view=self)
+        serializer = HotelSerializer(page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)

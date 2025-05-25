@@ -30,7 +30,7 @@ export function Home_facility() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className="hotel_fac">
         <h1>Hotel Features</h1>
         <div className={styles.featuresGrid}>
           {features.map(({ key, label, icon }) => (

@@ -7,10 +7,18 @@ from pages.views.facility_views import  AddFacilityView , FacilitiesListView
 from pages.views.auth_views import RegisterView, LoginView
 from dj_rest_auth.registration.views import RegisterView as DJRegisterView
 from pages.views.fav import list_favorites, add_favorite, remove_favorite
+from pages.views.hotel_views import AllHotelsView 
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from pages.views.rooms_views import AllRoomPhotosAPIView
+
+from pages.views.review import ReviewListView
 
 
+from pages.views.rooms_views import RoomViewSet
+router = DefaultRouter()
+router.register(r'rooms', RoomViewSet, basename='rooms')
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -35,8 +43,14 @@ urlpatterns = [
     path('favorites/', list_favorites, name='list_favorites'),          # GET all favorites
     path('favorites/add/', add_favorite, name='add_favorite'),          # POST to add favorite
     path('favorites/remove/', remove_favorite, name='remove_favorite'), 
-
-]
+    path('hotels/', AllHotelsView.as_view(), name='all_hotels'),
+    path('', include(router.urls)), 
+    path('room-photos/', AllRoomPhotosAPIView.as_view(), name='all-room-photos'),
+    path('reviews/', ReviewListView.as_view(), name='review-list'),
+    
+    
+    
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

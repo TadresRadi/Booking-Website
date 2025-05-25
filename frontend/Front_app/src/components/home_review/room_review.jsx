@@ -20,7 +20,7 @@ export function Home_review() {
 
  return (
     <div  className='main'>
-      <h1 className='headi'>What People Say..</h1>
+      <h1 className='head'>What People Say..</h1>
       <div className={styles.reviewContainer}>
         {reviews.slice(0, 3).map((review) => (
           <div key={review.id} className={styles.reviewCard}>
