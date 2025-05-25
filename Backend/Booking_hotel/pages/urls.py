@@ -7,6 +7,10 @@ from pages.views.facility_views import  AddFacilityView , FacilitiesListView
 from pages.views.auth_views import RegisterView, LoginView
 from dj_rest_auth.registration.views import RegisterView as DJRegisterView
 from pages.views.fav import list_favorites, add_favorite, remove_favorite
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
