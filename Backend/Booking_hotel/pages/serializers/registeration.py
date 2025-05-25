@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-
-
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -34,8 +32,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         counter = 1
 
         while User.objects.filter(username=username).exists():
-            username = f"{base_username}{counter}"
-            counter += 1
             username = f"{base_username}{counter}"
             counter += 1
 
