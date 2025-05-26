@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import styles from "./add_images.module.css";
 import axios from "axios";
-<<<<<<< HEAD
-// <<<<<<< HEAD
 import { useHotel } from "../../context/HotelContext.jsx";
-// =======
-// import { useHotel } from "../../context/HotelContext";
-// >>>>>>> 47bac34b221406a702c4c10d9dc15f9b9d17cd50
-// just say hi to the world
-=======
-import { useHotel } from "../../context/HotelContext";
->>>>>>> 47bac34b221406a702c4c10d9dc15f9b9d17cd50
 import { useNavigate } from "react-router-dom";
 
 
