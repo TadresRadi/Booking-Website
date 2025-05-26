@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styles from "./add_images.module.css";
 import axios from "axios";
-import { useHotelContext } from "../../contexts/HotelContext";
+import { useHotel } from "../../context/HotelContext";
 import { useNavigate } from "react-router-dom";
 
 export default function AddPhotosPage() {
-  const { hotelId, roomId } = useHotelContext();
+  const { hotelId, roomId } = useHotel();
   const [hotelFiles, setHotelFiles] = useState([]);
   const [roomFiles, setRoomFiles] = useState([]);
   const [mainHotelIndex, setMainHotelIndex] = useState(null);
