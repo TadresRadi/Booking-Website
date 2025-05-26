@@ -56,6 +56,7 @@ class UploadHotelPhotosView(APIView):
     def post(self, request):
         hotel_id = request.data.get("hotel")
         images = request.FILES.getlist('images')
+        is_main_values = request.data.getlist('is_main')  
 
         if not hotel_id:
             return Response({"error": "Hotel ID is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -65,8 +66,20 @@ class UploadHotelPhotosView(APIView):
         if not images:
             return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-        for image in images:
-            serializer = HotelPhotoSerializer(data={"hotel": hotel_id, "image": image})
+       
+        if len(is_main_values) != len(images):
+            return Response({"error": "Mismatch between images and is_main flags"}, status=status.HTTP_400_BAD_REQUEST)
+
+        for image, is_main in zip(images, is_main_values):
+            
+            is_main_bool = True if is_main.lower() == 'true' else False
+
+            serializer = HotelPhotoSerializer(data={
+                "hotel": hotel_id,
+                "image": image,
+                "is_main": is_main_bool,
+            })
+
             if serializer.is_valid():
                 serializer.save()
             else:
