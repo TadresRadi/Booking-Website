@@ -13,16 +13,7 @@ const Header = () => {
   const menuRef = useRef();
 
   useEffect(() => {
-<<<<<<< HEAD
     const handleClickOutside = (event) => {
-=======
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername);
-  }, []);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
->>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
@@ -36,83 +27,37 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-<<<<<<< HEAD
   const navigateTo = (path) => {
     setMenuOpen(false);
     navigate(path);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     setMenuOpen(false);
-    [
-      "username",
-      "first_name",
-      "last_name",
-      "profileImage",
-      "access",
-      "refresh",
-    ].forEach((item) => localStorage.removeItem(item));
+    ["username", "first_name", "last_name", "profileImage", "access", "refresh"].forEach((item) =>
+      localStorage.removeItem(item)
+    );
     setUserData(null);
     navigate("/login");
   };
 
-  // الاسم الأول والآخر بأمان
   const firstName = userData?.fullname?.first || "";
   const lastName = userData?.fullname?.last || "";
 
-  // الصورة الشخصية أو الصورة الافتراضية
   const profileImg =
     userData?.profileImage && userData.profileImage.trim() !== ""
       ? userData.profileImage
       : defaultAvatar;
-=======
-  // Navigation handlers adapted to work with <a> tags
-  function handleFav(e) {
-    e.preventDefault();
-    navigate('/fav');
-  }
-  function handleLogin(e) {
-    e.preventDefault();
-    navigate('/login');
-  }
-  function handleRegister(e) {
-    e.preventDefault();
-    navigate('/register');
-  }
-  function handleHome(e) {
-    e.preventDefault();
-    navigate('/home'); 
-  }
-  function handleProfile(e) {
-    e.preventDefault();
-    setMenuOpen(false);
-    navigate('/profile');
-  }
-  function handleSettings(e) {
-    e.preventDefault();
-    setMenuOpen(false);
-    navigate('/settings');
-  }
-  function handleLogout(e) {
-    e.preventDefault();
-    setMenuOpen(false);
-    localStorage.removeItem("username");
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    setUsername(null);
-    navigate('/login');
-  }
->>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
 
   return (
-    <header className="header" style={{ backgroundColor: 'white' }}>
+    <header className="header" style={{ backgroundColor: "white" }}>
       <div className="header-content">
         <div className="logo" onClick={() => navigateTo("/home")}>
           Diva
         </div>
 
         <div className="auth-buttons">
-<<<<<<< HEAD
           <button className="login-btn" onClick={() => navigateTo("/fav")}>
             Favorite
           </button>
@@ -168,35 +113,8 @@ const Header = () => {
                     key={profileImg}
                   />
                   <span>
-                    {firstName} {lastName}
+                    {firstName} {lastName} <span style={{ marginLeft: 8, fontSize: 12 }}>▼</span>
                   </span>
-=======
-          <a href="/fav" onClick={handleFav} className="login-btn" role="button">Favorite</a>
-          <a href="/home" onClick={handleHome} className="login-btn" role="button">Home</a>
-          {!username ? (
-            <>
-              <a href="/login" onClick={handleLogin} className="login-btn" role="button">Log in</a>
-              <a href="/register" onClick={handleRegister} className="create-account-btn" role="button">Create Account</a>
-            </>
-          ) : (
-            <div className="user-menu-wrapper" ref={menuRef}>
-              <a
-                href="#"
-                className="login-btn"
-                style={{ backgroundColor: "#f7c873", color: "#3e3e3e", position: "relative" }}
-                onClick={(e) => { e.preventDefault(); setMenuOpen(prev => !prev); }}
-                role="button"
-              >
-                {username}
-                <span style={{marginLeft: 8, fontSize: 12}}>▼</span>
-              </a>
-              {menuOpen && (
-                <div className="user-dropdown-menu">
-                  <a href="/profile" onClick={handleProfile} className="dropdown-item" role="button">My Profile</a>
-                  <a href="/settings" onClick={handleSettings} className="dropdown-item" role="button">Setting</a>
-                  <hr className="dropdown-divider" />
-                  <a href="/logout" onClick={handleLogout} className="dropdown-item logout-btn" role="button">Logout</a>
->>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
                 </div>
 
                 {menuOpen && (
