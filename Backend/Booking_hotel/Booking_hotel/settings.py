@@ -116,9 +116,9 @@ WSGI_APPLICATION = 'Booking_hotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'booking_db',          
+        'NAME': 'booking',          
         'USER': 'postgres',             
-        'PASSWORD': '123456',            
+        'PASSWORD': '123',            
         'HOST': 'localhost',             
         'PORT': '5432',                  
     }
@@ -182,3 +182,7 @@ DEBUG = True  # Must be True for local media serving
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 6,
+}

@@ -25,9 +25,14 @@ urlpatterns = [
     path('api/', include('pages.urls')),
     path('auth/', include('dj_rest_auth.urls')),
     path('api/auth/', include('dj_rest_auth.urls')),
+<<<<<<< HEAD
     path('pages/', include('pages.urls')),
     path('api/user/', include('pages.urls')),
     path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
+=======
+    # path('pages/', include('pages.urls')),
+    
+>>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
 ]
 
 

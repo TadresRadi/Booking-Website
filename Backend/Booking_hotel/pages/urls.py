@@ -6,9 +6,23 @@ from pages.views.rooms_views import RoomAnimatesListView, RoomPhotosAPIView, Add
 from pages.views.facility_views import  AddFacilityView , FacilitiesListView
 from pages.views.auth_views import RegisterView, LoginView
 from dj_rest_auth.registration.views import RegisterView as DJRegisterView
+from pages.views.fav import list_favorites, add_favorite, remove_favorite
+from pages.views.hotel_views import AllHotelsView 
 from django.conf import settings
 from django.conf.urls.static import static
+<<<<<<< HEAD
 from pages.views.auth_views import UserProfileView
+=======
+from rest_framework.routers import DefaultRouter
+from pages.views.rooms_views import AllRoomPhotosAPIView
+
+from pages.views.review import ReviewListView
+
+
+from pages.views.rooms_views import RoomViewSet
+router = DefaultRouter()
+router.register(r'rooms', RoomViewSet, basename='rooms')
+>>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -30,9 +44,23 @@ urlpatterns = [
     path('add-room/', AddRoomView.as_view(), name='add-room'),
     path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
+<<<<<<< HEAD
     path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
     path('profile/', UserProfileView.as_view(), name='user-profile'),
 ]
+=======
+    path('favorites/', list_favorites, name='list_favorites'),          # GET all favorites
+    path('favorites/add/', add_favorite, name='add_favorite'),          # POST to add favorite
+    path('favorites/remove/', remove_favorite, name='remove_favorite'), 
+    path('hotels/', AllHotelsView.as_view(), name='all_hotels'),
+    path('', include(router.urls)), 
+    path('room-photos/', AllRoomPhotosAPIView.as_view(), name='all-room-photos'),
+    path('reviews/', ReviewListView.as_view(), name='review-list'),
+    
+    
+    
+    ]
+>>>>>>> 76becd6f5489c9197121606fa662a43b81d04682
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

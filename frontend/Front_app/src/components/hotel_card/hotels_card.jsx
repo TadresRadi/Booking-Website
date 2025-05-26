@@ -6,55 +6,83 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite, removeFavorite } from "../../store/slice/fav";
 import { BsHeart } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
-import { dicreasecounter, increasecounter } from "../../store/slice/counter";
+
+const API_URL = "http://localhost:8000";
 
 export default function HotelsCard({ hotel }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const favoritehotel = useSelector((state) => state.favorites.favoriteHotels);
-  
-  const roomPrices = hotel.rooms.map(room => room.price_per_night);
-  const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : 'N/A';
+  const favoriteHotels = useSelector((state) => state.favorites.favoriteHotels);
 
+  const roomPrices = Array.isArray(hotel.rooms) ? hotel.rooms.map(room => room.price_per_night) : [];
+  const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : 'N/A';
+  const facilities = Array.isArray(hotel.facilities) ? hotel.facilities : [];
   const imageUrl = hotel.hotel_images?.[0]?.image || 'fallback-image-url';
 
-  
-
-   const handleClick = () => {
-     navigate(`/hotel/${hotel.id}`);
-
+  const handleClick = () => {
+    navigate(`/hotel/${hotel.id}`);
   };
 
- const toggleHeart = (hotel) => {
-   const isFavorite = favoritehotel.some((favhotel) => favhotel.id === hotel.id);
- 
-   if (isFavorite) {
-     dispatch(removeFavorite(hotel));
-     dispatch(dicreasecounter()); 
-   } else {
-     dispatch(addFavorite(hotel));
-     dispatch(increasecounter()); 
-   }
- };
+  const addHotelToFavorites = async (hotelId) => {
+    try {
+      await fetch(`${API_URL}/api/favorites/add/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth
+        },
+        body: JSON.stringify({ hotel_id: hotelId }),
+      });
+    } catch (error) {
+      console.error('Error adding favorite:', error);
+    }
+  };
+
+  const removeHotelFromFavorites = async (hotelId) => {
+    try {
+      await fetch(`${API_URL}/api/favorites/remove/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth
+        },
+        body: JSON.stringify({ hotel_id: hotelId }),
+      });
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+    }
+  };
+
+  const toggleHeart = async (hotel) => {
+    const isFavorite = favoriteHotels.some(favhotel => favhotel.id === hotel.id);
+
+    if (isFavorite) {
+      await removeHotelFromFavorites(hotel.id);
+      dispatch(removeFavorite(hotel));
+    } else {
+      await addHotelToFavorites(hotel.id);
+      dispatch(addFavorite(hotel));
+    }
+  };
+
+  const isFavorite = favoriteHotels.some(favhotel => favhotel.id === hotel.id);
 
   return (
     <div className={styles.card} onClick={handleClick}>
-      <img
-        src={imageUrl}
-        alt="Hotel"
-        className={styles.card_img}
-      />
+      <img src={imageUrl} alt="Hotel" className={styles.card_img} />
       <span>
-        {favoritehotel.some((favhotel) => favhotel.id === hotel.id) ? (
-          <FaHeart   className={styles.heart}
+        {isFavorite ? (
+          <FaHeart
+            className={styles.heart}
             onClick={(e) => {
-              e.stopPropagation(); 
+              e.stopPropagation();
               toggleHeart(hotel);
             }}
             style={{ color: "red" }}
           />
         ) : (
-          <BsHeart className={styles.heart}
+          <BsHeart
+            className={styles.heart}
             onClick={(e) => {
               e.stopPropagation();
               toggleHeart(hotel);
@@ -70,10 +98,10 @@ export default function HotelsCard({ hotel }) {
             sx={{
               fontSize: "clamp(20px, 2vw, 1.5rem)",
               '& .MuiRating-iconFilled': {
-                color: 'rgba(230, 116, 44, 1)', // filled star color
+                color: 'rgba(230, 116, 44, 1)',
               },
               '& .MuiRating-iconEmpty': {
-                color: 'rgba(230, 116, 44, 1)', // empty star color
+                color: 'rgba(230, 116, 44, 1)',
               },
             }}
             name="read-only"
@@ -82,31 +110,25 @@ export default function HotelsCard({ hotel }) {
           />
         </div>
 
-        <div className={`${styles.card_location}`}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="30px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill=" rgba(230, 116, 44, 1)"
-          >
+        <div className={styles.card_location}>
+          <svg xmlns="http://www.w3.org/2000/svg" height="30px" width="24px" fill="rgba(230, 116, 44, 1)">
             <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
           </svg>
           <p className="card-text">{hotel.location}</p>
         </div>
 
         <p className={styles.property_title}>The property offer:</p>
-        <span className={styles.property_item}>{hotel.facilities[0]}</span>
-        <span className={styles.property_item}>{hotel.facilities[1]}</span>
+        <span className={styles.property_item}>{facilities[0] || 'No facility'}</span>
+        <span className={styles.property_item}>{facilities[1] || 'No facility'}</span>
         <span className={styles.property_item}>others..</span>
 
         <div className={styles.card_footer}>
           <div className={styles.card_reviews}>
-            <p className={styles.reviews}>{`${hotel.reviews_count} reviews`} </p>
+            <p className={styles.reviews}>{`${hotel.reviews_count} reviews`}</p>
             <p className={styles.rate}>{`${hotel.largest_rating_percentage}% ${hotel.largest_rating_category}`}</p>
           </div>
           <div className={styles.card_price}>
-            <span>{`${minPrice}$`}</span>
+            <span>{minPrice !== 'N/A' ? `${minPrice}$` : 'Price N/A'}</span>
             <span className={styles.per_night}>
               <span className={styles.per}> /</span>Per Night.
             </span>

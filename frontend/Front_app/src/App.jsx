@@ -27,6 +27,9 @@ import UserManage from './page/Admin_Dashboard/User_managment/usermangment.jsx';
 import { AdminProvider } from './context/AdminContext';
 
 function App() {
+
+
+  
   const location = useLocation();
   const showSearchBar = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/search";
   const hideHeaderFooter = location.pathname === "/login" || location.pathname === "/register"|| location.pathname.startsWith("/admin");
