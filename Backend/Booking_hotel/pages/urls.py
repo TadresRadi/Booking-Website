@@ -8,6 +8,7 @@ from pages.views.auth_views import RegisterView, LoginView
 from dj_rest_auth.registration.views import RegisterView as DJRegisterView
 from django.conf import settings
 from django.conf.urls.static import static
+from pages.views.auth_views import UserProfileView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -29,6 +30,8 @@ urlpatterns = [
     path('add-room/', AddRoomView.as_view(), name='add-room'),
     path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
+    path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
 ]
 
 if settings.DEBUG:

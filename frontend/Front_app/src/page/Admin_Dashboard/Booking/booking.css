@@ -1,0 +1,64 @@
+.customer-page {
+  background-color: #fefefe;
+  height: 100vh;
+  flex-direction: row;
+}
+
+.sidebar {
+  background-color: #d8f0f8;
+  width: 25%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.2em;
+  text-decoration: none;
+}
+
+.sidebar-item.active {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.sidebar-item:hover {
+  color: #0056b3;
+}
+
+.content {
+  background-color: #f9f3f1;
+  width: 75%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.action-btn {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  color: #0056b3;
+}
+
+.pagination {
+  margin-top: 20px;
+}

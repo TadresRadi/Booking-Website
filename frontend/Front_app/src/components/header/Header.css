@@ -1,5 +1,5 @@
 .header {
-  background-color:  #faefe3;
+  background-color: #faefe3;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -15,24 +15,12 @@
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #000;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #000;
-  font-size: 1rem;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
+  font-family: "Pacifico", cursive;
+  font-size: 2rem;
+  color: #67bfd1;
+  letter-spacing: 2px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .auth-buttons {
@@ -40,22 +28,54 @@
   gap: 10px;
 }
 
-.login-btn, .create-account-btn {
-  background-color:#67bfd1;
+.login-btn,
+.create-account-btn {
+  background-color: #67bfd1;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 5px 15px;
   font-size: 1rem;
   cursor: pointer;
   color: #fcfafa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.login-btn:hover, .create-account-btn:hover {
+.login-btn:hover,
+.create-account-btn:hover {
   background-color: #f0f0f0;
   color: #444;
 }
 
-/* Dropdown user menu styles */
+.header-profile-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #67bfd1;
+  background: #fff;
+  margin-right: 6px;
+  box-shadow: 0 2px 4px #0001;
+
+  image-rendering: auto; /* جرب بدلها crisp-edges أو pixelated لو حبيت */
+  backface-visibility: hidden;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  background-color: #f7c873 !important;
+  color: #3e3e3e !important;
+  border: none;
+}
+
+.user-btn:hover {
+  background-color: #ffe3b0 !important;
+}
+
 .user-menu-wrapper {
   position: relative;
   display: inline-block;

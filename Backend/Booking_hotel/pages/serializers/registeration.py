@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from pages.models.user_profile import UserProfile
 
 class RegisterSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
@@ -7,10 +8,16 @@ class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     accept_terms = serializers.BooleanField(write_only=True)
+    birth_date = serializers.DateField(required=True)
+    phone_number = serializers.CharField(required=True)
+    profile_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'accept_terms']
+        fields = [
+            'first_name', 'last_name', 'email', 'password', 'accept_terms',
+            'birth_date', 'phone_number', 'profile_image'
+        ]
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
@@ -24,6 +31,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('accept_terms')
+        birth_date = validated_data.pop('birth_date')
+        phone_number = validated_data.pop('phone_number')
+        profile_image = validated_data.pop('profile_image', None)
 
         first_name = validated_data['first_name'].strip().lower()
         last_name = validated_data['last_name'].strip().lower()
@@ -41,5 +51,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             email=validated_data['email'],
             password=validated_data['password']
+        )
+        UserProfile.objects.create(
+            user=user,
+            birth_date=birth_date,
+            phone_number=phone_number,
+            profile_image=profile_image
         )
         return user

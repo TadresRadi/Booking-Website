@@ -5,6 +5,10 @@
   min-height: 100vh;
   padding-left: 5%;
   padding-right: 5%;
+  background-image: url('/natural.jpg'); /* ضع الصورة في مجلد public باسم natural.jpg */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .first_container {
@@ -17,10 +21,9 @@
   justify-content: center;
   position: relative;
 }
-.guest-wrapper11{
+.guest-wrapper11 {
   width: 600px;
 }
-
 
 .home_text {
   color: white;
@@ -68,11 +71,10 @@
 .booking-input3,
 .booking-input11 {
   flex: 1 1 200px;
- 
   position: relative;
-  top:-10px;
+  top: -10px;
 }
-.booking-input11{
+.booking-input11 {
   width: 400px;
 }
 .destination-input,
@@ -182,7 +184,6 @@
   font-size: 16px;
   width: 400px;
   cursor: pointer;
-
   transition: background-color 0.3s ease;
 }
 
@@ -190,7 +191,7 @@
   margin-right: -30px;
 }
 
-.booking-input1{
+.booking-input1 {
   width: 300px;
 }
 
@@ -218,7 +219,6 @@
 @media (max-width: 400px) {
   .booking-container {
     flex-direction: column;
- 
   }
 
   .booking-input1,

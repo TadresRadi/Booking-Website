@@ -14,25 +14,28 @@ import { useNavigate } from 'react-router-dom';
 export function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [serverError, setServerError] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     setServerError('');
-    const payload = {
-      username: data.email,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      password: data.password,
-      accept_terms: data.accept_terms,
-    };
+
+    const formData = new FormData();
+    formData.append('first_name', data.firstName);
+    formData.append('last_name', data.lastName);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('accept_terms', data.accept_terms);
+    formData.append('birth_date', data.birth_date);
+    formData.append('phone_number', data.phone_number);
+    if (data.profile_image && data.profile_image[0]) {
+      formData.append('profile_image', data.profile_image[0]);
+    }
+
     try {
       const response = await fetch('http://127.0.0.1:8000/api/register/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       });
       const result = await response.json();
       if (response.ok) {
@@ -49,8 +52,18 @@ export function Register() {
       setServerError('Network error, please try again later.');
     }
   };
+
   const goToLogin = () => {
     navigate('/login');
+  };
+
+  // معاينة الصورة قبل الرفع
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImagePreview(URL.createObjectURL(e.target.files[0]));
+    } else {
+      setImagePreview(null);
+    }
   };
 
   return (
@@ -65,8 +78,9 @@ export function Register() {
 
                 {serverError && <div className={styles.errorMessage}>{serverError}</div>}
 
-                <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <Form onSubmit={handleSubmit(onSubmit)} noValidate encType="multipart/form-data">
                   <Form.Group className="mb-3" controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="First Name"
@@ -76,6 +90,7 @@ export function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="lastName">
+                    <Form.Label>Last Name</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Last Name"
@@ -85,6 +100,7 @@ export function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email Address</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Email Address"
@@ -100,6 +116,7 @@ export function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="password">
+                    <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
                       placeholder="Create Password"
@@ -112,6 +129,43 @@ export function Register() {
                       })}
                     />
                     {errors.password && <div className={styles.errorMessage}>{errors.password.message}</div>}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="birth_date">
+                    <Form.Label>Birth Date</Form.Label>
+                    <Form.Control
+                      type="date"
+                      {...register("birth_date", { required: "Birth date is required" })}
+                    />
+                    {errors.birth_date && <div className={styles.errorMessage}>{errors.birth_date.message}</div>}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="phone_number">
+                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Control
+                      type="tel"
+                      placeholder="Phone Number"
+                      {...register("phone_number", { required: "Phone number is required" })}
+                    />
+                    {errors.phone_number && <div className={styles.errorMessage}>{errors.phone_number.message}</div>}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="profile_image">
+                    <Form.Label>Profile Image</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      {...register("profile_image")}
+                      onChange={handleImageChange}
+                    />
+                    {imagePreview && (
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="mt-2"
+                        style={{ maxWidth: '100px', maxHeight: '100px', objectFit: 'cover', borderRadius: '50%' }}
+                      />
+                    )}
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="accept_terms">
