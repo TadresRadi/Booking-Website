@@ -9,7 +9,7 @@ from pages.models.room_image import *
 class HotelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelPhoto
-        fields = ['id', 'image','hotel']  
+        fields = ['id', 'image','hotel','is_main']  
  
         
 class RoomAnimateSerializer(serializers.ModelSerializer):
