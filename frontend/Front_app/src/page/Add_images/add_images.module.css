@@ -1,6 +1,6 @@
 
 .container {
-    background-image: url('../../assets/natural.jpg');
+    background-image: url('../../assets/images/natural.jpg');
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -92,4 +92,42 @@
   .saveButton:hover {
     background-color: #5d8b9b;
     transform: translateY(-5px);
+  }
+  
+  .previewGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .previewItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+  }
+  
+  .previewImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    transition: transform 0.2s ease;
+  }
+  
+  .previewImage:hover {
+    transform: scale(1.05);
+    border-color: #78c4dd;
+  }
+  
+  .radioLabel {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #444;
+  }
+  
+  .radioLabel input[type="radio"] {
+    margin-right: 5px;
   }
