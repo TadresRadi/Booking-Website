@@ -6,7 +6,8 @@ import { useHotel } from '../../context/HotelContext.jsx';
 export function FilterSide() {
   const [facilities, setFacilities] = useState([]);
   const [roomAmenities, setRoomAmenities] = useState([]);
-  const { selectedFacilities, setSelectedFacilities } = useHotel();
+  const { selectedFacilities, setSelectedFacilities ,selectedRoomAmenities,
+  setSelectedRoomAmenities } = useHotel();
 
   useEffect(() => {
     axiosInstance.get('/facilities/')
@@ -17,7 +18,7 @@ export function FilterSide() {
         console.error("Error fetching facilities:", error);
       });
 
-    axiosInstance.get('/animates/')
+    axiosInstance.get('/All_Animates/')
       .then(response => {
         setRoomAmenities(response.data);
       })
@@ -35,8 +36,18 @@ export function FilterSide() {
     );
   };
 
+  const handleAmenityChange = (event) => {
+  const amenityName = event.target.value;
+  setSelectedRoomAmenities(prev =>
+    prev.includes(amenityName)
+      ? prev.filter(a => a !== amenityName)
+      : [...prev, amenityName]
+  );
+};
+
   return (
     <>
+    <div className={styles.fixedFilter}>
       <h3 className={styles.fiter_by}>Filter By</h3>
 
       {/* Property Facilities Filter */}
@@ -62,11 +73,14 @@ export function FilterSide() {
           <div key={amenity.id}>
             <input
               type="checkbox"
-              disabled // For future enhancement
+               value={amenity.animation_name}
+               onChange={handleAmenityChange}
+               checked={selectedRoomAmenities.includes(amenity.animation_name)}
             />
             <span className={styles.facility_name}>{amenity.animation_name}</span><br />
           </div>
         ))}
+      </div>
       </div>
     </>
   );

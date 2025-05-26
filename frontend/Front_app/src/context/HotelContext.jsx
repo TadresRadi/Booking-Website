@@ -10,12 +10,15 @@ export  const HotelProvider = ({ children }) => {
     const [hotelId, setHotelId] = useState(null);
     const [roomId, setRoomId] = useState(null);
     const [selectedFacilities, setSelectedFacilities] = useState([]);
+    const [selectedRoomAmenities, setSelectedRoomAmenities] = useState([]);
+
     
 
     return (
 
         <HotelContext.Provider value={{ hotels, setHotels, hotelId, setHotelId ,roomId, setRoomId , selectedFacilities,
-      setSelectedFacilities}}>
+      setSelectedFacilities , selectedRoomAmenities,
+  setSelectedRoomAmenities}}>
             {children}
         </HotelContext.Provider>
     );

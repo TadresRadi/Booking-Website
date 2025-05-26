@@ -1,39 +1,45 @@
 
-import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./searchInput.module.css";
 import axiosInstance from "../../api/axiosInstance";
 import { useHotel } from "../../context/HotelContext.jsx";
 import { useNavigate } from 'react-router-dom';
-
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useState } from "react";
 import GroupsIcon from '@mui/icons-material/Groups';
+import { CAlert } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilBurn } from '@coreui/icons'
 
 
 
 export default function SearchInput() {
-
+  const [showAlert, setShowAlert] = useState(false);
   const [location, setLocation] = useState("");
-
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
-
   const [adults, setAdults] = useState(2);
   const [openGuests, setOpenGuests] = useState(false);
   const { setHotels } = useHotel();
   const navigate = useNavigate();
-  const handleSearch = () => {
 
+
+  const handleSearch = () => {
+    if (!location || !checkIn || !checkOut) {
+      setShowAlert(true);
+      return;
+    }
+    setShowAlert(false); // hide alert if everything is valid
     console.log("Searching for hotels in:", location);
     axiosInstance.get(
       `/search/?location-or-hotel=${location}&check_in=${checkIn.toISOString().split('T')[0]}&check_out=${checkOut.toISOString().split('T')[0]}&adults=${adults}`
     )
-
       .then(response => {
-        console.log("Search results:", response.data);
-        setHotels(response.data);
-        navigate('/search');
+        
+          setHotels(response.data);  // set hotels from response
+          console.log("Search results:", response.data.hotels);
+        
+        navigate('/search');  // always navigate to results page
       })
       .catch(error => {
         console.error("Error fetching hotels:", error);
@@ -46,10 +52,18 @@ export default function SearchInput() {
 
   return (<>
     <div className={styles["search_form_container"]}>
-
+      {showAlert && (
+        <div className="position-fixed top-0 start-50 translate-middle-x mt-3 z-3" style={{ zIndex: 1050 }}>
+          <CAlert color="danger" className="d-flex align-items-center shadow-lg">
+            <CIcon icon={cilBurn} className="flex-shrink-0 me-2" width={24} height={24} />
+            <div>Please fill in all fields before searching.</div>
+          </CAlert>
+        </div>
+      )}
 
       <div className={styles["first_container"]}>
         <p className={styles["home_text"]}>Make Your Reservation</p>
+
       </div>
       {/* Filter Section */}
 
@@ -78,7 +92,7 @@ export default function SearchInput() {
                 selected={checkIn}
                 onChange={(date) => {
                   setCheckIn(date)
-                   // Optional: reset checkOut if it’s before new checkIn
+                  // Optional: reset checkOut if it’s before new checkIn
                   if (checkOut && date && checkOut < date) {
                     setCheckOut(null);
                   }
@@ -96,8 +110,7 @@ export default function SearchInput() {
                 placeholderText="Check-out"
                 className={styles["datepicker-input"]}
                 minDate={checkIn || new Date()}
-                disabled={!checkIn} // Optional: disable until check-in is selected
-
+                disabled={!checkIn}
               />
 
             </div>
@@ -108,9 +121,9 @@ export default function SearchInput() {
                 onClick={() => setOpenGuests(!openGuests)}
               >
                 <GroupsIcon className={styles["group-icon "]} color="action" />
-                
+
                 <span className={styles["guest-text"]}> {adults} Guests</span>
-                
+
               </div>
 
               {openGuests && (

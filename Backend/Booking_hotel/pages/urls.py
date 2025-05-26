@@ -1,6 +1,8 @@
 from django.urls import path, include
 from django.contrib import admin
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from pages.views.room_animates import All_Animates
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,6 +36,8 @@ urlpatterns = [
     path('add-room/', AddRoomView.as_view(), name='add-room'),
     path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
+    path('All_Animates/', All_Animates.as_view(), name='All_Animates'),
+
 
 
 ]

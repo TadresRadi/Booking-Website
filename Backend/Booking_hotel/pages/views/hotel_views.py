@@ -106,8 +106,12 @@ class HotelListView(APIView):
         hotel_ids = rooms.values_list('hotel_id', flat=True).distinct()
         hotels = hotels.filter(id__in=hotel_ids)
 
-        if not hotels.exists():
-            return Response({"message": "No hotels found"}, status=status.HTTP_404_NOT_FOUND)
+        if not hotels:
+            return Response({
+                          "hotels": [], 
+                          "message": "No hotels found"
+                           }, status=200)
+
 
         serializer = HotelSerializer(hotels, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
