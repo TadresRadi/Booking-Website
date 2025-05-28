@@ -16,6 +16,7 @@ class HotelSerializer(serializers.ModelSerializer):
     largest_rating_percentage = serializers.SerializerMethodField()
     largest_rating_category = serializers.SerializerMethodField()
     facilities = serializers.SerializerMethodField()
+    main_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Hotel
@@ -25,8 +26,15 @@ class HotelSerializer(serializers.ModelSerializer):
                   'facilities','description',
                   'country','city','street_address','postal_code', 
                   'check_in_from','check_in_until','check_out_from',
-                  'check_out_until','parking', 'created_at','latitude', 'longitude']
+                  'check_out_until','parking', 'created_at','latitude', 'longitude',"main_image"]
         read_only_fields = ['location']
+
+    def get_main_image(self, obj):
+        main_photo = obj.hotel_images.filter(is_main=True).first()
+        if main_photo and main_photo.image:
+            return main_photo.image.url
+        return None
+
     def get_facilities(self, obj):
         return [f.get_facility_name_display() for f in obj.facilities.all()]
 

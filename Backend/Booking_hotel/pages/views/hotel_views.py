@@ -16,6 +16,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from pages.models.hotel_image import HotelPhoto
 
 class HotelCreateView(APIView):
     def post(self, request):
@@ -50,6 +51,52 @@ class AddHotelView(APIView):
 
 
 
+
+
+
+
+
+
+# class UploadHotelPhotosView(APIView):
+#     parser_classes = [MultiPartParser, FormParser]
+
+#     def post(self, request):
+#         hotel_id = request.data.get("hotel")
+#         images = request.FILES.getlist('images')
+#         is_main_values = request.data.getlist('is_main')  
+
+#         if not hotel_id:
+#             return Response({"error": "Hotel ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         get_object_or_404(Hotel, id=hotel_id)
+
+#         if not images:
+#             return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+       
+#         if len(is_main_values) != len(images):
+#             return Response({"error": "Mismatch between images and is_main flags"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         for image, is_main in zip(images, is_main_values):
+            
+#             is_main_bool = True if is_main.lower() == 'true' else False
+
+#             serializer = HotelPhotoSerializer(data={
+#                 "hotel": hotel_id,
+#                 "image": image,
+#                 "is_main": is_main_bool,
+#             })
+
+#             if serializer.is_valid():
+#                 serializer.save()
+#             else:
+#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response({"message": "Photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+
+
+
+
 class UploadHotelPhotosView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
@@ -61,18 +108,20 @@ class UploadHotelPhotosView(APIView):
         if not hotel_id:
             return Response({"error": "Hotel ID is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        get_object_or_404(Hotel, id=hotel_id)
+        hotel = get_object_or_404(Hotel, id=hotel_id)
 
         if not images:
             return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-       
         if len(is_main_values) != len(images):
             return Response({"error": "Mismatch between images and is_main flags"}, status=status.HTTP_400_BAD_REQUEST)
 
         for image, is_main in zip(images, is_main_values):
-            
             is_main_bool = True if is_main.lower() == 'true' else False
+
+            # اجعل كل الصور السابقة غير main إذا كنت ستحفظ صورة جديدة كـ main
+            if is_main_bool:
+                HotelPhoto.objects.filter(hotel=hotel, is_main=True).update(is_main=False)
 
             serializer = HotelPhotoSerializer(data={
                 "hotel": hotel_id,
@@ -145,3 +194,5 @@ class AllHotelsView(APIView):
         page = paginator.paginate_queryset(hotels, request, view=self)
         serializer = HotelSerializer(page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
+
+
