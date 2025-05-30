@@ -135,6 +135,8 @@ export default function HotelsCard({ hotel }) {
           </div>
         </div>
       </div>
+
+      
     </div>
   );
 }

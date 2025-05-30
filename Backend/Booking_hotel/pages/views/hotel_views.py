@@ -169,8 +169,12 @@ class HotelListView(APIView):
         hotel_ids = rooms.values_list('hotel_id', flat=True).distinct()
         hotels = hotels.filter(id__in=hotel_ids)
 
-        if not hotels.exists():
-            return Response({"message": "No hotels found"}, status=status.HTTP_404_NOT_FOUND)
+        if not hotels:
+            return Response({
+                          "hotels": [], 
+                          "message": "No hotels found"
+                           }, status=200)
+
 
         serializer = HotelSerializer(hotels, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -196,3 +200,13 @@ class AllHotelsView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
+
+
+# view for hotel details for booking
+from rest_framework.views import APIView
+class HotelDetailesForBookingView(APIView):
+
+    def get(self, request, id):
+        hotel = get_object_or_404(Hotel, id=id)
+        serializer = HotelSerializer(hotel, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
