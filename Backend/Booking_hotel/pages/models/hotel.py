@@ -20,7 +20,7 @@ class Hotel (models.Model):
     check_out_until = models.TimeField()
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    # main_image = models.ImageField(upload_to='hotel_main_images/', null=True, blank=True)
+  
 
     PARKING_CHOICES = [
         ('free', 'Yes, free'),
