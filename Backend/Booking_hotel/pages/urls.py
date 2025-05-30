@@ -7,7 +7,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from pages.views.hotel_views import HotelCreateView, HotelListView, HotelDetailView, AddHotelView, UploadHotelPhotosView
+from pages.views.hotel_views import HotelCreateView, HotelDetailesForBookingView, HotelListView, HotelDetailView, AddHotelView, UploadHotelPhotosView
 from pages.views.rooms_views import RoomAnimatesListView, RoomPhotosAPIView, AddRoomView, UploadRoomPhotosView
 from pages.views.facility_views import  AddFacilityView , FacilitiesListView
 from pages.views.auth_views import RegisterView, LoginView, register_user
@@ -37,6 +37,8 @@ urlpatterns = [
     path('AddHotelImages/', UploadHotelPhotosView.as_view(), name='upload-hotel-photos'),
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
     path('All_Animates/', All_Animates.as_view(), name='All_Animates'),
+    path('hoteldetailesForBooking/<int:id>', HotelDetailesForBookingView.as_view(), name='HotelDetailesForBookingView'),
+
 
 
 

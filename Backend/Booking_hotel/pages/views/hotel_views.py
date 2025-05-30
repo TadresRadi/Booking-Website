@@ -125,3 +125,13 @@ class HotelDetailView(RetrieveAPIView):
     lookup_field = 'id'
 
 
+
+
+# view for hotel details for booking
+from rest_framework.views import APIView
+class HotelDetailesForBookingView(APIView):
+
+    def get(self, request, id):
+        hotel = get_object_or_404(Hotel, id=id)
+        serializer = HotelSerializer(hotel, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

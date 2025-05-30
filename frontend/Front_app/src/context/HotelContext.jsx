@@ -1,7 +1,9 @@
 import { useContext, createContext, useState } from "react";
 
 const HotelContext = createContext();
+
 export const useHotel = () => {
+
     return useContext(HotelContext);
 }
 
@@ -11,6 +13,8 @@ export  const HotelProvider = ({ children }) => {
     const [roomId, setRoomId] = useState(null);
     const [selectedFacilities, setSelectedFacilities] = useState([]);
     const [selectedRoomAmenities, setSelectedRoomAmenities] = useState([]);
+  
+
 
     
 
@@ -18,7 +22,7 @@ export  const HotelProvider = ({ children }) => {
 
         <HotelContext.Provider value={{ hotels, setHotels, hotelId, setHotelId ,roomId, setRoomId , selectedFacilities,
       setSelectedFacilities , selectedRoomAmenities,
-  setSelectedRoomAmenities}}>
+  setSelectedRoomAmenities }}>
             {children}
         </HotelContext.Provider>
     );
