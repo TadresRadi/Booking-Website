@@ -61,9 +61,16 @@ export default function SearchInput() {
     axiosInstance
       .get(`/search/?location-or-hotel=${location}&check_in=${checkIn.toISOString().split('T')[0]}&check_out=${checkOut.toISOString().split('T')[0]}&adults=${adults}`)
       .then((response) => {
-        setHotels(response.data.hotels);
+
+        if (response.data.message == "No hotels found") {
+          setHotels([]);
+          navigate("/search");
+        }
+        else  {
+        setHotels(response.data);
         console.log("Search results:", response.data);
         navigate("/search");
+        }
       })
       .catch((error) => {
         console.error("Error fetching hotels:", error);
