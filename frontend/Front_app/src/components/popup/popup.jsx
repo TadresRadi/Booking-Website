@@ -22,8 +22,6 @@ export default function PhotoGallery({ photos = [] }) {
     return url.startsWith("/") ? `${BASE_URL}${url}` : `${BASE_URL}/${url}`;
   };
 
-  console.log("Photo URLs:", photos.map((p) => p.image));
-
   return (
     <>
       <div
@@ -37,7 +35,12 @@ export default function PhotoGallery({ photos = [] }) {
               <img
                 src={getPhotoUrl(photo.image)}
                 alt={`Preview ${index + 1}`}
-                className="img-fluid rounded w-100"
+                style={{
+                  width: "100%",
+                  height: "100px",
+                  objectFit: "cover",
+                  borderRadius: "10px"
+                }}
               />
             </Col>
           ))}
@@ -61,8 +64,13 @@ export default function PhotoGallery({ photos = [] }) {
               <Carousel.Item key={photo.id || index}>
                 <img
                   src={getPhotoUrl(photo.image)}
-                  className="d-block w-100 rounded"
                   alt={`Slide ${index + 1}`}
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                    objectFit: "cover",
+                    borderRadius: "10px"
+                  }}
                 />
               </Carousel.Item>
             ))}
