@@ -8,15 +8,14 @@ export const facilityMap = {
   non_smoking_rooms: 7,
   airport_shuttle: 8,
   family_rooms: 9,
-  jacuzzi: 10, //###
-  free_wifi: 11,
-  air_conditioning: 12,
-  water_park: 13,
-  ev_charging: 14,
-  swimming_pool: 15,
-  beach: 16,
-  electric_kettle: 17,
-  tea_coffee_maker: 18,
-  dining_area: 19,
-  microwave: 20
+  free_wifi: 10,
+  air_conditioning: 11,
+  water_park: 12,
+  ev_charging: 13,
+  swimming_pool: 14,
+  beach: 15,
+  electric_kettle: 16,
+  tea_coffee_maker: 17,
+  dining_area: 18,
+  microwave: 19
   };

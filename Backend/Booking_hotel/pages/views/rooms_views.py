@@ -77,3 +77,11 @@ class RoomPhotosAPIView(APIView):
         photos = RoomPhoto.objects.filter(room_id=room_id)
         serializer = RoomPhotoSerializer(photos, many=True)
         return Response(serializer.data)
+
+
+
+class AllRoomPhotosAPIView(APIView):
+    def get(self, request):
+        photos = RoomPhoto.objects.all()
+        serializer = RoomPhotoSerializer(photos, many=True)
+        return Response(serializer.data)

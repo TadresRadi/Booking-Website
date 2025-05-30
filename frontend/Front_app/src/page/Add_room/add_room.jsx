@@ -5,8 +5,6 @@ import styles from './add_room.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useHotel } from "../../context/HotelContext";
 
-
-
 const allFeatures = [
   { id: 1, name: 'clothes_rack', label: 'Clothes Rack' },
   { id: 2, name: 'flat_screen_tv', label: 'Flat Screen TV' },
@@ -23,12 +21,9 @@ const allFeatures = [
 ];
 
 const AddRoomForm = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { hotelId, setRoomId } = useHotel();
 
-    
-   
-
-  const { hotelId, setRoomId} = useHotel();
   const [formData, setFormData] = useState({
     hotel: '',
     name: '',
@@ -66,35 +61,32 @@ const AddRoomForm = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!formData.room_facilities.length) {
-    alert("Please select at least one feature.");
-    return;
-  }
-
-  try {
-    const res = await axios.post('http://localhost:8000/api/add-room/', formData, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    alert("Room added successfully!");
-    setRoomId(res.data.id);
-    navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
-
-  } catch (error) {
-    console.error(error);
-    if (error.response && error.response.data) {
-      alert("Error: " + JSON.stringify(error.response.data));
-    } else {
-      alert("An error occurred while saving the room.");
+    if (!formData.room_facilities.length) {
+      alert("Please select at least one feature.");
+      return;
     }
-  }
-};
-  
-  
+
+    try {
+      const res = await axios.post('http://localhost:8000/api/add-room/', formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      alert("Room added successfully!");
+      setRoomId(res.data.id);
+      navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
+
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.data) {
+        alert("Error: " + JSON.stringify(error.response.data));
+      } else {
+        alert("An error occurred while saving the room.");
+      }
+    }
+  };
 
   return (
     <div className={styles.roomFormBackground}>

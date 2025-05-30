@@ -5,34 +5,52 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
-  width: 100vw;
-
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* شكل عصري بتأثير الزجاج */
 .cardCustom {
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background-color: rgb(240, 224, 210);
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
+.cardCustom:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* زر انشاء الحساب */
 .createAccountButton {
   background-color: #92c7cf;
   border: none;
   color: white;
   margin-top: 10px;
   width: 100%;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border-radius: 8px;
 }
 
 .createAccountButton:hover {
   background-color: #446a70;
   color: white;
+  transform: scale(1.02);
   cursor: pointer;
 }
 
+/* رسائل الخطأ */
 .errorMessage {
-  color: red;
+  color: #ff4d4f;
   font-size: 14px;
   margin-top: 5px;
+  font-weight: 500;
 }
-

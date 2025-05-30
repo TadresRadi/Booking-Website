@@ -1,30 +1,51 @@
+
+
 .roomFormBackground {
-    background-image: url('../../assets/natural.jpg');
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    position: relative;
-  }
-  
-  .roomFormCard {
-    border-top: 8px solid #78c4dd;
-    background-color: #fff5f3;
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-  }
-  
-  .saveButton {
-    background: linear-gradient(135deg, #78c4dd, #78c4dd);
-    color: white;
-    padding: 0.6rem 1.4rem;
-    border-radius: 8px;
-    font-weight: 500;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    border: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .saveButton:hover {
-    background-color: #5d8b9b;
-    transform: translateY(-5px);
-  }
+  background-image: url('../../assets/natural.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Blur effect on background image only, not content */
+.roomFormBackground::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: no-repeat;
+  filter: blur(2px) brightness(0.94) saturate(110%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.roomFormCard {
+  border-top: 8px solid #78c4dd;
+  background-color: #fff5f3;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #78c4dd, #78c4dd);
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #5d8b9b;
+  transform: translateY(-5px);
+}

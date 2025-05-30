@@ -1,12 +1,9 @@
 import axios from 'axios';
 import styles from './AddHotelForm.module.css';
-//import backgroundImage from '../../assets/images/natural.jpg';
 import { facilityMap } from '../../assets/hoteldata/facilityMap';
 import { useNavigate } from 'react-router-dom';
 import { useHotel } from '../../context/HotelContext';
 import { useState } from 'react';
-
-
 
 const amenities = [
   { name: 'restaurant', label: 'Restaurant' },
@@ -18,7 +15,6 @@ const amenities = [
   { name: 'non_smoking_rooms', label: 'Non-smoking rooms' },
   { name: 'airport_shuttle', label: 'Airport shuttle' },
   { name: 'family_rooms', label: 'Family rooms' },
-  { name: 'hot_tub', label: 'Hot tub/Jacuzzi' },
   { name: 'free_wifi', label: 'Free WiFi' },
   { name: 'air_conditioning', label: 'Air conditioning' },
   { name: 'water_park', label: 'Water Park' },
@@ -30,7 +26,6 @@ const amenities = [
   { name: 'dining_area', label: 'Dining area' },
   { name: 'microwave', label: 'Microwave' },
 ];
-
 
 const AddHotelForm = () => {
   const [formData, setFormData] = useState({
@@ -45,7 +40,7 @@ const AddHotelForm = () => {
     check_in_until: '',
     check_out_from: '',
     check_out_until: '',
-    parking: 'no',
+    parking: '',
     facilities: [],
   });
 
@@ -72,47 +67,41 @@ const AddHotelForm = () => {
     });
   };
 
+  const navigate = useNavigate();
+  const { setHotelId } = useHotel(); 
 
-
-
-  
-const navigate = useNavigate();
-const { setHotelId } = useHotel(); 
-
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       ...formData,
     };
 
-   try {
-  const res = await axios.post('http://localhost:8000/api/add-hotel/', payload);
-  const hotelId = res.data?.id;
+    try {
+      const res = await axios.post('http://localhost:8000/api/add-hotel/', payload);
+      const hotelId = res.data?.id;
 
-  if (!hotelId) {
-    alert("Error: Hotel ID is missing from the response.");
-    return;
-  }
+      if (!hotelId) {
+        alert("Error: Hotel ID is missing from the response.");
+        return;
+      }
 
-  setHotelId(hotelId);
-  alert("Hotel added successfully!");
-  navigate('/add-property');
-
-} catch (error) {
-  console.error(error.response?.data || error.message);
-  alert("Something went wrong while adding the hotel.");
-}
+      setHotelId(hotelId);
+      alert("Hotel added successfully!");
+      navigate('/add-property');
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+      alert("Something went wrong while adding the hotel.");
+    }
   };
 
-  
-
   return (
-    <div className={styles.hotelFormBackground} >
-      <div className="container py-5">
+    <div className={styles.hotelFormBackground}>
+      
+      <div className={styles.bgGlass}></div>
+      <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
         <div className="row justify-content-center">
-       <div className={`col-11 col-md-10 col-lg-7 p-4 shadow ${styles.hotelFormCard}`}>
+          <div className={`col-11 col-md-10 col-lg-7 p-4 shadow ${styles.hotelFormCard}`}>
             <form onSubmit={handleSubmit}>
               <h3 className="text-center mb-4">Add Your Hotel</h3>
 
@@ -204,12 +193,12 @@ const handleSubmit = async (e) => {
                     className="form-check-input"
                     type="radio"
                     name="parking"
-                   id={`parking-${val}`}
+                    id={`parking-${val}`}
                     value={val}
                     checked={formData.parking === val}
                     onChange={handleChange}
                   />
-                 <label className="form-check-label" htmlFor={`parking-${val}`}>
+                  <label className="form-check-label" htmlFor={`parking-${val}`}>
                     {val === 'free' ? 'Yes, free' : val === 'paid' ? 'Yes, paid' : 'No'}
                   </label>
                 </div>

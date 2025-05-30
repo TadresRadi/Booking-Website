@@ -1,0 +1,138 @@
+/* Main heading */
+h1 {
+  text-align: center;
+  margin: 40px 0 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #849fa8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Containers center content */
+.main_container1,
+.main_container2 {
+  display: flex;
+  justify-content: center;
+  padding: 0 15px 50px; 
+  justify-content: space-between;/* padding bottom for spacing between sections */
+}
+
+/* Bootstrap row: limit max width and center */
+.g-4 {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Center each column’s content */
+.col {
+  display: flex;
+  justify-content: center;
+}
+
+/* Cards style */
+.card {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  background: #fff;
+}
+
+/* Card image */
+.card-img-top {
+  height: 160px;
+  object-fit: cover;
+}
+
+/* Card hover animation */
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+/* Center card text */
+.card-body {
+  text-align: center;
+}
+
+/* Card title */
+.card-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #34495e;
+  margin-bottom: 0.75rem;
+}
+
+/* Card text */
+.card-text {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+  margin-left: 100px;
+  justify-content: space-between;
+}
+
+
+
+.paginationContainer {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+}
+
+.paginationButton {
+  padding: 8px 16px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.paginationButton:disabled {
+  cursor: not-allowed;
+  background-color: #ccc;
+}
+.cardImg {
+  width: 100%;       /* full width of the card */
+  height: 200px;     /* fixed height */
+  object-fit: cover; /* crop and cover the space without stretching */
+}
+.heading {
+  font-family: 'Arial, sans-serif';  /* replace with your desired font family */
+  /* you can add other styles here if you want */
+}
+
+
+
+
+
+
+
+.main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+  margin-right: 100px;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

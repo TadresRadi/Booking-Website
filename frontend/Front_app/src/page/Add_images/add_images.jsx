@@ -1,63 +1,66 @@
 import React, { useState } from "react";
 import styles from "./add_images.module.css";
 import axios from "axios";
+import { useHotel } from "../../context/HotelContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { useHotel } from "../../context/HotelContext";
-
-
 
 export default function AddPhotosPage() {
-    const { hotelId, roomId } = useHotel();
-
+  const { hotelId, roomId } = useHotel();
   const [hotelFiles, setHotelFiles] = useState([]);
   const [roomFiles, setRoomFiles] = useState([]);
- 
-  
-const navigate = useNavigate();
+  const [mainHotelIndex, setMainHotelIndex] = useState(null);
 
-const handleSubmit = async () => {
-  if (!hotelId || !roomId) {
-    alert("Hotel ID or Room ID is missing!");
-    return;
-  }
+  const navigate = useNavigate();
 
-  if (hotelFiles.length < 5 || roomFiles.length < 5) {
-    alert("Please upload at least 5 photos for hotel and room.");
-    return;
-  }
+  const handleSubmit = async () => {
+    if (!hotelId || !roomId) {
+      alert("Hotel ID or Room ID is missing!");
+      return;
+    }
 
-  try {
-    const hotelFormData = new FormData();
-    hotelFormData.append("hotel", hotelId);
-    hotelFiles.forEach((file) => hotelFormData.append("images", file));
+    if (hotelFiles.length < 5 || roomFiles.length < 5) {
+      alert("Please upload at least 5 photos for hotel and room.");
+      return;
+    }
 
-    await axios.post("http://localhost:8000/api/AddHotelImages/", hotelFormData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    try {
+      const hotelFormData = new FormData();
+      hotelFormData.append("hotel", hotelId);
+      hotelFiles.forEach((file, index) => {
+        hotelFormData.append("images", file);
+        hotelFormData.append("is_main", index === mainHotelIndex ? "true" : "false");
+      });
 
-    const roomFormData = new FormData();
-    roomFormData.append("room", roomId);
-    roomFiles.forEach((file) => roomFormData.append("images", file));
+      await axios.post("http://localhost:8000/api/AddHotelImages/", hotelFormData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    await axios.post("http://localhost:8000/api/AddRoomImages/", roomFormData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+      const roomFormData = new FormData();
+      roomFormData.append("room", roomId);
+      roomFiles.forEach((file) => roomFormData.append("images", file));
 
-    alert("✅ Images uploaded successfully!");
-    navigate("/add-property");
+      await axios.post("http://localhost:8000/api/AddRoomImages/", roomFormData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-  } catch (error) {
-    console.error("❌ Error while uploading images:", error);
-    alert("An error occurred while uploading images.");
-  }
-};
-  
+      alert("✅ Images uploaded successfully!");
+      navigate("/add-property");
 
+    } catch (error) {
+      console.error("❌ Error while uploading images:", error);
+      alert("An error occurred while uploading images.");
+    }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <HotelPhotosUploader setHotelFiles={setHotelFiles} />
+        <HotelPhotosUploader
+          setHotelFiles={setHotelFiles}
+          hotelFiles={hotelFiles}
+          mainHotelIndex={mainHotelIndex}
+          setMainHotelIndex={setMainHotelIndex}
+        />
         <RoomPhotosUploader setRoomFiles={setRoomFiles} />
         <button className={styles.saveButton} onClick={handleSubmit}>
           Save
@@ -67,11 +70,11 @@ const handleSubmit = async () => {
   );
 }
 
-function HotelPhotosUploader({ setHotelFiles }) {
+function HotelPhotosUploader({ setHotelFiles, hotelFiles, mainHotelIndex, setMainHotelIndex }) {
   const handleHotelFiles = (event) => {
     const files = Array.from(event.target.files);
     setHotelFiles(files);
-    console.log("Hotel photos selected:", files);
+    setMainHotelIndex(null); // Reset main image selection
   };
 
   return (
@@ -95,6 +98,29 @@ function HotelPhotosUploader({ setHotelFiles }) {
         </label>
         <p className={styles.fileInfo}>jpg/ jpeg or png, maximum 47 MP each</p>
       </div>
+
+      {hotelFiles.length > 0 && (
+        <div className={styles.previewGrid}>
+          {hotelFiles.map((file, index) => (
+            <div key={index} className={styles.previewItem}>
+              <img
+                src={URL.createObjectURL(file)}
+                alt={`preview-${index}`}
+                className={styles.previewImage}
+              />
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="main-hotel-image"
+                  checked={mainHotelIndex === index}
+                  onChange={() => setMainHotelIndex(index)}
+                />
+                Main Image
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

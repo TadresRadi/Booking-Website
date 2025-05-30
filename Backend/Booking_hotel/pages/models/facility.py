@@ -12,7 +12,7 @@ class Facility (models.Model):
         ('non_smoking_rooms', 'Non-smoking rooms'),
         ('airport_shuttle', 'Airport shuttle'),
         ('family_rooms', 'Family rooms'),
-        ('hot_tub', 'Hot tub/Jacuzzi'),
+        # ('hot_tub', 'Hot tub/Jacuzzi'),
         ('free_wifi', 'Free WiFi'),
         ('air_conditioning', 'Air conditioning'),
         ('water_park', 'Water Park'),
