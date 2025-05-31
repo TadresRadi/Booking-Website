@@ -13,7 +13,8 @@ export default function Hotel_card({ hotel }) {
       <div className={`${styles["abouthotel_container"]} row w-100 gx-3 gy-4`}>
 
         <div className={`${styles["hotel_discption"]} col-7 mt-5`}>
-          <div className={`${styles["disrption"]} h-50`}>
+          <div className={`${styles["disrption"]} `}>
+            
             <Card className={styles["dis_Card"]}>
               <Card.Body>
                 <h1 className={styles["Card_Title"]}>{hotel.hotel_name}</h1>

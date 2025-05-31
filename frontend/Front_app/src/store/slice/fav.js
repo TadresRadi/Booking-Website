@@ -20,8 +20,7 @@ export const fetchFavorites = createAsyncThunk('favorites/fetchFavorites', async
   try {
     const res = await axios.get(`${API_URL}/api/favorites/`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Adjust as needed
-        'Content-Type': 'application/json',
+  Authorization: `Bearer ${localStorage.getItem('access')}`,        'Content-Type': 'application/json',
       }
     });
     return res.data;

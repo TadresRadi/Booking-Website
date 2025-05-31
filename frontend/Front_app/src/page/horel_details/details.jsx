@@ -33,28 +33,28 @@ export function Details() {
     return <p>Loading...</p>;
   }
   const getImageSrc = (image) => {
-    if (!image) return '';
-    if (image.startsWith('http')) {
-      return image;
-    }
-    return `http://localhost:8000${image}`;
-  };
+  if (!image) return ''; 
+  if (image.startsWith('http')) {
+    return image; 
+  }
+  return `http://localhost:8000${image}`; 
+};
 
   return (
     <>
       <div className={styles["main_container"]}>
         <div className={styles["first_div"]}></div>
-        <div className={`${styles["viewdhotel_div"]} container`}>
-          {details.hotel_images?.map((photo, index) => (
-            <img
-              key={index}
-              src={getImageSrc(photo.image)}
-              alt={`Hotel Photo ${index + 1}`}
-              style={{ width: '300px', height: 'auto', margin: '10px' }}
-            />
-          ))}
+<div className={`${styles["viewdhotel_div"]} container`}>
+{details.hotel_images?.map((photo, index) => (
+  <img
+    key={index}
+    src={getImageSrc(photo.image)}
+    alt={`Hotel Photo ${index + 1}`}
+    style={{ width: '300px', height: 'auto', margin: '10px' }}
+  />
+))}
 
-        </div>
+</div>
 
       </div>
 
@@ -72,13 +72,18 @@ export function Details() {
 
       <div className={`${styles["room"]} mb-5 container h-100`}>
         {details.rooms?.length > 0 ? (
+<<<<<<< HEAD
           <Room_card
             hotelId={details.id}
             rooms={details.rooms}
             selectedRoom={selectedRoom}
+=======
+   <Room_card
+  rooms={details.rooms}
+>>>>>>> ecedbdc9949d522476574ee1f84f4e73295fb6bd
 
-            onSelectRoom={setSelectedRoom}
-          />
+  onSelectRoom={setSelectedRoom}
+/>
         ) : (
           <p>No rooms available.</p>
         )}
