@@ -72,17 +72,12 @@ export function Details() {
 
       <div className={`${styles["room"]} mb-5 container h-100`}>
         {details.rooms?.length > 0 ? (
-<<<<<<< HEAD
           <Room_card
             hotelId={details.id}
             rooms={details.rooms}
             selectedRoom={selectedRoom}
-=======
-   <Room_card
-  rooms={details.rooms}
->>>>>>> ecedbdc9949d522476574ee1f84f4e73295fb6bd
 
-  onSelectRoom={setSelectedRoom}
+             onSelectRoom={setSelectedRoom}
 />
         ) : (
           <p>No rooms available.</p>
