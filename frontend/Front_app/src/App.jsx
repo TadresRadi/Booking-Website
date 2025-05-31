@@ -19,7 +19,6 @@ import Fav from './page/fav/fav.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Booking } from './page/booking/booking.jsx';
 
-
 import RegisterSuccess from './page/register/RegisterSuccess.jsx';
 import { UserProvider } from './context/UserContext.jsx';
 
@@ -32,40 +31,19 @@ import UsersList from "./page/Admin_Dashboard/pages/UsersList.jsx";
 import TransactionsList from "./page/Admin_Dashboard/pages/TransactionsList.jsx";
 import ChatRoom from "./page/Admin_Dashboard/pages/ChatRoom.jsx";
 import ManagerList from "./page/Admin_Dashboard/pages/ManagerList.jsx"; 
+
 function App() {
   const location = useLocation();
   const showSearchBar = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/search";
-  const hideHeaderFooter =  location.pathname.startsWith("/admin");
+  const hideHeaderFooter = location.pathname.startsWith("/admin");
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <Provider store={store}>
-      <div className="app-container">
-        {!hideHeaderFooter && <Header />}
-        {showSearchBar && <SearchBar />}
-        
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Add_property" element={<Add_property />} />
-          <Route path="/home" element={<Homepage />} />
-          <Route path="/search" element={<SearchResult />} />
-          <Route path="/hotel/:id" element={<Details />} />
-          <Route path="fav" element={<Fav />} />
-          <Route path="*" element={<Homepage />} />
-          <Route path='add-hotel' element={<AddHotelForm/>}/>
-          <Route path='add-room' element={<AddRoomForm/>}/>
-          <Route path='add-images' element={<AddPhotosPage />} />
-          <Route path='add-property' element={<Add_property/>} />
-          <Route path='booking' element={<Booking/>} />
-          
-        </Routes>
-        
-        {!hideHeaderFooter && <Footer />}
-      </div>
       <UserProvider>
         <div className="app-container">
           {isAdminRoute ? (
+            // Admin Layout
             <>
               <AdminSidebar />
               <AdminTopbar userName="TadresRadi" />
@@ -81,6 +59,7 @@ function App() {
               </div>
             </>
           ) : (
+            // Normal User Layout
             <>
               {!hideHeaderFooter && <Header />}
               {showSearchBar && <SearchBar />}
@@ -88,7 +67,7 @@ function App() {
                 <Route path="/" element={<Homepage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/booking" element={<Add_property />} />
+                <Route path="/Add_property" element={<Add_property />} />
                 <Route path="/home" element={<Homepage />} />
                 <Route path="/search" element={<SearchResult />} />
                 <Route path="/hotel/:id" element={<Details />} />
@@ -100,6 +79,7 @@ function App() {
                 <Route path="add-property" element={<Add_property />} />
                 <Route path="/register-success" element={<RegisterSuccess />} />
                 <Route path="/settings" element={<Setting />} />
+                <Route path="/booking" element={<Booking />} />
               </Routes>
               {!hideHeaderFooter && <Footer />}
             </>
