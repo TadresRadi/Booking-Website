@@ -2,6 +2,8 @@ from django.urls import path, include
 from django.contrib import admin
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from pages.views.booking import Create_booking
+from pages.models import booking
 from pages.views.room_animates import All_Animates
 from . import views
 from django.conf import settings
@@ -50,11 +52,6 @@ urlpatterns = [
     path('AddRoomImages/', UploadRoomPhotosView.as_view(), name='upload-room-photos'),
     path('All_Animates/', All_Animates.as_view(), name='All_Animates'),
     path('hoteldetailesForBooking/<int:id>', HotelDetailesForBookingView.as_view(), name='HotelDetailesForBookingView'),
-
-
-
-
-
     path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('favorites/', list_favorites, name='list_favorites'), 
@@ -64,6 +61,7 @@ urlpatterns = [
     path('', include(router.urls)), 
     path('room-photos/', AllRoomPhotosAPIView.as_view(), name='all-room-photos'),
     path('reviews/', ReviewListView.as_view(), name='review-list'),
+    path('booking/', Create_booking,name='booking'),
 ]
 
 

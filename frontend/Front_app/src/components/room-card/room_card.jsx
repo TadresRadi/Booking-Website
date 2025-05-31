@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Row, Col, Form } from 'react-bootstrap';
@@ -6,27 +5,25 @@ import styles from './room_card.module.css';
 import PhotoGallery from '../popup/popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import { useBooking } from '../../context/BookingContext.jsx';
 
-export default function Room_card({ hotelId, rooms = [], onSelectRoom }) {
+
+export default function Room_card({ hotelId, rooms=[], onSelectRoom }) {
   const navigate = useNavigate();
-    //  const [selectedRoom, setSelectedRoom] = useState(null);
-    //  const [totalPrice,setTotalPrice ] = useState(0);
-     
-  useEffect(() => {
 
-  //  setTotalPrice(rooms.reduce((total, room) => total + (room.selectedCount || 1) * room.price_per_night, 0));
-  //  setSelectedRoom(rooms.reduce((total, room) => total + (room.selectedCount || 1), 0));
-   
-  
-  }, [rooms, hotelId, navigate]);
-
+  const { setRoomId ,setNumberOfRooms} = useBooking();
 
   const onRecerveRoom = (roomData ) => {
-    const { type, count, pricePerNight, total } = roomData;
-    const selectedRoom = { type, count, pricePerNight, total }; 
+      
+    
+    const { type, count, pricePerNight ,roomId } = roomData;
+    const selectedRoom = { type, count, pricePerNight, total: count * pricePerNight }; 
+    setRoomId(roomId);
+    setNumberOfRooms(count);
 
     navigate(`/booking/`, { state: { hotelId   , selectedRoom   } });
   }
+
   return (
     <div>
       {rooms.length === 0 ? (
@@ -108,6 +105,7 @@ export default function Room_card({ hotelId, rooms = [], onSelectRoom }) {
                           count: room.selectedCount || 1,
                           pricePerNight: room.price_per_night,
                           total: (room.selectedCount || 1) * room.price_per_night,
+                          roomId: room.id,
                         });
                       }}
                     >

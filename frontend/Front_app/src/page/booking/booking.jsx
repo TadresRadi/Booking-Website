@@ -6,14 +6,15 @@ import Rating from '@mui/material/Rating';
 import { useLocation } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import BookingForm from '../../components/booking_form/booking_form.jsx';
+import { useBooking } from '../../context/BookingContext.jsx';
+
 
 export function Booking() {
   const location = useLocation();
-  const [checkIn, setCheckIn] = useState();
-  const [checkOut, setCheckOut] = useState();
   const [bookingDetails, setBookingDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { checkIn ,setCheckIn, checkOut,setCheckOut, setNights, setTotalPrice } = useBooking();
   // Load check-in/out dates from localStorage on mount
   useEffect(() => {
     const storedCheckIn = localStorage.getItem("checkIn");
@@ -21,6 +22,11 @@ export function Booking() {
 
     if (storedCheckIn) setCheckIn(new Date(storedCheckIn));
     if (storedCheckOut) setCheckOut(new Date(storedCheckOut));
+    if (storedCheckIn && storedCheckOut) {
+      const nights = Math.ceil((new Date(storedCheckOut) - new Date(storedCheckIn)) / (1000 * 60 * 60 * 24));
+      setNights(nights);
+      
+    }
   }, []);
 
   // Fetch booking details when location.state changes
@@ -61,6 +67,7 @@ export function Booking() {
     }
     return 0;
   };
+  
   const nights = useMemo(() => getNumberOfNights(), [checkIn, checkOut]);
 
  
@@ -91,6 +98,8 @@ export function Booking() {
     selectedRoom = {},
     totalPrice,
   } = bookingDetails;
+
+  setTotalPrice(totalPrice || selectedRoom.total || 0);
 
   return (
     <div className={style.bookingContainer}>
@@ -137,7 +146,12 @@ export function Booking() {
 
         <p className="fs-4">Total length of stay:</p>
         <p className="fs-6 fw-bold">
-          {nights} {nights === 1 ? "Night" : "Nights"}
+           {checkIn && checkOut && checkIn.getTime() === checkOut.getTime()
+              ? "1 Night (Dayuse)"
+              : `${nights} ${nights === 1 ? "Night" : "Nights"}`
+            }
+            
+           
         </p>
 
         {/* booking rooms and price summary */}

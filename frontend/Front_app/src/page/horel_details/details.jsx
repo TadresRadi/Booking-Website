@@ -1,5 +1,5 @@
 import styles from './details.module.css';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams,  } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 import Hotel_card from '../../components/hotel_propery/hote_propeertty_card';
@@ -8,7 +8,6 @@ import Room_card from '../../components/room-card/room_card';
 import axiosInstance from '../../api/axiosInstance';
 
 export function Details() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -28,23 +27,7 @@ export function Details() {
     fetchHotelDetails();
   }, [id]);
 
-  const handleConfirmBooking = () => {
-    if (!selectedRoom || !details) {
-      alert("Please select a room before confirming.");
-      return;
-    }
-
-    navigate("/reservation", {
-      state: {
-        hotelId: details.id,
-        hotelName: details.hotel_name,
-        roomType: selectedRoom.type,
-        roomCount: selectedRoom.count,
-        pricePerNight: selectedRoom.pricePerNight,
-        total: selectedRoom.total,
-      },
-    });
-  };
+ 
 
   if (!details) {
     return <p>Loading...</p>;
@@ -92,6 +75,7 @@ export function Details() {
           <Room_card
             hotelId={details.id}
             rooms={details.rooms}
+            selectedRoom={selectedRoom}
 
             onSelectRoom={setSelectedRoom}
           />
@@ -108,11 +92,7 @@ export function Details() {
         )}
       </div>
 
-      <div className={`${styles["confirmbooking"]} mt-6`}>
-        <button className={styles.confirmButton} onClick={handleConfirmBooking}>
-          Confirm Booking
-        </button>
-      </div>
+      
     </>
   );
 }
