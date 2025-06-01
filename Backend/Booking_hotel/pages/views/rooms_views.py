@@ -51,6 +51,54 @@ class UploadRoomPhotosView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message": "Room photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+    
+
+class SingleRoomView(APIView):
+    def get(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
+        serializer = RoomSerializer(room)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+class EditRoomView(APIView):
+    def put(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
+        serializer = RoomSerializer(room, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class RoomPhotosAPIView(APIView):
+    def get(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
+        photos = RoomPhoto.objects.filter(room=room)
+        serializer = RoomPhotoSerializer(photos, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UpdateRoomPhotosView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
+        images = request.FILES.getlist('images')
+
+        if not images:
+            return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # حذف كل الصور القديمة المرتبطة بالغرفة
+        RoomPhoto.objects.filter(room=room).delete()
+
+        # حفظ الصور الجديدة
+        for image in images:
+            serializer = RoomPhotoSerializer(data={"room": room.id, "image": image})
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Room photos updated successfully"}, status=status.HTTP_200_OK)
+
 
 
 
@@ -77,7 +125,7 @@ class RoomPhotosAPIView(APIView):
         photos = RoomPhoto.objects.filter(room_id=room_id)
         serializer = RoomPhotoSerializer(photos, many=True)
         return Response(serializer.data)
-
+    
 
 
 class AllRoomPhotosAPIView(APIView):

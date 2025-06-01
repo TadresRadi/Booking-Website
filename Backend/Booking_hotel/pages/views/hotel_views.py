@@ -18,6 +18,11 @@ from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from pages.models.hotel_image import HotelPhoto
 
+
+
+
+
+
 class HotelCreateView(APIView):
     def post(self, request):
         serializer = HotelSerializer(data=request.data)
@@ -119,7 +124,7 @@ class UploadHotelPhotosView(APIView):
         for image, is_main in zip(images, is_main_values):
             is_main_bool = True if is_main.lower() == 'true' else False
 
-            # اجعل كل الصور السابقة غير main إذا كنت ستحفظ صورة جديدة كـ main
+           
             if is_main_bool:
                 HotelPhoto.objects.filter(hotel=hotel, is_main=True).update(is_main=False)
 
@@ -135,6 +140,72 @@ class UploadHotelPhotosView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message": "Photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+    
+    
+class EditHotelView(APIView):
+    def put(self, request, id):
+        hotel = get_object_or_404(Hotel, id=id)
+        facilities_data = request.data.get('facilities', [])
+
+        if not Facility.objects.filter(id__in=facilities_data).count() == len(facilities_data):
+            return Response({"error": "One or more facility IDs are invalid."}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = HotelSerializer(hotel, data=request.data)
+        if serializer.is_valid():
+            updated_hotel = serializer.save()
+            updated_hotel.facilities.set(facilities_data)
+            return Response({"message": "Hotel updated successfully!", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class HotelPhotosAPIView(APIView):
+    def get(self, request, hotel_id):
+        hotel = get_object_or_404(Hotel, id=hotel_id)
+        photos = HotelPhoto.objects.filter(hotel=hotel)
+        serializer = HotelPhotoSerializer(photos, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+
+class UpdateHotelPhotosView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request, hotel_id):
+        hotel = get_object_or_404(Hotel, id=hotel_id)
+        images = request.FILES.getlist('images')
+        is_main_values = request.data.getlist('is_main')  
+
+        if not images:
+            return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if is_main_values and len(is_main_values) != len(images):
+            return Response({"error": "Mismatch between images and is_main flags"}, status=status.HTTP_400_BAD_REQUEST)
+
+        HotelPhoto.objects.filter(hotel=hotel).delete()
+
+        for idx, image in enumerate(images):
+            is_main = False
+            if is_main_values:
+                is_main = is_main_values[idx].lower() == 'true'
+
+            if is_main:
+                HotelPhoto.objects.filter(hotel=hotel, is_main=True).update(is_main=False)
+
+            serializer = HotelPhotoSerializer(data={
+                'hotel': hotel.id,
+                'image': image,
+                'is_main': is_main
+            })
+
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Hotel photos updated successfully"}, status=status.HTTP_200_OK)
+    
+
+
 
 
 
@@ -194,5 +265,16 @@ class AllHotelsView(APIView):
         page = paginator.paginate_queryset(hotels, request, view=self)
         serializer = HotelSerializer(page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
+    
+
+
+class HotelDetail(APIView):
+    def delete(self, request, pk):
+        try:
+            hotel = Hotel.objects.get(pk=pk)
+        except Hotel.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        hotel.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 

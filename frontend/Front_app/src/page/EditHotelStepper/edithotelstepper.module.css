@@ -1,0 +1,30 @@
+.editPage {
+    min-height: 100vh;
+    background: url("/images/tropical-bg.jpg") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 15px;
+  }
+  
+  .editCard {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    max-width: 600px;
+    width: 100%;
+    border: none;
+  }
+  
+  .btnSuccess {
+    background-color: #78c4dd;
+    border-color: #78c4dd;
+    color: white;
+  }
+  
+  .btnSuccess:hover {
+    background-color: #62b3cd;
+    border-color: #62b3cd;
+  }

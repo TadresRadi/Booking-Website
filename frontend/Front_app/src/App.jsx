@@ -25,6 +25,11 @@ import Customer from './page/Admin_Dashboard/Customer/customer.jsx';
 import Message from './page/Admin_Dashboard/message/message.jsx';
 import UserManage from './page/Admin_Dashboard/User_managment/usermangment.jsx';
 import { AdminProvider } from './context/AdminContext';
+import EditCombinedStepper from './page/EditHotelStepper/edithotelstepper.jsx';
+import HostDashboard from './page/HostDashboard/HostHome/hostdashboard.jsx';
+import Properties from './page/HostDashboard/Properties/properties.jsx';
+import HostBookings from './page/HostDashboard/HostBooking/hostbooking.jsx';
+
 
 function App() {
 
@@ -58,6 +63,11 @@ function App() {
             <Route path="add-property" element={<Add_property />} />
             <Route path="/register-success" element={<RegisterSuccess />} />
             <Route path="/settings" element={<Setting />} />
+            <Route path='edit-property' element={<EditCombinedStepper />} />
+            <Route path='host-dashboard' element={<HostDashboard/>} />
+            <Route path="host-properties" element={<Properties />} />
+            <Route path="/edit-hotel/:hotelId" element={<AddHotelForm />} />
+            <Route path="host-booking" element={<HostBookings />} />
 
 
             <Route 
