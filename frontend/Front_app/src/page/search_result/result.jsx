@@ -9,7 +9,7 @@ import { useHotel } from '../../context/HotelContext.jsx';
 import { useState } from 'react';
 
 export function SearchResult() {
-  const { hotels } = useHotel();
+  const { hotels, selectedFacilities } = useHotel();
 
   // Extract all prices from hotel rooms
   const prices = hotels
@@ -48,13 +48,21 @@ export function SearchResult() {
     setMaxLimit(newValue[1]);
   };
 
-  // Filter hotels based on any room’s price falling in range
-  const filteredHotels = hotels.filter(hotel =>
-    hotel.rooms?.some(room =>
+  // Filter hotels based on price range and selected facilities
+  const filteredHotels = hotels.filter(hotel => {
+    const matchesPrice = hotel.rooms?.some(room =>
       room.price_per_night >= selectedRange[0] &&
       room.price_per_night <= selectedRange[1]
-    )
-  );
+    );
+
+    const matchesFacilities =
+      selectedFacilities.length === 0 ||
+      selectedFacilities.every(facility =>
+        hotel.facilities?.includes(facility)
+      );
+
+    return matchesPrice && matchesFacilities;
+  });
 
   return (
     <>
@@ -102,7 +110,7 @@ export function SearchResult() {
         <div className={`col-11 col-sm-12 col-md-12 col-lg-8 m-1 m-lg-4 ${styles.search_result_cards}`}>
           {filteredHotels.length > 0 ? (
             filteredHotels.map((hotel) => (
-              <HotelsCard hotel={hotel} key={hotel.id}  />
+              <HotelsCard hotel={hotel} key={hotel.id} />
             ))
           ) : (
             <div className={styles.no_result}>No Result Found</div>

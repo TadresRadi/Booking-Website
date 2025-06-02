@@ -282,11 +282,3 @@ function RoomPhotosUploader({
     </div>
   );
 }
-
-
-
-
-
-
-
-

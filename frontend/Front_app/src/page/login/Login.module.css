@@ -1,47 +1,61 @@
 .loginWrapper {
-    width: 100%;
-  }
-  
-  .LoginContainer {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    background-color: rgb(240, 224, 210);
-    border: 1px solid #02799b;
-  }
-  
-  .textCenter {
-    color: #02799b;
-    margin-bottom: 30px;
-    align-self: center !important;
-  }
-  
-  .Loginbtn {
-    background-color: #559aa5;
-    width: 40%;
-    border: none;
-    color: white;
-    margin-top: 10px;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 20px;
-  }
-  
-  .Loginbtn:hover {
-    background-color: #02799b;
-    color: white;
-    cursor: pointer;
-  }
-  
-   
+  width: 100%;
+}
+
+.LoginContainer {
+  background: rgba(255, 255, 255, 0.2); /* خلفية شفافة */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* ظل ناعم */
+  backdrop-filter: blur(10px); /* تأثير زجاجي */
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 40px 30px;
+  transition: 0.3s ease;
+}
+
+.LoginContainer:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.textCenter {
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-size: 1.8rem;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.Loginbtn {
+  background-color: #02799b;
+  width: 50%;
+  border: none;
+  color: white;
+  margin-top: 15px;
+  height: 50px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.Loginbtn:hover {
+  background-color: #035d74;
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
 .body_like {
-    margin: 0;
-    padding: 0;
-    background-image: url('../../assets/natural.jpg');   
-    background-size: cover;      
-    background-position: center;   
-    background-repeat: no-repeat;  
-    height: 100vh;                
-    width: 100%;                  
-  }
-  
-  
+  margin: 0;
+  padding: 0;
+  background-image: url('../../assets/natural.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

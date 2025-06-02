@@ -9,11 +9,14 @@ export default function Properties() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("access");
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:8000/api/hotels/")
+      .get("http://localhost:8000/api/my-hotels/", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       .then((res) => {
         setProperties(res.data.results ?? []);
         setLoading(false);
@@ -23,9 +26,8 @@ export default function Properties() {
         setError("Error loading properties!");
         setLoading(false);
       });
-  }, []);
+  }, [token]);
 
- 
   const removePropertyFromList = (hotelId) => {
     setProperties((prev) => prev.filter((p) => p.id !== hotelId));
   };
@@ -33,7 +35,6 @@ export default function Properties() {
   return (
     <div className={styles.propertiesRoot}>
       <header className={styles.header}>
-        {/* <div className={styles.logo}>Bookingio</div> */}
         <nav>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/host-properties" className={styles.active}>Properties</Link>
@@ -92,14 +93,12 @@ export default function Properties() {
   );
 }
 
-
 function PropertyCard({ property, onDeleteSuccess }) {
   const navigate = useNavigate();
   const [deleting, setDeleting] = React.useState(false);
 
   const BASE_URL = "http://localhost:8000";
 
-  
   let imageUrl = "";
   if (property.main_image) {
     imageUrl = property.main_image.startsWith("http")
@@ -127,7 +126,6 @@ function PropertyCard({ property, onDeleteSuccess }) {
     navigate(`/hotel/${property.id}`);
   };
 
-  
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this hotel?")) return;
     setDeleting(true);
@@ -162,7 +160,6 @@ function PropertyCard({ property, onDeleteSuccess }) {
       <div className={styles.propertyDetails}>
         <div className={styles.propertyHeadRow}>
           <span className={styles.propertyName}>{property.hotel_name}</span>
-          {/* <span className={statusClass}>{property.status}</span> */}
         </div>
         <div className={styles.propertyAddress}>
           {property.street_address} · {property.city}

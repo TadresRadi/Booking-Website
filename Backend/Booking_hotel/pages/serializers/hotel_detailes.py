@@ -14,6 +14,7 @@ class HotelDetailSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     details = DetailsSerializer(read_only=True)
     facilities = FacilitySerializer(many=True, read_only=True)
+    
 
     class Meta:
         model = Hotel
@@ -23,3 +24,7 @@ class HotelDetailSerializer(serializers.ModelSerializer):
             'created_at', 'latitude', 'longitude',
             'facilities', 'hotel_images', 'rooms', 'reviews', 'details'
         ]
+        read_only_fields = ['owner']
+    
+
+   

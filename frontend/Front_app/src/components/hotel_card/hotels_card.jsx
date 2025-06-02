@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./hotel_card.module.css";
-import Rating from '@mui/material/Rating';
+import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../../store/slice/fav";
 import { BsHeart } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
@@ -14,10 +14,17 @@ export default function HotelsCard({ hotel }) {
   const navigate = useNavigate();
   const favoriteHotels = useSelector((state) => state.favorites.favoriteHotels);
 
-  const roomPrices = Array.isArray(hotel.rooms) ? hotel.rooms.map(room => room.price_per_night) : [];
-  const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : 'N/A';
+const token = localStorage.getItem("access");
+
+  
+  const isLoggedIn = !!token;
+
+  const roomPrices = Array.isArray(hotel.rooms)
+    ? hotel.rooms.map((room) => room.price_per_night)
+    : [];
+  const minPrice = roomPrices.length > 0 ? Math.min(...roomPrices) : "N/A";
   const facilities = Array.isArray(hotel.facilities) ? hotel.facilities : [];
-  const imageUrl = hotel.hotel_images?.[0]?.image || 'fallback-image-url';
+  const imageUrl = hotel.hotel_images?.[0]?.image || "fallback-image-url";
 
   const handleClick = () => {
     navigate(`/hotel/${hotel.id}`);
@@ -25,36 +32,53 @@ export default function HotelsCard({ hotel }) {
 
   const addHotelToFavorites = async (hotelId) => {
     try {
-      await fetch(`${API_URL}/api/favorites/add/`, {
-        method: 'POST',
+      const res = await fetch(`${API_URL}/api/favorites/add/`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ hotel_id: hotelId }),
       });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || data.message || "Failed to add favorite");
+      }
     } catch (error) {
-      console.error('Error adding favorite:', error);
+      alert(error.message);
+      console.error("Error adding favorite:", error);
     }
   };
 
   const removeHotelFromFavorites = async (hotelId) => {
     try {
-      await fetch(`${API_URL}/api/favorites/remove/`, {
-        method: 'POST',
+      const res = await fetch(`${API_URL}/api/favorites/remove/`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ hotel_id: hotelId }),
       });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || data.message || "Failed to remove favorite");
+      }
     } catch (error) {
-      console.error('Error removing favorite:', error);
+      alert(error.message);
+      console.error("Error removing favorite:", error);
     }
   };
 
   const toggleHeart = async (hotel) => {
-    const isFavorite = favoriteHotels.some(favhotel => favhotel.id === hotel.id);
+    if (!isLoggedIn) {
+      alert("Please log in to manage favorites.");
+      return;
+    }
+
+    const isFavorite = favoriteHotels.some((fav) => fav.id === hotel.id);
 
     if (isFavorite) {
       await removeHotelFromFavorites(hotel.id);
@@ -65,7 +89,7 @@ export default function HotelsCard({ hotel }) {
     }
   };
 
-  const isFavorite = favoriteHotels.some(favhotel => favhotel.id === hotel.id);
+  const isFavorite = favoriteHotels.some((fav) => fav.id === hotel.id);
 
   return (
     <div className={styles.card} onClick={handleClick}>
@@ -97,11 +121,11 @@ export default function HotelsCard({ hotel }) {
           <Rating
             sx={{
               fontSize: "clamp(20px, 2vw, 1.5rem)",
-              '& .MuiRating-iconFilled': {
-                color: 'rgba(230, 116, 44, 1)',
+              "& .MuiRating-iconFilled": {
+                color: "rgba(230, 116, 44, 1)",
               },
-              '& .MuiRating-iconEmpty': {
-                color: 'rgba(230, 116, 44, 1)',
+              "& .MuiRating-iconEmpty": {
+                color: "rgba(230, 116, 44, 1)",
               },
             }}
             name="read-only"
@@ -118,8 +142,8 @@ export default function HotelsCard({ hotel }) {
         </div>
 
         <p className={styles.property_title}>The property offer:</p>
-        <span className={styles.property_item}>{facilities[0] || 'No facility'}</span>
-        <span className={styles.property_item}>{facilities[1] || 'No facility'}</span>
+        <span className={styles.property_item}>{facilities[0] || "No facility"}</span>
+        <span className={styles.property_item}>{facilities[1] || "No facility"}</span>
         <span className={styles.property_item}>others..</span>
 
         <div className={styles.card_footer}>
@@ -128,7 +152,7 @@ export default function HotelsCard({ hotel }) {
             <p className={styles.rate}>{`${hotel.largest_rating_percentage}% ${hotel.largest_rating_category}`}</p>
           </div>
           <div className={styles.card_price}>
-            <span>{minPrice !== 'N/A' ? `${minPrice}$` : 'Price N/A'}</span>
+            <span>{minPrice !== "N/A" ? `${minPrice}$` : "Price N/A"}</span>
             <span className={styles.per_night}>
               <span className={styles.per}> /</span>Per Night.
             </span>

@@ -1,6 +1,12 @@
 from django.db import models
 
 from .facility import Facility
+from django.contrib.auth import get_user_model
+
+
+
+User = get_user_model() 
+
 
 
 # hotel model to store hotel information
@@ -20,7 +26,9 @@ class Hotel (models.Model):
     check_out_until = models.TimeField()
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    # main_image = models.ImageField(upload_to='hotel_main_images/', null=True, blank=True)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hotels')
+  
 
     PARKING_CHOICES = [
         ('free', 'Yes, free'),

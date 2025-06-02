@@ -17,87 +17,107 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from pages.models.hotel_image import HotelPhoto
+from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListAPIView
+
+from rest_framework.permissions import IsAuthenticated
 
 
 
 
 
 
-class HotelCreateView(APIView):
-    def post(self, request):
-        serializer = HotelSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-    {"message": "The hotel was created", "data": serializer.data},
-    status=status.HTTP_201_CREATED
-)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class HotelCreateView(APIView):
+#     def post(self, request):
+#         serializer = HotelSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(
+#     {"message": "The hotel was created", "data": serializer.data},
+#     status=status.HTTP_201_CREATED
+# )
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
+
+# class AddHotelView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def post(self, request):
+#         facilities_data = request.data.get('facilities', [])
+
+        
+#         if not Facility.objects.filter(id__in=facilities_data).count() == len(facilities_data):
+#             return Response({"error": "One or more facility IDs are invalid."}, status=status.HTTP_400_BAD_REQUEST)
+
+#         serializer = HotelSerializer(data=request.data)
+#         if serializer.is_valid():
+#             # hotel = serializer.save()
+#             hotel = serializer.save(owner=request.user)
+#             hotel.facilities.set(facilities_data)  
+#             return Response({"id": hotel.id, "message": "Hotel added successfully!"}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from pages.models.facility import Facility
+from pages.models.hotel import Hotel
+from pages.serializers.list_hotel_card import HotelSerializer
 
 class AddHotelView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
+        
         facilities_data = request.data.get('facilities', [])
 
         
-        if not Facility.objects.filter(id__in=facilities_data).count() == len(facilities_data):
-            return Response({"error": "One or more facility IDs are invalid."}, status=status.HTTP_400_BAD_REQUEST)
+        if Facility.objects.filter(id__in=facilities_data).count() != len(facilities_data):
+            return Response(
+                {"error": "One or more facility IDs are invalid."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
+        
         serializer = HotelSerializer(data=request.data)
         if serializer.is_valid():
-            hotel = serializer.save()
-            hotel.facilities.set(facilities_data)  
-            return Response({"id": hotel.id, "message": "Hotel added successfully!"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
-
-
-
-
-# class UploadHotelPhotosView(APIView):
-#     parser_classes = [MultiPartParser, FormParser]
-
-#     def post(self, request):
-#         hotel_id = request.data.get("hotel")
-#         images = request.FILES.getlist('images')
-#         is_main_values = request.data.getlist('is_main')  
-
-#         if not hotel_id:
-#             return Response({"error": "Hotel ID is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-#         get_object_or_404(Hotel, id=hotel_id)
-
-#         if not images:
-#             return Response({"error": "No images provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-       
-#         if len(is_main_values) != len(images):
-#             return Response({"error": "Mismatch between images and is_main flags"}, status=status.HTTP_400_BAD_REQUEST)
-
-#         for image, is_main in zip(images, is_main_values):
             
-#             is_main_bool = True if is_main.lower() == 'true' else False
+            hotel = serializer.save(owner=request.user)
+            hotel.facilities.set(facilities_data)
+            return Response(
+                {"id": hotel.id, "message": "Hotel added successfully!"},
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
-#             serializer = HotelPhotoSerializer(data={
-#                 "hotel": hotel_id,
-#                 "image": image,
-#                 "is_main": is_main_bool,
-#             })
 
-#             if serializer.is_valid():
-#                 serializer.save()
-#             else:
-#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class AddHotelView(APIView):
+#     permission_classes = [IsAuthenticated]
+    
+#     def post(self, request):
+#         facilities_data = request.data.get('facilities', [])
 
-#         return Response({"message": "Photos uploaded successfully"}, status=status.HTTP_201_CREATED)
+#         # تحقق من صلاحية الـ facilities
+#         if not Facility.objects.filter(id__in=facilities_data).count() == len(facilities_data):
+#             return Response({"error": "One or more facility IDs are invalid."}, status=status.HTTP_400_BAD_REQUEST)
+
+#         serializer = HotelSerializer(data=request.data)
+#         if serializer.is_valid():
+#             # مرر الـ owner هنا
+#             hotel = serializer.save(owner=request.user)
+#             hotel.facilities.set(facilities_data)  
+#             return Response({"id": hotel.id, "message": "Hotel added successfully!"}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
@@ -240,8 +260,12 @@ class HotelListView(APIView):
         hotel_ids = rooms.values_list('hotel_id', flat=True).distinct()
         hotels = hotels.filter(id__in=hotel_ids)
 
-        if not hotels.exists():
-            return Response({"message": "No hotels found"}, status=status.HTTP_404_NOT_FOUND)
+        if not hotels:
+            return Response({
+                          "hotels": [], 
+                          "message": "No hotels found"
+                           }, status=200)
+
 
         serializer = HotelSerializer(hotels, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -278,3 +302,32 @@ class HotelDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+class HotelCreateView(CreateAPIView):
+    serializer_class = HotelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+
+class UserHotelsListView(ListAPIView):
+    serializer_class = HotelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Hotel.objects.filter(owner=self.request.user)
+
+
+
+
+
+# view for hotel details for booking
+from rest_framework.views import APIView
+class HotelDetailesForBookingView(APIView):
+
+    def get(self, request, id):
+        hotel = get_object_or_404(Hotel, id=id)
+        serializer = HotelSerializer(hotel, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

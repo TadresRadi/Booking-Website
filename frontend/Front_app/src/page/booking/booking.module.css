@@ -1,0 +1,148 @@
+.bookingContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+}
+.hotelCard{
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color:#67bfd1;
+}
+.hotelName{
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #67bfd1;
+    margin-bottom: 10px;
+}
+.reveiw{
+    font-size: 1em;
+    color: #555;
+   margin-left: auto; 
+   font-size: 18px;  
+}
+.informationInput{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 68%;
+    padding-left: 2%;
+    padding-right: 2%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color:#67bfd1;
+    margin-left: 2%;
+}
+.BookingDetails{
+    padding-top: 20px;
+
+    width: 30%;
+    height: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color:#67bfd1;
+}
+.bookDate{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+.checkin{
+    border-right: 1px solid #ccc;
+    padding: 10px;
+
+}
+.checkout{
+    padding: 10px;
+}
+.bookingTitle{
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #67bfd1;
+    margin-bottom: 10px;
+}
+
+
+.bookingTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #67bfd1;
+  margin-bottom: 10px;
+}
+
+.inputGroup {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.note {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.submitBtn {
+  padding: 10px;
+  background-color: #67bfd1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submitBtn:hover {
+  background-color: #56a5b3;
+}
+
+
+.summaryCard {
+  width: 100%;
+  padding: 2%;
+  border-top: 1px solid #ccc;
+  margin-bottom: 20px;
+  border-color: #67bfd1;
+}
+
+.summaryTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #67bfd1;
+  margin-bottom: 10px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 16px;
+}

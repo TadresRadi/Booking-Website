@@ -1,4 +1,6 @@
 
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,7 +14,6 @@ export function Add_property() {
   const [hotel, setHotel] = useState(null);
   const { hotelId, roomId, setRoomId, setHotelId } = useHotel();
 
-  
   const token = localStorage.getItem('access');
 
   useEffect(() => {
@@ -27,12 +28,10 @@ export function Add_property() {
     }
   }, [hotelId, token]);
 
- 
   const handleAddAnotherRoom = () => {
     setRoomId(null);
     navigate('/add-room');
   };
-
 
   const handleAddAnotherHotel = () => {
     setHotelId(null);
@@ -44,6 +43,18 @@ export function Add_property() {
     <div className={styles.bodylike}>
       <div className={styles.bgGlass}></div>
       <div className="position-relative" style={{ zIndex: 1, minHeight: "100vh" }}>
+        {/* زرار view hotel في أعلى الصفحة */}
+        <div className="container py-2">
+          <div className="d-flex justify-content-end mb-3">
+            <button
+              className={styles.saveButton}
+              onClick={() => navigate('/host-properties')}
+            >
+              View Hotel
+            </button>
+          </div>
+        </div>
+
         <div className="container py-5">
 
           {/* Step 1: Hotel Details */}
@@ -70,7 +81,7 @@ export function Add_property() {
                             Add
                           </button>
                         )}
-                        {hotel && hotelId && (
+                        {hotelId && (
                           <>
                             <button
                               className={styles.saveButton}
@@ -127,12 +138,10 @@ export function Add_property() {
                         <span className="badge bg-info fs-6">Step 2</span>
                       </div>
 
-                      
                       <p className="mb-3 flex-grow-1 text-md-start text-center">
                         Add rooms, layouts, bed options, and rates.
                       </p>
 
-                      
                       <div className="d-flex gap-3 flex-wrap justify-content-start mb-2">
                         {!hotelId && (
                           <button
@@ -180,12 +189,10 @@ export function Add_property() {
                         <span className="badge bg-info fs-6">Step 3</span>
                       </div>
 
-                      
                       <p className="mb-3 flex-grow-1 text-md-start text-center">
                         Share photos of your hotel so guests know what to expect.
                       </p>
 
-                      
                       <div className="d-flex gap-3 flex-wrap justify-content-start mb-2">
                         {!hotelId && (
                           <button

@@ -55,9 +55,9 @@ export function Home_hotel() {
               
                  <Card.Img
                 variant="top"
-                src={hotel.main_image ?  hotel.main_image : "/placeholder.jpg"}
-                   alt={hotel.hotel_name}
-                     className={styles.cardImg}
+     src={hotel.main_image ? `http://localhost:8000${hotel.main_image}` : "/placeholder.jpg"}
+        alt={hotel.hotel_name}
+        className={styles.cardImg}
                         />
                   <Card.Body>
                     <Card.Title className={styles.cardTitle}>{hotel.hotel_name}</Card.Title>

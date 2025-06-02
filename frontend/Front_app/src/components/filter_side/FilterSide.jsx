@@ -1,60 +1,87 @@
-import React from 'react';
-
-import styles from "./filter.module.css"
+import React, { useState, useEffect } from 'react';
+import styles from "./filter.module.css";
 import axiosInstance from '../../api/axiosInstance';
-import { useState } from 'react';
+import { useHotel } from '../../context/HotelContext.jsx';
+
 export function FilterSide() {
-    const [facilities, setFacilities] = useState([]);
-    const [roomAmenities, setRoomAmenities] = useState([]);
+  const [facilities, setFacilities] = useState([]);
+  const [roomAmenities, setRoomAmenities] = useState([]);
+  const { selectedFacilities, setSelectedFacilities ,selectedRoomAmenities,
+  setSelectedRoomAmenities } = useHotel();
 
-    React.useEffect(() => {
-        axiosInstance.get('/facilities/')
-        .then(response => {
-            console.log("Facilities:", response.data);
-            setFacilities(response.data);
-        })
-        .catch(error => {
-            console.error("Error fetching facilities:", error);
-        });
+  useEffect(() => {
+    axiosInstance.get('/facilities/')
+      .then(response => {
+        setFacilities(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching facilities:", error);
+      });
 
-        axiosInstance.get('/animates/')
-        .then(response => {
-            console.log("Room Amenities:", response.data);
-            setRoomAmenities(response.data);
-        })
-        .catch(error => {
-            console.error("Error fetching room amenities:", error);
-        });
-    }, []);
-    
-        
-   
+    axiosInstance.get('/All_Animates/')
+      .then(response => {
+        setRoomAmenities(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching room amenities:", error);
+      });
+  }, []);
 
+  const handleFacilityChange = (event) => {
+    const facilityName = event.target.value;
+    setSelectedFacilities(prev =>
+      prev.includes(facilityName)
+        ? prev.filter(f => f !== facilityName)
+        : [...prev, facilityName]
+    );
+  };
 
-    return (
-        <>
-          <h3 className={styles.fiter_by}>Filter By </h3>
-           
-            <div className={styles.fliter_container}>   
-                    <h4>Property facilities</h4>
-                    {facilities.map((facility) => (
-                        <div key={facility.id}>
-                            <input type="checkbox" />  <span className={styles.facility_name}>    {facility.facility_name}</span><br />
-                        </div>
-                    ))}
-                    
-            </div>
+  const handleAmenityChange = (event) => {
+  const amenityName = event.target.value;
+  setSelectedRoomAmenities(prev =>
+    prev.includes(amenityName)
+      ? prev.filter(a => a !== amenityName)
+      : [...prev, amenityName]
+  );
+};
 
-            <div className={styles.fliter_container}>   
-                    <h4>Room amenities</h4>
-                    {roomAmenities.map((roomAmenity) => (
-                        <div key={roomAmenity.id}>
-                            <input type="checkbox" />  <span className={styles.facility_name}>    {roomAmenity.animation_name}</span><br />
-                        </div>
-                    ))}
-                    
-            </div>
+  return (
+    <>
+    <div className={styles.fixedFilter}>
+      <h3 className={styles.fiter_by}>Filter By</h3>
 
-        </>
-    )
+      {/* Property Facilities Filter */}
+      <div className={styles.fliter_container}>
+        <h4>Property Facilities</h4>
+        {facilities.map((facility) => (
+          <div key={facility.id}>
+            <input
+              type="checkbox"
+              value={facility.facility_name}
+              onChange={handleFacilityChange}
+              checked={selectedFacilities.includes(facility.facility_name)}
+            />
+            <span className={styles.facility_name}>{facility.facility_name}</span><br />
+          </div>
+        ))}
+      </div>
+
+      {/* Room Amenities (not yet wired) */}
+      <div className={styles.fliter_container}>
+        <h4>Room Amenities</h4>
+        {roomAmenities.map((amenity) => (
+          <div key={amenity.id}>
+            <input
+              type="checkbox"
+               value={amenity.animation_name}
+               onChange={handleAmenityChange}
+               checked={selectedRoomAmenities.includes(amenity.animation_name)}
+            />
+            <span className={styles.facility_name}>{amenity.animation_name}</span><br />
+          </div>
+        ))}
+      </div>
+      </div>
+    </>
+  );
 }

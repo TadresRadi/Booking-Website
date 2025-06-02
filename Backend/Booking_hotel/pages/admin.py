@@ -8,10 +8,16 @@ from .models.room_image import RoomPhoto
 from .models.room_animate import Room_animates
 from .models.reviews import Review
 from .models.hotel import Hotel
+from pages.models.booking import Booking
+
+admin.register(Booking)
 
 
 # Register your models here.
-
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email') 
+    
 
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
