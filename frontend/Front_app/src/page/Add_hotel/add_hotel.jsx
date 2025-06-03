@@ -1,9 +1,13 @@
+
+
+
+
 import axios from 'axios';
 import styles from './AddHotelForm.module.css';
 import { facilityMap } from '../../assets/hoteldata/facilityMap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useHotel } from '../../context/HotelContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const amenities = [
   { name: 'restaurant', label: 'Restaurant' },
@@ -28,6 +32,10 @@ const amenities = [
 ];
 
 const AddHotelForm = () => {
+  const { hotelId: paramsHotelId } = useParams(); 
+  const { hotelId: contextHotelId, setHotelId } = useHotel(); 
+  const hotelId = paramsHotelId || contextHotelId; 
+
   const [formData, setFormData] = useState({
     hotel_name: '',
     description: '',
@@ -44,128 +52,191 @@ const AddHotelForm = () => {
     facilities: [],
   });
 
+  const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    if (paramsHotelId) setHotelId(paramsHotelId);
+    
+    return () => {
+      if (paramsHotelId) setHotelId(null);
+    };
+  }, [paramsHotelId, setHotelId]);
+
+  
+  useEffect(() => {
+    if (!hotelId) {
+      
+      setFormData({
+        hotel_name: '',
+        description: '',
+        star_rating: '',
+        country: '',
+        city: '',
+        street_address: '',
+        postal_code: '',
+        check_in_from: '',
+        check_in_until: '',
+        check_out_from: '',
+        check_out_until: '',
+        parking: '',
+        facilities: [],
+      });
+    } else {
+      // edit mode: fetch data
+      const token = localStorage.getItem('access');
+      axios.get(`http://localhost:8000/api/hotel/${hotelId}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => {
+          const data = res.data;
+          setFormData({
+            hotel_name: data.hotel_name || '',
+            description: data.description || '',
+            star_rating: data.star_rating || '',
+            country: data.country || '',
+            city: data.city || '',
+            street_address: data.street_address || '',
+            postal_code: data.postal_code || '',
+            check_in_from: data.check_in_from || '',
+            check_in_until: data.check_in_until || '',
+            check_out_from: data.check_out_from || '',
+            check_out_until: data.check_out_until || '',
+            parking: data.parking || '',
+            facilities: data.facilities ? data.facilities.map(fac => fac.id) : [],
+          });
+        })
+        .catch((err) => {
+          console.error("Error fetching hotel data:", err);
+        });
+    }
+  }, [hotelId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleFacilityChange = (facilityName) => {
     const facilityId = facilityMap[facilityName];
     if (!facilityId) return;
 
-    setFormData((prev) => {
-      const currentFacilities = prev.facilities;
+    setFormData(prev => {
+      const currentFacilities = prev.facilities || [];
+      const isSelected = currentFacilities.includes(facilityId);
       return {
         ...prev,
-        facilities: currentFacilities.includes(facilityId)
+        facilities: isSelected
           ? currentFacilities.filter(id => id !== facilityId)
           : [...currentFacilities, facilityId],
       };
     });
   };
 
-  const navigate = useNavigate();
-  const { setHotelId } = useHotel(); 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      ...formData,
-    };
-
+    const token = localStorage.getItem('access');
     try {
-      const res = await axios.post('http://localhost:8000/api/add-hotel/', payload);
-      const hotelId = res.data?.id;
-
-      if (!hotelId) {
-        alert("Error: Hotel ID is missing from the response.");
-        return;
+      if (hotelId) {
+        await axios.put(
+          `http://localhost:8000/api/edit-hotel/${hotelId}/`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Hotel updated successfully!");
+      } else {
+        const res = await axios.post(
+          'http://localhost:8000/api/add-hotel/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const newHotelId = res.data?.id;
+        if (!newHotelId) throw new Error("Hotel ID missing");
+        setHotelId(newHotelId);
+        alert("Hotel added successfully!");
       }
-
-      setHotelId(hotelId);
-      alert("Hotel added successfully!");
       navigate('/add-property');
     } catch (error) {
       console.error(error.response?.data || error.message);
-      alert("Something went wrong while adding the hotel.");
+      alert("An error occurred while saving the hotel");
     }
   };
 
   return (
     <div className={styles.hotelFormBackground}>
-      
       <div className={styles.bgGlass}></div>
       <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
         <div className="row justify-content-center">
           <div className={`col-11 col-md-10 col-lg-7 p-4 shadow ${styles.hotelFormCard}`}>
             <form onSubmit={handleSubmit}>
-              <h3 className="text-center mb-4">Add Your Hotel</h3>
+              <h3 className="text-center mb-4">{hotelId ? 'Edit Hotel' : 'Add Your Hotel'}</h3>
 
-              {/* Hotel name */}
               <div className="mb-3">
                 <label className="form-label">Hotel Name</label>
-                <input type="text" className="form-control" name="hotel_name" value={formData.hotel_name} onChange={handleChange} />
+                <input type="text" className="form-control" name="hotel_name" value={formData.hotel_name} onChange={handleChange} required />
               </div>
 
-              {/* Description */}
               <div className="mb-3">
                 <label className="form-label">Description</label>
-                <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} rows="3" />
+                <textarea className="form-control" name="description" value={formData.description || ''} onChange={handleChange} rows="3" required />
               </div>
 
-              {/* Star rating */}
               <div className="mb-3">
                 <label className="form-label">Star Rating (1 to 5)</label>
-                <input type="number" min="1" max="5" className="form-control" name="star_rating" value={formData.star_rating} onChange={handleChange} />
+                <input type="number" min="1" max="5" className="form-control" name="star_rating" value={formData.star_rating} onChange={handleChange} required />
               </div>
 
-              {/* Location */}
               <h5 className="mt-4">Hotel Location</h5>
               <div className="row g-3">
                 <div className="col-md-6">
                   <label className="form-label">Country</label>
-                  <input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} />
+                  <input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Post code / ZIP</label>
-                  <input type="text" className="form-control" name="postal_code" value={formData.postal_code} onChange={handleChange} />
+                  <input type="text" className="form-control" name="postal_code" value={formData.postal_code} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">City</label>
-                  <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} />
+                  <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Street Address</label>
-                  <input type="text" className="form-control" name="street_address" value={formData.street_address} onChange={handleChange} />
+                  <input type="text" className="form-control" name="street_address" value={formData.street_address} onChange={handleChange} required />
                 </div>
               </div>
 
-              {/* Check-in/out times */}
               <h5 className="mt-4">Check-in & Check-out</h5>
               <div className="row g-3">
                 <div className="col-md-6">
                   <label className="form-label">Check-in from</label>
-                  <input type="time" className="form-control" name="check_in_from" value={formData.check_in_from} onChange={handleChange} />
+                  <input type="time" className="form-control" name="check_in_from" value={formData.check_in_from} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Check-in until</label>
-                  <input type="time" className="form-control" name="check_in_until" value={formData.check_in_until} onChange={handleChange} />
+                  <input type="time" className="form-control" name="check_in_until" value={formData.check_in_until} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Check-out from</label>
-                  <input type="time" className="form-control" name="check_out_from" value={formData.check_out_from} onChange={handleChange} />
+                  <input type="time" className="form-control" name="check_out_from" value={formData.check_out_from} onChange={handleChange} required />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Check-out until</label>
-                  <input type="time" className="form-control" name="check_out_until" value={formData.check_out_until} onChange={handleChange} />
+                  <input type="time" className="form-control" name="check_out_until" value={formData.check_out_until} onChange={handleChange} required />
                 </div>
               </div>
 
-              {/* Facilities */}
               <h5 className="mt-4">Facilities</h5>
               <div className="row">
                 {amenities.map((item, index) => (
@@ -185,7 +256,6 @@ const AddHotelForm = () => {
                 ))}
               </div>
 
-              {/* Parking */}
               <h5 className="mt-4">Parking</h5>
               {['free', 'paid', 'no'].map((val, idx) => (
                 <div className="form-check" key={idx}>

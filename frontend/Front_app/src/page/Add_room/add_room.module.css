@@ -1,5 +1,4 @@
 
-
 .roomFormBackground {
   background-image: url('../../assets/natural.jpg');
   background-size: cover;
@@ -9,7 +8,7 @@
   overflow: hidden;
 }
 
-/* Blur effect on background image only, not content */
+
 .roomFormBackground::before {
   content: "";
   position: absolute;

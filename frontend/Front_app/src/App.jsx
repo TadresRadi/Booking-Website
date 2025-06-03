@@ -36,6 +36,14 @@ import ChatRoom from "./page/Admin_Dashboard/pages/ChatRoom.jsx";
 import ManagerList from "./page/Admin_Dashboard/pages/ManagerList.jsx"; 
 import AdminLogin from "./page/Admin_Dashboard/pages/AdminLogin.jsx";
 import { AdminProvider } from './page/Admin_Dashboard/components/admincontext.jsx';
+import EditCombinedStepper from './page/EditHotelStepper/edithotelstepper.jsx';
+import HostDashboard from './page/HostDashboard/HostHome/hostdashboard.jsx';
+import HostBookings from './page/HostDashboard/HostBooking/hostbooking.jsx';
+import Properties from './page/HostDashboard/Properties/properties.jsx';
+
+
+
+
 
 
 function App() {
@@ -96,6 +104,11 @@ function App() {
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/payment" element={<PaymentForm />} />
                 <Route path="/after-reservation" element={<AfterReservation />} />
+                <Route path='edit-property' element={<EditCombinedStepper />} />
+                <Route path='host-dashboard' element={<HostDashboard/>} />
+                <Route path="host-properties" element={<Properties />} />
+                <Route path="/edit-hotel/:hotelId" element={<AddHotelForm />} />
+                <Route path="host-booking" element={<HostBookings />} />
               </Routes>
                 <FloatingChatButton />
               {!hideHeaderFooter && <Footer />}

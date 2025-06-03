@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './add_room.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useHotel } from "../../context/HotelContext";
 
 const allFeatures = [
@@ -22,10 +22,30 @@ const allFeatures = [
 
 const AddRoomForm = () => {
   const navigate = useNavigate();
-  const { hotelId, setRoomId } = useHotel();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  
+  const { hotelId: contextHotelId, roomId: contextRoomId, setRoomId, setHotelId } = useHotel();
+  const hotelIdFromUrl = queryParams.get('hotelId');
+  const roomIdFromUrl = queryParams.get('roomId');
+  const hotelId = contextHotelId || hotelIdFromUrl;
+  const roomId = contextRoomId || roomIdFromUrl;
+
+  
+  useEffect(() => {
+    if (!contextHotelId && hotelIdFromUrl) {
+      setHotelId(hotelIdFromUrl);
+    }
+    if (!contextRoomId && roomIdFromUrl) {
+      setRoomId(roomIdFromUrl);
+    }
+  }, [contextHotelId, hotelIdFromUrl, setHotelId, contextRoomId, roomIdFromUrl, setRoomId]);
+
+ 
 
   const [formData, setFormData] = useState({
-    hotel: '',
+    hotel: hotelId ? Number(hotelId) : '',
     name: '',
     price_per_night: '',
     available_rooms: '',
@@ -36,10 +56,31 @@ const AddRoomForm = () => {
   });
 
   useEffect(() => {
-    if (hotelId) {
-      setFormData(prev => ({ ...prev, hotel: hotelId }));
+    const token = localStorage.getItem('access');
+    if (roomId) {
+      axios.get(`http://localhost:8000/api/rooms/${roomId}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => {
+          const data = res.data;
+          setFormData({
+            hotel: hotelId ? Number(hotelId) : '',
+            name: data.name || '',
+            price_per_night: data.price_per_night || '',
+            available_rooms: data.available_rooms || '',
+            adult_capacity: data.adult_capacity || '',
+            room_size: data.room_size || '',
+            outdoor_view: data.outdoor_view || '',
+            room_facilities: data.room_facilities ? data.room_facilities.map(f => f.id) : [],
+          });
+        })
+        .catch(err => {
+          console.error("Error fetching room data:", err);
+        });
+    } else if (hotelId) {
+      setFormData(prev => ({ ...prev, hotel: Number(hotelId) }));
     }
-  }, [hotelId]);
+  }, [roomId, hotelId]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -69,15 +110,42 @@ const AddRoomForm = () => {
       return;
     }
 
+    if (!formData.hotel || isNaN(Number(formData.hotel))) {
+      alert("Hotel ID is missing! Please select a hotel first.");
+      return;
+    }
+
+    const token = localStorage.getItem('access');
+
     try {
-      const res = await axios.post('http://localhost:8000/api/add-room/', formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      alert("Room added successfully!");
-      setRoomId(res.data.id);
-      navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
-
+      if (roomId) {
+        await axios.put(
+          `http://localhost:8000/api/edit-room/${roomId}/`,
+          { ...formData, hotel: Number(formData.hotel) },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Room updated successfully!");
+        navigate(`/add-property?hotelId=${formData.hotel}&roomId=${roomId}`);
+      } else {
+        const res = await axios.post(
+          'http://localhost:8000/api/add-room/',
+          { ...formData, hotel: Number(formData.hotel) },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setRoomId(res.data.id);
+        alert("Room added successfully!");
+        navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
+      }
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data) {
@@ -88,12 +156,39 @@ const AddRoomForm = () => {
     }
   };
 
+  const handleAddAnotherRoom = () => {
+    setRoomId(null);
+    setFormData({
+      hotel: hotelId ? Number(hotelId) : '',
+      name: '',
+      price_per_night: '',
+      available_rooms: '',
+      adult_capacity: '',
+      room_size: '',
+      outdoor_view: '',
+      room_facilities: [],
+    });
+    navigate(`/add-room?hotelId=${hotelId}`);
+  };
+
   return (
     <div className={styles.roomFormBackground}>
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className={`col-11 col-md-10 col-lg-7 p-4 shadow ${styles.roomFormCard}`}>
-            <h3 className="text-center mb-4">Add Your Room</h3>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h3 className="text-center mb-0 flex-grow-1">{roomId ? 'Edit Your Room' : 'Add Your Room'}</h3>
+              {roomId && (
+                <button
+                  type="button"
+                  className={`${styles.saveButton} btn-outline-primary ms-2`}
+                  onClick={handleAddAnotherRoom}
+                  style={{ minWidth: 170 }}
+                >
+                  Add Another Room
+                </button>
+              )}
+            </div>
 
             <form onSubmit={handleSubmit}>
               <input type="hidden" name="hotel" value={formData.hotel} />
@@ -211,7 +306,3 @@ const AddRoomForm = () => {
 };
 
 export default AddRoomForm;
-
-
-
-

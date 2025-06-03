@@ -8,7 +8,6 @@ from pages.views.room_animates import All_Animates
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
 from pages.views.hotel_views import HotelCreateView, HotelDetailesForBookingView, HotelListView, HotelDetailView, AddHotelView, UploadHotelPhotosView
 from pages.views.hotel_views import HotelCreateView, HotelListView, HotelDetailView, AddHotelView, UploadHotelPhotosView
 from pages.views.rooms_views import RoomAnimatesListView, RoomPhotosAPIView, AddRoomView, UploadRoomPhotosView
@@ -35,6 +34,16 @@ from pages.views.chat import (
     SendMessageView,
     AdminUserView
 )
+from pages.views.hotel_views import EditHotelView
+from pages.views.rooms_views import SingleRoomView
+from pages.views.rooms_views import EditRoomView
+from pages.views.hotel_views import HotelPhotosAPIView
+from pages.views.rooms_views import RoomPhotosAPIView
+from pages.views.rooms_views import UpdateRoomPhotosView 
+from pages.views.hotel_views import UpdateHotelPhotosView
+from pages.views.photo_views import delete_image
+from pages.views.hotel_views import HotelDetail
+from pages.views.hotel_views import UserHotelsListView
 from pages.views.rooms_views import RoomViewSet
 router = DefaultRouter()
 router.register(r'rooms', RoomViewSet, basename='rooms')
@@ -70,6 +79,26 @@ urlpatterns = [
     path('', include(router.urls)), 
     path('room-photos/', AllRoomPhotosAPIView.as_view(), name='all-room-photos'),
     path('reviews/', ReviewListView.as_view(), name='review-list'),
+    path('edit-hotel/<int:id>/', EditHotelView.as_view(), name='edit-hotel'),
+    path('rooms/<int:room_id>/', SingleRoomView.as_view(), name='get-single-room'),
+    path('edit-room/<int:room_id>/', EditRoomView.as_view(), name='edit-room'),
+    path('room-images/<int:room_id>/', RoomPhotosAPIView.as_view(), name='room-images'),
+    path('room-images/<int:room_id>/update/', UpdateRoomPhotosView.as_view(), name='update-room-images'),
+    
+    
+    path('hotel-images/<int:hotel_id>/', HotelPhotosAPIView.as_view(), name='hotel-photos'),
+
+    path('hotel-images/<int:hotel_id>/update/', UpdateHotelPhotosView.as_view(), name='update-hotel-photos'),
+
+    path("delete-image/<int:image_id>/", delete_image, name="delete-image"),
+    path('hotel-detail/<int:pk>/', HotelDetail.as_view()),
+    path('my-hotels/', UserHotelsListView.as_view(), name='user-hotels'),
+
+    
+
+
+    
+
     path('booking/', Create_booking,name='booking'),
     path("users/", UsersListView.as_view(), name="users-list"),
     path('users/<int:user_id>/toggle-manager-status/', ToggleManagerStatus.as_view(), name='toggle-manager-status'),

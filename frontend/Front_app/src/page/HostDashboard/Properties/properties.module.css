@@ -1,0 +1,220 @@
+.propertiesRoot {
+  background: linear-gradient(110deg, #f7f7fa 60%, #fff5f3 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+  font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px 24px 48px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3d3d3d;
+  letter-spacing: 1px;
+}
+
+.header nav {
+  display: flex;
+  gap: 28px;
+}
+.header nav a {
+  color: #999;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 4px 0;
+  position: relative;
+}
+.header nav a:hover, .header nav .active {
+  color: #ffb8a5;
+}
+.avatar {
+  width: 46px;
+  height: 46px;
+  background: #e9e6ef;
+  border-radius: 50%;
+  border: 2px solid #e0dbe9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainArea {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.propertiesHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.propertiesTitle {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #464646;
+  margin-bottom: 6px;
+}
+.propertiesSubtitle {
+  color: #8b8b8b;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.addPropertyBtn {
+  background: linear-gradient(90deg, #ffd7cd 60%, #fff5f3 100%);
+  border: none;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 30px;
+  color: #b15536;
+  box-shadow: 0 2px 8px #f7efd0a0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.addPropertyBtn:hover {
+  background: linear-gradient(90deg, #fff5f3 40%, #ffd7cd 100%);
+}
+
+.propertiesListSection {
+  background: #fff5f3;
+  border-radius: 18px;
+  padding: 18px 26px;
+  box-shadow: 0 2px 10px #f7efd0a0;
+}
+
+.emptyProperties {
+  text-align: center;
+  color: #e09e87;
+  padding: 32px 0;
+  font-size: 1.2rem;
+}
+.emptyProperties button {
+  background: linear-gradient(90deg, #ffd7cd 60%, #fff5f3 100%);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 18px;
+  padding: 10px 24px;
+  color: #b15536;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #f7efd0a0;
+}
+.emptyProperties button:hover {
+  background: linear-gradient(90deg, #fff5f3 40%, #ffd7cd 100%);
+}
+
+.propertiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.propertyCard {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 8px #f7efd0a0;
+  padding: 18px 24px;
+  gap: 22px;
+  border: 1.5px solid #ffe3db;
+  transition: box-shadow 0.2s;
+}
+.propertyCard img {
+  width: 86px;
+  height: 74px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-right: 18px;
+  border: 1px solid #ffd7cd;
+  background: #fff5f3;
+}
+.propertyDetails {
+  flex-grow: 1;
+}
+.propertyHeadRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.propertyName {
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: #464646;
+}
+.propertyStatus {
+  border-radius: 10px;
+  font-size: 0.97rem;
+  font-weight: 500;
+  padding: 2px 13px;
+  margin-left: 4px;
+}
+.statusActive {
+  background: #e6f9e5;
+  color: #4ca04c;
+}
+.statusPending {
+  background: #fff3d0;
+  color: #c3a10b;
+}
+.statusHidden {
+  background: #eaeaea;
+  color: #aaaaaa;
+}
+.propertyAddress {
+  color: #8b8b8b;
+  font-size: 1.04rem;
+  margin: 1px 0 4px 0;
+}
+.propertyQuickStats {
+  display: flex;
+  gap: 28px;
+  font-size: 0.98rem;
+  color: #e09e87;
+}
+.propertyQuickStats b {
+  color: #b15536;
+}
+
+.propertyBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.propertyBtn {
+  background: linear-gradient(90deg,#ffe3db 60%,#fff5f3 100%);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.97rem;
+  padding: 7px 18px;
+  color: #b15536;
+  cursor: pointer;
+  margin: 0;
+  box-shadow: 0 1px 4px #f7efd0a0;
+  transition: background 0.2s;
+}
+.propertyBtn:hover {
+  background: linear-gradient(90deg, #fff5f3 40%, #ffe3db 100%);
+}
+
+.deleteBtn {
+  background: #d9534f !important;
+  color: #fff !important;
+  border: none;
+}

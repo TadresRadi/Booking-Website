@@ -1,0 +1,182 @@
+
+
+@import url('https://fonts.googleapis.com/css?family=Cairo:wght@400;700&display=swap');
+
+
+.propertiesRoot {
+  background: linear-gradient(110deg, #f7f7fa 60%, #fdf6e3 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+  font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px 24px 48px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3d3d3d;
+  letter-spacing: 1px;
+}
+
+.header nav {
+  display: flex;
+  gap: 28px;
+}
+.header nav a {
+  color: #999;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 4px 0;
+  position: relative;
+}
+.header nav .active, .header nav a:hover {
+  color: #ffda70;
+}
+.avatar {
+  width: 46px;
+  height: 46px;
+  background: #e9e6ef;
+  border-radius: 50%;
+  border: 2px solid #e0dbe9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainArea {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.propertiesHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.propertiesTitle {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #464646;
+  margin-bottom: 6px;
+}
+.propertiesSubtitle {
+  color: #8b8b8b;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.propertiesListSection {
+  background: #fffbea;
+  border-radius: 18px;
+  padding: 18px 26px;
+  box-shadow: 0 2px 10px #f7efd0a0;
+}
+
+.emptyProperties {
+  text-align: center;
+  color: #bba822;
+  padding: 32px 0;
+  font-size: 1.2rem;
+}
+
+
+.bookingsList {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.bookingCard {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 8px #f7efd0a0;
+  padding: 18px 24px;
+  gap: 22px;
+  border: 1.5px solid #fcf3d1;
+  transition: box-shadow 0.2s;
+  justify-content: space-between;
+}
+
+.bookingDetails {
+  flex-grow: 1;
+}
+.bookingHeadRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.propertyName {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #464646;
+}
+.bookingStatus {
+  border-radius: 10px;
+  font-size: 0.97rem;
+  font-weight: 500;
+  padding: 2px 13px;
+  margin-left: 4px;
+}
+.statusConfirmed {
+  background: #e6f9e5;
+  color: #4ca04c;
+}
+.statusPending {
+  background: #fff3d0;
+  color: #c3a10b;
+}
+.statusCancelled {
+  background: #fbeaea;
+  color: #d9534f;
+}
+
+.bookingInfoRow {
+  color: #8b8b8b;
+  font-size: 1.04rem;
+  margin-bottom: 2px;
+  display: flex;
+  gap: 32px;
+}
+
+.bookingStats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+.bookingStats span {
+  color: #bba822;
+  font-size: 1.01rem;
+}
+
+.bookingBtn {
+  background: linear-gradient(90deg,#ffecb5 60%,#fff3d0 100%);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.97rem;
+  padding: 7px 18px;
+  color: #856200;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #f7efd0a0;
+  transition: background 0.2s;
+}
+.bookingBtn:hover {
+  background: linear-gradient(90deg, #fff3d0 40%, #ffecb5 100%);
+}

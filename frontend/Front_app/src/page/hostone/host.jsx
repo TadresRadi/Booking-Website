@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,23 +12,52 @@ import { useHotel } from '../../context/HotelContext';
 export function Add_property() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
-  const { hotelId } = useHotel();
+  const { hotelId, roomId, setRoomId, setHotelId } = useHotel();
+
+  const token = localStorage.getItem('access');
 
   useEffect(() => {
-    if (hotelId) {
-      axios.get(`http://localhost:8000/api/hotel/${hotelId}/`)
+    if (hotelId && token) {
+      axios.get(`http://localhost:8000/api/hotel/${hotelId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then(res => setHotel(res.data))
         .catch(err => console.error(err));
     }
-  }, [hotelId]);
+  }, [hotelId, token]);
+
+  const handleAddAnotherRoom = () => {
+    setRoomId(null);
+    navigate('/add-room');
+  };
+
+  const handleAddAnotherHotel = () => {
+    setHotelId(null);
+    setRoomId(null); 
+    navigate('/add-hotel');
+  };
 
   return (
     <div className={styles.bodylike}>
       <div className={styles.bgGlass}></div>
       <div className="position-relative" style={{ zIndex: 1, minHeight: "100vh" }}>
+        {/* زرار view hotel في أعلى الصفحة */}
+        <div className="container py-2">
+          <div className="d-flex justify-content-end mb-3">
+            <button
+              className={styles.saveButton}
+              onClick={() => navigate('/host-properties')}
+            >
+              View Hotel
+            </button>
+          </div>
+        </div>
+
         <div className="container py-5">
 
-          {/* Step 1 */}
+          {/* Step 1: Hotel Details */}
           <div className="row mb-4">
             <div className="col-md-8 mx-auto">
               <Card className={styles.cardCustom}>
@@ -36,22 +68,38 @@ export function Add_property() {
                   </div>
 
                   <div className="row align-items-center">
-                    {/* Text + Button */}
                     <div className="col-md-7">
                       <p className="mb-3">
                         The basics — Add your hotel name, address, facilities, and more.
                       </p>
-                      <div className="text-start">
-                        <button
-                          className={styles.saveButton}
-                          onClick={() => navigate('/add-hotel')}
-                        >
-                          {hotelId ? 'Edit' : 'Add'}
-                        </button>
+                      <div className="text-start d-flex gap-2 flex-wrap mb-2">
+                        {!hotelId && (
+                          <button
+                            className={styles.saveButton}
+                            onClick={() => navigate('/add-hotel')}
+                          >
+                            Add
+                          </button>
+                        )}
+                        {hotelId && (
+                          <>
+                            <button
+                              className={styles.saveButton}
+                              onClick={() => navigate('/add-hotel')}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className={`${styles.saveButton} btn-outline-primary`}
+                              onClick={handleAddAnotherHotel}
+                            >
+                              Add Another Hotel
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
 
-                    
                     <div className="col-md-5 text-center">
                       {hotel?.hotel_images?.length > 0 ? (
                         <img
@@ -76,12 +124,12 @@ export function Add_property() {
             </div>
           </div>
 
-          {/* Step 2 + Step 3 */}
+          {/* Step 2 & 3 */}
           <div className="row">
             <div className="col-md-8 mx-auto">
               <div className="row g-4 align-items-stretch">
 
-                {/* Step 2 */}
+                {/* Step 2: Rooms */}
                 <div className="col-md-6 d-flex">
                   <Card className={`${styles.cardCustom} flex-fill`}>
                     <Card.Body className="d-flex flex-column">
@@ -90,22 +138,49 @@ export function Add_property() {
                         <span className="badge bg-info fs-6">Step 2</span>
                       </div>
 
-                      <div className="d-flex flex-md-row-reverse flex-column align-items-center gap-3">
-                        <button
-                          className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
-                          onClick={() => navigate('/add-room')}
-                        >
-                          Add
-                        </button>
-                        <p className="mb-0 flex-grow-1 text-md-start text-center">
-                          Add rooms, layouts, bed options, and rates.
-                        </p>
+                      <p className="mb-3 flex-grow-1 text-md-start text-center">
+                        Add rooms, layouts, bed options, and rates.
+                      </p>
+
+                      <div className="d-flex gap-3 flex-wrap justify-content-start mb-2">
+                        {!hotelId && (
+                          <button
+                            className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                            onClick={() => navigate('/add-room')}
+                          >
+                            Add
+                          </button>
+                        )}
+                        {hotelId && roomId && (
+                          <>
+                            <button
+                              className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                              onClick={() => navigate('/add-room')}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className={`${styles.saveButton} ${styles.roomsPhotosButton} btn-outline-primary`}
+                              onClick={handleAddAnotherRoom}
+                            >
+                              Add Another Room
+                            </button>
+                          </>
+                        )}
+                        {hotelId && !roomId && (
+                          <button
+                            className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                            onClick={() => navigate('/add-room')}
+                          >
+                            Add
+                          </button>
+                        )}
                       </div>
                     </Card.Body>
                   </Card>
                 </div>
 
-                {/* Step 3 */}
+                {/* Step 3: Photos */}
                 <div className="col-md-6 d-flex">
                   <Card className={`${styles.cardCustom} flex-fill`}>
                     <Card.Body className="d-flex flex-column">
@@ -114,16 +189,45 @@ export function Add_property() {
                         <span className="badge bg-info fs-6">Step 3</span>
                       </div>
 
-                      <div className="d-flex flex-md-row-reverse flex-column align-items-center gap-3">
-                        <button
-                          className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
-                          onClick={() => navigate('/add-images')}
-                        >
-                          Add
-                        </button>
-                        <p className="mb-0 flex-grow-1 text-md-start text-center">
-                          Share photos of your hotel so guests know what to expect.
-                        </p>
+                      <p className="mb-3 flex-grow-1 text-md-start text-center">
+                        Share photos of your hotel so guests know what to expect.
+                      </p>
+
+                      <div className="d-flex gap-3 flex-wrap justify-content-start mb-2">
+                        {!hotelId && (
+                          <button
+                            className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                            onClick={() => navigate('/add-images')}
+                          >
+                            Add
+                          </button>
+                        )}
+                        {hotelId && hotel?.hotel_images?.length > 0 && (
+                          <>
+                            <button
+                              className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                              onClick={() => navigate('/add-images')}
+                            >
+                              Edit
+                            </button>
+                            {roomId && (
+                              <button
+                                className={`${styles.saveButton} ${styles.roomsPhotosButton} btn-outline-primary`}
+                                onClick={() => navigate('/add-images')}
+                              >
+                                Add
+                              </button>
+                            )}
+                          </>
+                        )}
+                        {hotelId && (!hotel?.hotel_images || hotel?.hotel_images.length === 0) && (
+                          <button
+                            className={`${styles.saveButton} ${styles.roomsPhotosButton}`}
+                            onClick={() => navigate('/add-images')}
+                          >
+                            Add
+                          </button>
+                        )}
                       </div>
                     </Card.Body>
                   </Card>
@@ -140,11 +244,3 @@ export function Add_property() {
 }
 
 export default Add_property;
-
-
-
-
-
-
-
-
