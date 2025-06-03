@@ -26,8 +26,8 @@ urlpatterns = [
     path('auth/', include('dj_rest_auth.urls')),
     path('api/auth/', include('dj_rest_auth.urls')),
     path('pages/', include('pages.urls')),
-    path('api/user/', include('pages.urls')),
-    path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
+    # path('api/user/', include('pages.urls')),
+    # path('api/user/profile/', UserProfileView.as_view(), name='user-profile'),
 ]
 
 

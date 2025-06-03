@@ -1,152 +1,115 @@
 import React, { useState, useRef, useEffect } from "react";
-
-const dummyChats = [
-  {
-    id: 1,
-    name: "Kaiya George",
-    avatar: "https://randomuser.me/api/portraits/women/11.jpg",
-    title: "Project Manager",
-    lastMsg: "15 mins",
-    online: true,
-  },
-  {
-    id: 2,
-    name: "Lindsey Curtis",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    title: "Designer",
-    lastMsg: "30 mins",
-    online: true,
-  },
-  {
-    id: 3,
-    name: "Zain Geidt",
-    avatar: "https://randomuser.me/api/portraits/men/25.jpg",
-    title: "Content Writer",
-    lastMsg: "45 mins",
-    online: true,
-  },
-  {
-    id: 4,
-    name: "Carla George",
-    avatar: "https://randomuser.me/api/portraits/women/90.jpg",
-    title: "Front-end Developer",
-    lastMsg: "2 days",
-    online: false,
-  },
-  {
-    id: 5,
-    name: "Abram Schleifer",
-    avatar: "https://randomuser.me/api/portraits/men/14.jpg",
-    title: "Digital Marketer",
-    lastMsg: "1 hour",
-    online: true,
-  },
-  {
-    id: 6,
-    name: "Lincoln Donin",
-    avatar: "https://randomuser.me/api/portraits/men/36.jpg",
-    title: "Project ManagerProduct Designer",
-    lastMsg: "3 days",
-    online: true,
-  },
-  {
-    id: 7,
-    name: "Erin Geidthem",
-    avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-    title: "Copyrighter",
-    lastMsg: "5 days",
-    online: false,
-  },
-  {
-    id: 8,
-    name: "Alena Baptista",
-    avatar: "https://randomuser.me/api/portraits/women/77.jpg",
-    title: "SEO Expert",
-    lastMsg: "2 hours",
-    online: false,
-  },
-];
-
-// Sample messages for one user
-const dummyMessages = [
-  {
-    id: 1,
-    sender: "other",
-    text: "I want to make an appointment tomorrow from 2:00 to 5:00pm?",
-    time: "2 hours ago",
-  },
-  {
-    id: 2,
-    sender: "me",
-    text: "If don't like something, I'll stay away from it.",
-    time: "2 hours ago",
-  },
-  {
-    id: 3,
-    sender: "other",
-    text: "I want more detailed information.",
-    time: "2 hours ago",
-  },
-  {
-    id: 4,
-    sender: "me",
-    text: "If don't like something, I'll stay away from it.",
-    time: "2 hours ago",
-  },
-  {
-    id: 5,
-    sender: "me",
-    text: "They got there early, and got really good seats.",
-    time: "2 hours ago",
-  },
-  {
-    id: 6,
-    sender: "me",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=cover&w=400&q=80",
-    time: "2 hours ago",
-  },
-];
+import axios from "axios";
+import { useChat } from "../../../context/ChatContext";
 
 function ChatRoom() {
+  const {
+    chats, setChats,
+    selectedChat, setSelectedChat,
+    messages, setMessages
+  } = useChat();
+
   const [search, setSearch] = useState("");
-  const [selectedChat, setSelectedChat] = useState(dummyChats[1]); // default: Lindsey Curtis
-  const [messages, setMessages] = useState(dummyMessages);
   const [messageInput, setMessageInput] = useState("");
+  const [managerId, setManagerId] = useState(null);
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to bottom on messages update
+  // جلب بيانات المانجر الحالي (من localStorage أو API حسب نظامك)
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    try {
+      const manager = JSON.parse(localStorage.getItem("user"));
+      if (manager && manager.id) setManagerId(manager.id);
+    } catch {
+      setManagerId(null);
     }
-  }, [messages, selectedChat]);
+  }, []);
 
-  // Send message handler
-  const handleSend = () => {
-    if (messageInput.trim()) {
-      setMessages([
-        ...messages,
+  // جلب قائمة الشاتات (users) عند تحميل الصفحة
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const res = await axios.get("http://127.0.0.1:8000/api/admin/chat-list/", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setChats(res.data);
+        // حدد أول شات تلقائيًا
+        if (res.data.length > 0 && !selectedChat) {
+          setSelectedChat(res.data[0]);
+        }
+      } catch {
+        setChats([]);
+      }
+    };
+    fetchChats();
+  }, []);
+
+  // جلب الرسائل عند تغيير الشات المحدد
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (!selectedChat) return;
+      try {
+        const token = localStorage.getItem("access");
+        const res = await axios.get(
+          `http://127.0.0.1:8000/api/admin/chat/messages/${selectedChat.id}/`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+        setMessages(res.data);
+      } catch {
+        setMessages([]);
+      }
+    };
+    fetchMessages();
+    // polling كل 5 ثواني
+    const interval = setInterval(fetchMessages, 5000);
+    return () => clearInterval(interval);
+  }, [selectedChat]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // إرسال رسالة
+  const handleSend = async () => {
+    if (!messageInput.trim() || !selectedChat) return;
+    try {
+      const token = localStorage.getItem("access");
+      await axios.post(
+        "http://127.0.0.1:8000/api/chat/send/",
         {
-          id: messages.length + 1,
-          sender: "me",
-          text: messageInput,
-          time: "Just now",
+          receiver: selectedChat.id,
+          message: messageInput,
         },
-      ]);
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setMessageInput("");
-    }
+      // جلب الرسائل بعد الإرسال
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/admin/chat/messages/${selectedChat.id}/`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      setMessages(res.data);
+    } catch {}
   };
 
-  // Filtered chats list by search
-  const filteredChats = dummyChats.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // بحث في قائمة الشاتات
+const filteredChats = (chats ?? []).filter(
+  (c) => c.name && c.name.toLowerCase().includes(search.toLowerCase())
+);
 
-  // On selecting a different chat
-  const handleSelectChat = (chat) => {
-    setSelectedChat(chat);
-    setMessages(dummyMessages); // For demo, always same messages
-  };
+  // جلب صورة البروفايل
+  const getUserAvatar = (user) =>
+  user.profile_image
+    ? user.profile_image
+    : "https://ui-avatars.com/api/?background=5956e9&color=fff&name=" +
+      encodeURIComponent(user.name || "User");
+      console.log("chats", chats);
 
   return (
     <div
@@ -218,10 +181,15 @@ function ChatRoom() {
               minHeight: 0,
             }}
           >
+            {filteredChats.length === 0 && (
+              <div style={{ color: "#aaa", textAlign: "center", marginTop: 40 }}>
+                No chats found
+              </div>
+            )}
             {filteredChats.map((chat) => (
               <div
                 key={chat.id}
-                onClick={() => handleSelectChat(chat)}
+                onClick={() => setSelectedChat(chat)}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -239,7 +207,7 @@ function ChatRoom() {
               >
                 <div style={{ position: "relative" }}>
                   <img
-                    src={chat.avatar}
+                    src={getUserAvatar(chat)}
                     alt={chat.name}
                     style={{
                       width: 44,
@@ -249,25 +217,14 @@ function ChatRoom() {
                       border: "2px solid #eee",
                     }}
                   />
-                  <span
-                    style={{
-                      position: "absolute",
-                      right: 2,
-                      bottom: 2,
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: chat.online ? "#0fc47e" : "#f6b93b",
-                      border: "2px solid #fff",
-                    }}
-                  />
+                  {/* يمكنك إضافة حالة الأونلاين لو النظام يدعمها */}
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: 15 }}>
                     {chat.name}
                   </div>
                   <div style={{ fontSize: 13, color: "#737373" }}>
-                    {chat.title}
+                    {chat.title || ""}
                   </div>
                 </div>
                 <div style={{ fontSize: 13, color: "#aaa" }}>
@@ -303,33 +260,37 @@ function ChatRoom() {
               justifyContent: "space-between",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-              <img
-                src={selectedChat.avatar}
-                alt={selectedChat.name}
-                style={{
-                  width: 44,
-                  height: 44,
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                  border: "2px solid #eee",
-                }}
-              />
-              <div>
-                <div style={{ fontWeight: 600, fontSize: 16 }}>
-                  {selectedChat.name}
-                </div>
-                <div
+            {selectedChat ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
+                <img
+                  src={getUserAvatar(selectedChat)}
+                  alt={selectedChat.name}
                   style={{
-                    fontSize: 13,
-                    color: "#737373",
-                    fontWeight: 400,
+                    width: 44,
+                    height: 44,
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    border: "2px solid #eee",
                   }}
-                >
-                  {selectedChat.title}
+                />
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 16 }}>
+                    {selectedChat.name}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: "#737373",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {selectedChat.title || ""}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div style={{ color: "#aaa" }}>No chat selected</div>
+            )}
             <div style={{ display: "flex", gap: 16 }}>
               <button title="Call" style={{ background: "none", border: "none", fontSize: 20, color: "#5956e9" }}>
                 <i className="bi bi-telephone"></i>
@@ -350,77 +311,60 @@ function ChatRoom() {
               gap: 16,
             }}
           >
-            {messages.map((msg) =>
-              msg.sender === "me" ? (
-                <div key={msg.id} style={{ alignSelf: "flex-end", maxWidth: "60%" }}>
-                  {msg.text && (
-                    <div
-                      style={{
-                        background: "#5956e9",
-                        color: "#fff",
-                        borderRadius: 12,
-                        padding: "10px 20px",
-                        fontWeight: 500,
-                        fontSize: 15,
-                        marginBottom: 4,
-                        wordBreak: "break-word",
-                        textAlign: "left",
-                      }}
-                    >
-                      {msg.text}
-                    </div>
-                  )}
-                  {msg.image && (
-                    <img
-                      src={msg.image}
-                      alt=""
-                      style={{
-                        display: "block",
-                        borderRadius: 12,
-                        maxWidth: 220,
-                        maxHeight: 130,
-                        marginBottom: 4,
-                      }}
-                    />
-                  )}
-                  <div style={{ color: "#888", fontSize: 12, textAlign: "right" }}>{msg.time}</div>
-                </div>
-              ) : (
-                <div key={msg.id} style={{ alignSelf: "flex-start", maxWidth: "60%" }}>
-                  {msg.text && (
-                    <div
-                      style={{
-                        background: "#f4f6fa",
-                        color: "#222",
-                        borderRadius: 12,
-                        padding: "10px 20px",
-                        fontWeight: 500,
-                        fontSize: 15,
-                        marginBottom: 4,
-                        wordBreak: "break-word",
-                        textAlign: "left",
-                      }}
-                    >
-                      {msg.text}
-                    </div>
-                  )}
-                  {msg.image && (
-                    <img
-                      src={msg.image}
-                      alt=""
-                      style={{
-                        display: "block",
-                        borderRadius: 12,
-                        maxWidth: 220,
-                        maxHeight: 130,
-                        marginBottom: 4,
-                      }}
-                    />
-                  )}
-                  <div style={{ color: "#888", fontSize: 12 }}>{selectedChat.name}, {msg.time}</div>
-                </div>
-              )
+            {selectedChat && messages.length === 0 && (
+              <div style={{ color: "#aaa", textAlign: "center", marginTop: 40 }}>
+                No messages yet with this user.
+              </div>
             )}
+            {selectedChat &&
+              messages.map((msg) => {
+                const isMe = msg.sender && msg.sender.id === managerId;
+                return (
+                  <div
+                    key={msg.id}
+                    style={{
+                      alignSelf: isMe ? "flex-end" : "flex-start",
+                      maxWidth: "60%",
+                    }}
+                  >
+                    {msg.message && (
+                      <div
+                        style={{
+                          background: isMe ? "#5956e9" : "#f4f6fa",
+                          color: isMe ? "#fff" : "#222",
+                          borderRadius: 12,
+                          padding: "10px 20px",
+                          fontWeight: 500,
+                          fontSize: 15,
+                          marginBottom: 4,
+                          wordBreak: "break-word",
+                          textAlign: "left",
+                        }}
+                      >
+                        {msg.message}
+                      </div>
+                    )}
+                    {msg.image && (
+                      <img
+                        src={msg.image}
+                        alt=""
+                        style={{
+                          display: "block",
+                          borderRadius: 12,
+                          maxWidth: 220,
+                          maxHeight: 130,
+                          marginBottom: 4,
+                        }}
+                      />
+                    )}
+                    <div style={{ color: "#888", fontSize: 12, textAlign: isMe ? "right" : "left" }}>
+                      {msg.created_at
+                        ? new Date(msg.created_at).toLocaleString()
+                        : ""}
+                    </div>
+                  </div>
+                );
+              })}
             <div ref={messagesEndRef}></div>
           </div>
           {/* Message input */}
@@ -454,6 +398,7 @@ function ChatRoom() {
                 padding: "12px 16px",
                 borderRadius: 8,
               }}
+              disabled={!selectedChat}
             />
             <button
               onClick={handleSend}
@@ -469,6 +414,7 @@ function ChatRoom() {
                 justifyContent: "center",
               }}
               title="Send"
+              disabled={!selectedChat || !messageInput.trim()}
             >
               <i className="bi bi-send"></i>
             </button>

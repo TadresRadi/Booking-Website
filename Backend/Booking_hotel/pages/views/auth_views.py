@@ -50,12 +50,12 @@ class LoginView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 refresh = RefreshToken.for_user(user)
-
                 try:
                     user_profile = UserProfile.objects.get(user=user)
                     profile_serializer = UserProfileSerializer(user_profile, context={'request': request})
                     profile_data = profile_serializer.data
                 except UserProfile.DoesNotExist:
+                    user_profile = None
                     profile_data = {}
 
                 data = {
@@ -63,6 +63,8 @@ class LoginView(APIView):
                     "user": {
                         "username": user.username,
                         "email": user.email,
+                        "is_admin": getattr(user_profile, "is_admin", False),
+                        "is_superuser": user.is_superuser,
                         **profile_data
                     },
                     "tokens": {
@@ -72,6 +74,7 @@ class LoginView(APIView):
                 }
                 return Response(data, status=status.HTTP_200_OK)
             return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

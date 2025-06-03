@@ -1,0 +1,87 @@
+.after-reservation-root {
+  min-height: 100vh;
+  background: #f7fafd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+}
+.after-reservation-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 38px 32px 32px 32px;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 4px 24px rgba(120,130,170,0.10);
+}
+
+.reservation-hotel-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 11px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 12px rgba(103,191,209,0.09);
+  background: #f4f8fb;
+}
+
+.hotel-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #374958;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.hotel-location {
+  color: #8d9aad;
+  font-size: 1.03rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.reservation-details {
+  background: #f6f8fa;
+  border-radius: 10px;
+  padding: 18px 14px;
+  margin-bottom: 12px;
+  font-size: 1.03rem;
+}
+.reservation-details > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.reservation-details .label {
+  color: #6a869b;
+  font-weight: 500;
+}
+.reservation-status {
+  text-align: center;
+  margin-top: 24px;
+}
+.pending {
+  display: inline-block;
+  background: #f4d47c;
+  color: #a07d1d;
+  font-weight: 600;
+  border-radius: 7px;
+  padding: 3px 18px;
+  font-size: 1.08rem;
+  margin-bottom: 9px;
+}
+.pending-msg {
+  color: #7d7d7d;
+  font-size: 1.04rem;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .after-reservation-card {
+    padding: 16px 7px;
+    max-width: 97vw;
+  }
+  .reservation-hotel-img {
+    width: 65px; height: 65px;
+  }
+}

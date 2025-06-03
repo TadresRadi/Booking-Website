@@ -1,53 +1,97 @@
+.setting-root {
+  background: #f8fafd;
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+.profile-card, .purchase-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(110, 130, 170, 0.07);
+}
+.purchase-card {
+  margin-bottom: 32px;
+}
 .image-wrapper {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   cursor: pointer;
+  margin-bottom: 5px;
 }
-
 .profile-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  border: 2.5px solid #e0e0e0;
+  background: #f4f8fb;
   transition: 0.3s ease;
 }
-
 .image-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(60, 66, 94, 0.45);
   opacity: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  transition: 0.3s ease;
-  font-weight: bold;
-  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 600; font-size: 16px;
+  transition: 0.2s;
 }
-
-.image-wrapper:hover .image-overlay {
-  opacity: 1;
-}
-
-.button-edit{
-  background-color: #67bfd1;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.image-wrapper:hover .image-overlay { opacity: 1; }
+.setting-label { font-size: 1.06rem; font-weight: 500; color: #466; }
+.value-text { font-size: 1.02rem; color: #222; font-weight: 400; }
+.simple-btn, .button-edit {
+  border-radius: 10px !important;
+  font-size: 0.97rem;
   padding: 5px 15px;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #fcfafa;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  border: none;
+  background: #edeef3 !important;
+  color: #222 !important;
+  box-shadow: 0 1px 3px rgba(90,110,150,0.03);
+  transition: background .15s, color .15s;
 }
-.button-edit:hover {
-  background-color: #f0f0f0;
-  color: #444;
+.simple-btn:hover, .button-edit:hover {
+  background: #dde !important;
+  color: #2a7 !important;
+}
+.fancy-input {
+  border-radius: 8px;
+  border: 1.2px solid #e7e7e7;
+  background: #f7fafd;
+  font-size: 1rem;
+  color: #333;
+  padding: 8px 11px;
+  box-shadow: 0 .5px 2px rgba(110,130,170,0.04);
+  transition: border 0.2s;
+}
+.fancy-input:focus {
+  border-color: #aaf;
+  background: #fff;
+}
+.simple-table {
+  background: #f9fafd;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.simple-table th, .simple-table td {
+  border: none;
+  font-size: 0.98rem;
+  padding: 9px 11px;
+}
+.simple-table thead th {
+  background: #f4f6fa;
+  font-weight: 600;
+  color: #556;
+  letter-spacing: .3px;
+}
+.simple-table tr {
+  transition: background 0.11s;
+}
+.simple-table tr:hover {
+  background: #f0f5fa;
+}
+@media (max-width: 768px) {
+  .profile-card, .purchase-card { padding: 11px !important; border-radius: 9px !important; }
+  .setting-root { padding: 0 2px !important; }
 }
