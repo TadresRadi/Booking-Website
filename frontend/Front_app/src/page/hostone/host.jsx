@@ -64,8 +64,12 @@ export function Add_property() {
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-center mb-3">
                     <h2 className={styles.cardTitle}>Hotel Details</h2>
-                    <span className="badge bg-info fs-5">Step 1</span>
-                  </div>
+<span
+  className="badge fs-5"
+  style={{ backgroundColor: '#78c4dd', color: 'white', padding: '0.5em 1em' }}
+>
+  Step 3
+</span>                </div>
 
                   <div className="row align-items-center">
                     <div className="col-md-7">
@@ -83,19 +87,20 @@ export function Add_property() {
                         )}
                         {hotelId && (
                           <>
-                            <button
-                              className={styles.saveButton}
-                              onClick={() => navigate('/add-hotel')}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className={`${styles.saveButton} btn-outline-primary`}
-                              onClick={handleAddAnotherHotel}
-                            >
-                              Add Another Hotel
-                            </button>
-                          </>
+                          <button
+    className={styles.saveButton}
+    onClick={() => navigate('/add-hotel')}
+  >
+    Edit
+  </button>
+  <button
+    className={`${styles.saveButton} ${styles.roomsPhotosButton} ${styles.addAnother}`}
+    onClick={handleAddAnotherRoom}
+  >
+    Add Another hotel
+  </button>
+</>
+                          
                         )}
                       </div>
                     </div>
@@ -135,8 +140,12 @@ export function Add_property() {
                     <Card.Body className="d-flex flex-column">
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <h3 className={styles.cardTitle}>Rooms</h3>
-                        <span className="badge bg-info fs-6">Step 2</span>
-                      </div>
+<span
+  className="badge fs-5"
+  style={{ backgroundColor: '#78c4dd', color: 'white', padding: '0.5em 1em' }}
+>
+  Step 2
+</span>                    </div>
 
                       <p className="mb-3 flex-grow-1 text-md-start text-center">
                         Add rooms, layouts, bed options, and rates.
@@ -159,12 +168,12 @@ export function Add_property() {
                             >
                               Edit
                             </button>
-                            <button
-                              className={`${styles.saveButton} ${styles.roomsPhotosButton} btn-outline-primary`}
-                              onClick={handleAddAnotherRoom}
-                            >
-                              Add Another Room
-                            </button>
+                          <button
+  className={`${styles.saveButton} ${styles.roomsPhotosButton} ${styles.addAnother}`}
+  onClick={handleAddAnotherRoom}
+>
+  Add Another Room
+</button>
                           </>
                         )}
                         {hotelId && !roomId && (
@@ -186,8 +195,12 @@ export function Add_property() {
                     <Card.Body className="d-flex flex-column">
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <h3 className={styles.cardTitle}>Photos</h3>
-                        <span className="badge bg-info fs-6">Step 3</span>
-                      </div>
+<span
+  className="badge fs-5"
+  style={{ backgroundColor: '#78c4dd', color: 'white', padding: '0.5em 1em' }}
+>
+  Step 3
+</span>     </div>
 
                       <p className="mb-3 flex-grow-1 text-md-start text-center">
                         Share photos of your hotel so guests know what to expect.

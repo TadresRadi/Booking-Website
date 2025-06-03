@@ -9,11 +9,11 @@ const axiosInstance = Axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access');
-    console.log("JWT Token:", token); // Log the token for debugging
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // const token = localStorage.getItem('access');
+    // console.log("JWT Token:", token); // Log the token for debugging
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
     return config;
   },
   (error) => Promise.reject(error)

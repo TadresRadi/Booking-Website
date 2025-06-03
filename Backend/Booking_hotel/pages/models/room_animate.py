@@ -19,3 +19,5 @@ class Room_animates(models.Model):
     animation_name = models.CharField(max_length=100, choices= ANIMATION_CHOICES)
     def __str__(self):
         return self.get_animation_name_display()
+
+
