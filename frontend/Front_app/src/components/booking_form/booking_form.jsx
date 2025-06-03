@@ -1,21 +1,31 @@
 import style from '../../page/booking/booking.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { useBooking } from '../../context/BookingContext.jsx';
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
-
-
-export default function BookingForm() {
+export default function BookingForm({ hotelData }) {
     const [showLogInAlert, setShowLogInAlert] = useState(false);
     const { bookingDetails, setBookingDetails } = useBooking();
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        address: "",
+        city: "",
+        zip_code: "",
+        country: "",
+        phone: ""
+    });
 
-    const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-    //  handel submit 
+
+    // handle submit
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access');
@@ -24,18 +34,23 @@ export default function BookingForm() {
             return;
         }
         setBookingDetails(formData);
-
-       
-
-       
+        localStorage.setItem('bookingUserData', JSON.stringify(formData));
+        // تحقق من وجود بيانات الفندق
+        if (!hotelData.hotel_name) {
+            alert("Hotel data is missing! Please go back and select your hotel/room.");
+            return;
+        }
+        // دمج بيانات الفورم مع الفندق لإرسالها لصفحة الدفع
+        const booking = {
+            ...hotelData,
+            ...formData,
+        };
+        navigate("/payment", { state: { booking } });
     };
 
     useEffect(() => {
         console.log("BookingDetails context updated:", bookingDetails);
     }, [bookingDetails]);
-
-
-
 
     return (
         <>
@@ -44,8 +59,8 @@ export default function BookingForm() {
                     position: 'fixed',
                     top: '20px',
                     zIndex: 9999,
-                    width: '50%'
-                    , left: '25%',
+                    width: '50%',
+                    left: '25%',
                 }}>
                     <Alert show={showLogInAlert} variant="danger" onClose={() => setShowLogInAlert(false)} dismissible>
                         <Alert.Heading>Login Required</Alert.Heading>
@@ -67,7 +82,6 @@ export default function BookingForm() {
                     <p>
                         Almost done! Just fill in the <span style={{ color: "red" }}>*</span> required info
                     </p>
-
                     <form onSubmit={handleSubmit}>
                         <div className={style.inputGroup}>
                             <label htmlFor="first_name" className={style.label}>
@@ -77,12 +91,11 @@ export default function BookingForm() {
                                 id="first_name"
                                 className={style.input}
                                 name="first_name"
-                                value={formData.first_name}
+                                value={formData.first_name || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="last_name" className={style.label}>
                                 Last name<span style={{ color: "red" }}>*</span>
@@ -91,12 +104,11 @@ export default function BookingForm() {
                                 id="last_name"
                                 className={style.input}
                                 name="last_name"
-                                value={formData.last_name}
+                                value={formData.last_name || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="email" className={style.label}>
                                 Email address<span style={{ color: "red" }}>*</span>
@@ -106,12 +118,11 @@ export default function BookingForm() {
                                 className={style.input}
                                 type="email"
                                 name="email"
-                                value={formData.email}
+                                value={formData.email || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="address" className={style.label}>
                                 Address<span style={{ color: "red" }}>*</span>
@@ -120,12 +131,11 @@ export default function BookingForm() {
                                 id="address"
                                 className={style.input}
                                 name="address"
-                                value={formData.address}
+                                value={formData.address || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="city" className={style.label}>
                                 City<span style={{ color: "red" }}>*</span>
@@ -134,12 +144,11 @@ export default function BookingForm() {
                                 id="city"
                                 className={style.input}
                                 name="city"
-                                value={formData.city}
+                                value={formData.city || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="zip_code" className={style.label}>
                                 Zip Code (optional)
@@ -148,11 +157,10 @@ export default function BookingForm() {
                                 id="zip_code"
                                 className={style.input}
                                 name="zip_code"
-                                value={formData.zip_code}
+                                value={formData.zip_code || ""}
                                 onChange={handleChange}
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="country" className={style.label}>
                                 Country/Region<span style={{ color: "red" }}>*</span>
@@ -161,12 +169,11 @@ export default function BookingForm() {
                                 id="country"
                                 className={style.select}
                                 name="country"
-                                value={formData.country}
+                                value={formData.country || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
                         <div className={style.inputGroup}>
                             <label htmlFor="phone" className={style.label}>
                                 Phone number<span style={{ color: "red" }}>*</span>
@@ -187,7 +194,7 @@ export default function BookingForm() {
                                     id="phone"
                                     className={style.input}
                                     name="phone"
-                                    value={formData.phone}
+                                    value={formData.phone || ""}
                                     onChange={handleChange}
                                     required
                                     style={{ borderRadius: "0 4px 4px 0" }}
@@ -195,12 +202,9 @@ export default function BookingForm() {
                             </div>
                             <p className={style.note}>Needed by the property to validate your booking</p>
                         </div>
-
                         <button type="submit" className={style.submitBtn}>
                             Confirm Booking
                         </button>
-
-
                     </form>
                 </div>
             </div>

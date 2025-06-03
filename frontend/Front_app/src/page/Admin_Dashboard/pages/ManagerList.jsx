@@ -1,61 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-// Dummy users data
-const dummyUsers = [
-  {
-    id: 1,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    name: "Mohamed Ali",
-    email: "mohamed.ali@email.com",
-    role: "manager",
-  },
-  {
-    id: 2,
-    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-    name: "Sara Youssef",
-    email: "sara.youssef@email.com",
-    role: "not manager",
-  },
-  {
-    id: 3,
-    avatar: "https://randomuser.me/api/portraits/men/56.jpg",
-    name: "Omar Hassan",
-    email: "omar.hassan@email.com",
-    role: "manager",
-  },
-  {
-    id: 4,
-    avatar: "https://randomuser.me/api/portraits/women/37.jpg",
-    name: "Nourhan Kamel",
-    email: "nourhan.kamel@email.com",
-    role: "not manager",
-  },
-];
-
-const ManagerList = () => {
-  const [users, setUsers] = useState(dummyUsers);
+const ManagerList = ({ currentUserId }) => {
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Filter users by email
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("access");
+      const res = await axios.get("http://127.0.0.1:8000/api/users/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (Array.isArray(res.data.results)) {
+        setUsers(res.data.results);
+      } else if (Array.isArray(res.data)) {
+        setUsers(res.data);
+      } else {
+        console.error("Unexpected response format:", res.data);
+        setUsers([]);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setError("Failed to load users. Please try again.");
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleToggleManagerStatus = async (id) => {
+    if (id === currentUserId) {
+      alert("لا يمكنك تغيير صلاحياتك الخاصة.");
+      return;
+    }
+    try {
+      const token = localStorage.getItem("access");
+      await axios.post(
+        `http://127.0.0.1:8000/api/users/${id}/toggle-manager-status/`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      fetchUsers();
+    } catch (error) {
+      console.error("Failed to toggle manager status:", error);
+      alert("فشل تحديث صلاحيات المستخدم. حاول مرة أخرى.");
+    }
+  };
+
   const filteredUsers = users.filter((u) =>
-    u.email.toLowerCase().includes(search.toLowerCase())
+    `${u.first_name} ${u.last_name} ${u.email}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
-
-  // Handler to set/remove admin
-  const handleSetAdmin = (id) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, role: "manager" } : u
-      )
-    );
-  };
-  const handleRemoveAdmin = (id) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, role: "not manager" } : u
-      )
-    );
-  };
 
   return (
     <div
@@ -63,7 +71,7 @@ const ManagerList = () => {
         width: "100%",
         minHeight: "calc(100vh - 60px)",
         background: "#f7f9fb",
-        padding: "40px 0"
+        padding: "40px 0",
       }}
     >
       <div
@@ -74,17 +82,17 @@ const ManagerList = () => {
           borderRadius: 16,
           boxShadow: "0 1px 2px rgba(0,0,0,0.06)",
           padding: 24,
-          border: "1.5px solid #ececec"
+          border: "1.5px solid #ececec",
         }}
       >
         <h5 className="mb-4" style={{ fontWeight: 700, fontSize: 18 }}>
           Manager List
         </h5>
-        {/* Search Bar */}
+
         <div className="d-flex justify-content-end mb-3">
           <input
             type="text"
-            placeholder="Search by email..."
+            placeholder="Search by name or email..."
             className="form-control"
             style={{
               maxWidth: 300,
@@ -95,89 +103,138 @@ const ManagerList = () => {
               background: "#fafbfc",
             }}
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div style={{ overflowX: "auto" }}>
-          <table className="table align-middle" style={{ minWidth: 800, width: "100%" }}>
-            <thead>
-              <tr>
-                <th style={{ minWidth: 160 }}>Users</th>
-                <th style={{ minWidth: 230 }}>Email</th>
-                <th style={{ minWidth: 120 }}>Role</th>
-                <th style={{ minWidth: 120 }}>Set As</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((u) => (
-                <tr key={u.id}>
-                  <td>
-                    <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <img src={u.avatar} alt="" style={{ width: 38, height: 38, borderRadius: "50%", objectFit: "cover", border: "2px solid #eee" }} />
-                      <span style={{ fontWeight: 500 }}>{u.name}</span>
-                    </span>
-                  </td>
-                  <td>
-                    <span style={{ fontSize: "0.96em", color: "#444" }}>{u.email}</span>
-                  </td>
-                  <td>
-                    <span
-                      style={{
-                        background: u.role === "manager" ? "#e8f9f1" : "#f0f0f0",
-                        color: u.role === "manager" ? "#23b26d" : "#888",
-                        borderRadius: 8,
-                        fontSize: 13,
-                        padding: "4px 16px",
-                        fontWeight: 500,
-                        letterSpacing: 1,
-                        display: "inline-block",
-                      }}
-                    >
-                      {u.role}
-                    </span>
-                  </td>
-                  <td>
-                    <div style={{ display: "flex", gap: 6 }}>
-                      <button
-                        className="btn btn-primary btn-sm"
-                        style={{
-                          background: "#5956e9",
-                          border: "none",
-                          borderRadius: 8,
-                          opacity: u.role === "manager" ? 0.7 : 1,
-                          pointerEvents: u.role === "manager" ? "none" : "auto",
-                        }}
-                        disabled={u.role === "manager"}
-                        onClick={() => handleSetAdmin(u.id)}
-                      >
-                        Set as admin
-                      </button>
-                      <button
-                        className="btn btn-outline-danger btn-sm"
-                        style={{
-                          borderRadius: 8,
-                          opacity: u.role === "not manager" ? 0.7 : 1,
-                          pointerEvents: u.role === "not manager" ? "none" : "auto",
-                        }}
-                        disabled={u.role === "not manager"}
-                        onClick={() => handleRemoveAdmin(u.id)}
-                      >
-                        Remove from admin
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {filteredUsers.length === 0 && (
+
+        {error && (
+          <div style={{ color: "red", marginBottom: 10, textAlign: "center" }}>
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div style={{ textAlign: "center", padding: 20 }}>Loading users...</div>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table
+              className="table align-middle"
+              style={{ minWidth: 800, width: "100%" }}
+            >
+              <thead>
                 <tr>
-                  <td colSpan={4} style={{ textAlign: "center", color: "#aaa" }}>No users found.</td>
+                  <th style={{ minWidth: 160 }}>Users</th>
+                  <th style={{ minWidth: 230 }}>Email</th>
+                  <th style={{ minWidth: 120 }}>Role</th>
+                  <th style={{ minWidth: 120 }}>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((u) => (
+                    <tr key={u.id}>
+                      <td>
+                        <span
+                          style={{ display: "flex", alignItems: "center", gap: 10 }}
+                        >
+                          <img
+                            src={u.profile_image || "https://via.placeholder.com/38"}
+                            alt=""
+                            style={{
+                              width: 38,
+                              height: 38,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                              border: "2px solid #eee",
+                            }}
+                          />
+                          <span style={{ fontWeight: 500 }}>
+                            {u.first_name} {u.last_name}
+                          </span>
+                        </span>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: "0.96em", color: "#444" }}>
+                          {u.email}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          style={{
+                            background: u.is_superuser ? "#e8f9f1" : "#f0f0f0",
+                            color: u.is_superuser ? "#23b26d" : "#888",
+                            borderRadius: 8,
+                            fontSize: 13,
+                            padding: "4px 16px",
+                            fontWeight: 500,
+                            letterSpacing: 1,
+                            display: "inline-block",
+                          }}
+                        >
+                          {u.is_superuser ? "super user" : "not super user"}
+                        </span>
+                      </td>
+                      <td>
+                        {/* زرار set as super user (للي مش سوبر يوزر) */}
+                        <button
+                          className="btn btn-primary btn-sm"
+                          style={{
+                            borderRadius: 8,
+                            background: "#5956e9",
+                            border: "none",
+                            color: "#fff",
+                            marginRight: 8,
+                          }}
+                          onClick={() => handleToggleManagerStatus(u.id)}
+                          disabled={u.is_superuser || u.id === currentUserId}
+                          title={
+                            u.is_superuser
+                              ? "هذا المستخدم هو سوبر يوزر بالفعل"
+                              : u.id === currentUserId
+                              ? "لا يمكنك تغيير صلاحياتك الخاصة"
+                              : ""
+                          }
+                        >
+                          Set as super user
+                        </button>
+
+                        {/* زرار remove from super user (للي سوبر يوزر) */}
+                        <button
+                          className="btn btn-outline-danger btn-sm"
+                          style={{
+                            borderRadius: 8,
+                            background: "transparent",
+                            border: "1px solid #dc3545",
+                            color: "#dc3545",
+                          }}
+                          onClick={() => handleToggleManagerStatus(u.id)}
+                          disabled={!u.is_superuser || u.id === currentUserId}
+                          title={
+                            !u.is_superuser
+                              ? "هذا المستخدم ليس سوبر يوزر"
+                              : u.id === currentUserId
+                              ? "لا يمكنك تغيير صلاحياتك الخاصة"
+                              : ""
+                          }
+                        >
+                          Remove from super user
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} style={{ textAlign: "center", color: "#aaa" }}>
+                      No users found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-      {/* Responsive */}
+
       <style>
         {`
           @media (max-width: 900px) {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import style from './booking.module.css';
-
 import { IoLocationSharp } from "react-icons/io5";
 import Rating from '@mui/material/Rating';
 import { useLocation } from 'react-router-dom';
@@ -9,27 +8,26 @@ import BookingForm from '../../components/booking_form/booking_form.jsx';
 import { useBooking } from '../../context/BookingContext.jsx';
 
 
+
+
 export function Booking() {
   const location = useLocation();
   const [bookingDetails, setBookingDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { checkIn ,setCheckIn, checkOut,setCheckOut, setNights, setTotalPrice } = useBooking();
-  // Load check-in/out dates from localStorage on mount
+
   useEffect(() => {
     const storedCheckIn = localStorage.getItem("checkIn");
     const storedCheckOut = localStorage.getItem("checkOut");
-
     if (storedCheckIn) setCheckIn(new Date(storedCheckIn));
     if (storedCheckOut) setCheckOut(new Date(storedCheckOut));
     if (storedCheckIn && storedCheckOut) {
       const nights = Math.ceil((new Date(storedCheckOut) - new Date(storedCheckIn)) / (1000 * 60 * 60 * 24));
       setNights(nights);
-      
     }
   }, []);
 
-  // Fetch booking details when location.state changes
   useEffect(() => {
     const fetchBookingDetails = async () => {
       const { hotelId, selectedRoom, totalPrice } = location.state || {};
@@ -38,7 +36,6 @@ export function Booking() {
         setLoading(false);
         return;
       }
-
       setLoading(true);
       try {
         const response = await axiosInstance.get(`/hoteldetailesForBooking/${hotelId}`);
@@ -54,11 +51,10 @@ export function Booking() {
       }
       setLoading(false);
     };
-
     fetchBookingDetails();
   }, [location.state]);
 
-  // Calculate nights between check-in and check-out
+  // حساب عدد الليالي
   const getNumberOfNights = () => {
     if (checkIn && checkOut) {
       const diffTime = Math.abs(checkOut - checkIn);
@@ -67,11 +63,8 @@ export function Booking() {
     }
     return 0;
   };
-  
   const nights = useMemo(() => getNumberOfNights(), [checkIn, checkOut]);
 
- 
-  // Show loading spinner or message while loading
   if (loading) {
     return (
       <div className={style.bookingContainer}>
@@ -79,8 +72,6 @@ export function Booking() {
       </div>
     );
   }
-
-  // If no booking details, show message
   if (!bookingDetails) {
     return (
       <div className={style.bookingContainer}>
@@ -89,7 +80,7 @@ export function Booking() {
     );
   }
 
-  // Safe destructuring with fallback
+  // البيانات التي سترسل للفورم وللدفع
   const {
     hotel_name,
     star_rating,
@@ -97,9 +88,22 @@ export function Booking() {
     reviews_count,
     selectedRoom = {},
     totalPrice,
+    image
   } = bookingDetails;
 
   setTotalPrice(totalPrice || selectedRoom.total || 0);
+
+  // تجهيز بيانات الفندق والغرفة لإرسالها للفورم (props)
+  const hotelData = {
+    hotel_name,
+    hotelLocation,
+    image,
+    room_type: selectedRoom.type,
+    room_count: selectedRoom.count,
+    checkIn: checkIn ? checkIn.toLocaleDateString() : "",
+    checkOut: checkOut ? checkOut.toLocaleDateString() : "",
+    totalPrice: selectedRoom.total || totalPrice || 0,
+  };
 
   return (
     <div className={style.bookingContainer}>
@@ -143,21 +147,15 @@ export function Booking() {
             <p>{checkOut ? checkOut.toLocaleDateString() : "N/A"}</p>
           </div>
         </div>
-
         <p className="fs-4">Total length of stay:</p>
         <p className="fs-6 fw-bold">
            {checkIn && checkOut && checkIn.getTime() === checkOut.getTime()
               ? "1 Night (Dayuse)"
               : `${nights} ${nights === 1 ? "Night" : "Nights"}`
-            }
-            
-           
+        }
         </p>
-
-        {/* booking rooms and price summary */}
         <div className={style.summaryCard}>
           <h2 className={style.summaryTitle}>You Will Book</h2>
-
           <div className={style.summaryItem}>
             <span>Selected Room:</span>
             <span className="fs-6 fw-bold">
@@ -166,7 +164,6 @@ export function Booking() {
                 : "N/A"}
             </span>
           </div>
-
           <div className={style.summaryItem}>
             <span className="fs-4 fw-bold">Total Price:</span>
             <span className="fs-4 fw-bold text-danger">
@@ -176,9 +173,8 @@ export function Booking() {
         </div>
       </div>
 
-      {/* information input */}
-      <BookingForm></BookingForm>
-      
+      {/* مرر بيانات الفندق والغرفة للفورم كـ props */}
+      <BookingForm hotelData={hotelData} />
     </div>
   );
 }

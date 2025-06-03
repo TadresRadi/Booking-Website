@@ -18,9 +18,12 @@ import Footer from './components/footer/footer';
 import Fav from './page/fav/fav.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Booking } from './page/booking/booking.jsx';
-
 import RegisterSuccess from './page/register/RegisterSuccess.jsx';
 import { UserProvider } from './context/UserContext.jsx';
+import PaymentForm from './page/payment/PaymentForm.jsx';
+import AfterReservation from './page/AfterReservation/AfterReservation.jsx';
+import FloatingChatButton from './components/Floating_Chat_Button/FloatingChatButton.jsx';
+import { ChatProvider } from './context/ChatContext.jsx';
 
 // Admin Dashboard Imports
 import AdminSidebar from "./page/Admin_Dashboard/components/Sidebar.jsx";
@@ -31,6 +34,8 @@ import UsersList from "./page/Admin_Dashboard/pages/UsersList.jsx";
 import TransactionsList from "./page/Admin_Dashboard/pages/TransactionsList.jsx";
 import ChatRoom from "./page/Admin_Dashboard/pages/ChatRoom.jsx";
 import ManagerList from "./page/Admin_Dashboard/pages/ManagerList.jsx"; 
+import AdminLogin from "./page/Admin_Dashboard/pages/AdminLogin.jsx";
+import { AdminProvider } from './page/Admin_Dashboard/components/admincontext.jsx';
 import EditCombinedStepper from './page/EditHotelStepper/edithotelstepper.jsx';
 import HostDashboard from './page/HostDashboard/HostHome/hostdashboard.jsx';
 import HostBookings from './page/HostDashboard/HostBooking/hostbooking.jsx';
@@ -46,27 +51,35 @@ function App() {
   const showSearchBar = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/search";
   const hideHeaderFooter = location.pathname.startsWith("/admin");
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminLogin = location.pathname === "/admin/login";
 
   return (
+    <ChatProvider>
     <Provider store={store}>
       <UserProvider>
         <div className="app-container">
           {isAdminRoute ? (
-            // Admin Layout
-            <>
-              <AdminSidebar />
-              <AdminTopbar userName="TadresRadi" />
-              <div style={{ marginLeft: 260, marginTop: 60, padding: 24 }}>
-                <Routes>
-                  <Route path="/admin/dashboard" element={<A_Dashboard />} />
-                  <Route path="/admin/user-profile" element={<UserProfile />} />
-                  <Route path="/admin/users-list" element={<UsersList />} />
-                  <Route path="/admin/transactions-list" element={<TransactionsList />} />
-                  <Route path="/admin/chat-room" element={<ChatRoom />} />
-                  <Route path="/admin/manager-list" element={<ManagerList />} />
-                </Routes>
-              </div>
-            </>
+            isAdminLogin ? (
+              
+              <Routes>
+                <Route path="/admin/login" element={<AdminLogin />} />
+              </Routes>
+            ) : (
+              <AdminProvider>
+                <AdminSidebar />
+                <AdminTopbar userName="TadresRadi" />
+                <div style={{ marginLeft: 260, marginTop: 60, padding: 24 }}>
+                  <Routes>
+                    <Route path="/admin/dashboard" element={<A_Dashboard />} />
+                    <Route path="/admin/user-profile" element={<UserProfile />} />
+                    <Route path="/admin/users-list" element={<UsersList />} />
+                    <Route path="/admin/transactions-list" element={<TransactionsList />} />
+                    <Route path="/admin/chat-room" element={<ChatRoom />} />
+                    <Route path="/admin/manager-list" element={<ManagerList />} />
+                  </Routes>
+                </div>
+              </AdminProvider>
+            )
           ) : (
             // Normal User Layout
             <>
@@ -89,19 +102,22 @@ function App() {
                 <Route path="/register-success" element={<RegisterSuccess />} />
                 <Route path="/settings" element={<Setting />} />
                 <Route path="/booking" element={<Booking />} />
+                <Route path="/payment" element={<PaymentForm />} />
+                <Route path="/after-reservation" element={<AfterReservation />} />
                 <Route path='edit-property' element={<EditCombinedStepper />} />
                 <Route path='host-dashboard' element={<HostDashboard/>} />
                 <Route path="host-properties" element={<Properties />} />
                 <Route path="/edit-hotel/:hotelId" element={<AddHotelForm />} />
                 <Route path="host-booking" element={<HostBookings />} />
-                
               </Routes>
+                <FloatingChatButton />
               {!hideHeaderFooter && <Footer />}
             </>
           )}
         </div>
       </UserProvider>
     </Provider>
+    </ChatProvider>
   );
 }
 
