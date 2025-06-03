@@ -66,7 +66,7 @@ export function Details() {
       <div className={`${styles["selestroom"]} container`}>
         <p className={styles["paragrh1"]}>Select your room</p>
         <p className={styles["paragrh2"]}>
-          {details.rooms?.length || 0} type{(details.rooms?.length || 0) !== 1 ? 's' : ''} of room
+        available room
         </p>
       </div>
 

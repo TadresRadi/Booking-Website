@@ -11,6 +11,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     dispatch(fetchFavorites());
   }, [dispatch]);
+  console.log("الفنادق المفضلة:", favoriteHotels);
 
   return (
     <div style={styles.pageWrapper}>

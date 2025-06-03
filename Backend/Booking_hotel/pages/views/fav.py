@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from pages.models.hotel import Hotel
 from pages.models.fav import Favorite
-from pages.serializers.fav import FavoriteHotelSerializer, FavoriteHotelInputSerializer
+from pages.serializers.fav import FavoriteHotelSerializer, FavoriteHotelInputSerializer,serializers
 
 
 @api_view(['GET'])
@@ -12,9 +12,8 @@ from pages.serializers.fav import FavoriteHotelSerializer, FavoriteHotelInputSer
 def list_favorites(request):
     user = request.user
     favorites = Favorite.objects.filter(user=user)
-    serializer = FavoriteHotelSerializer(favorites, many=True)
+    serializer = FavoriteHotelSerializer(favorites, many=True, context={'request': request})
     return Response(serializer.data)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])  # فقط للمستخدمين المسجلين

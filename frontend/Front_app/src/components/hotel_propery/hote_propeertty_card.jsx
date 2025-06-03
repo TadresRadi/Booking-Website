@@ -7,6 +7,14 @@ import LocationCard from '../location/location';
 
 export default function Hotel_card({ hotel }) {
   if (!hotel) return <p>Loading hotel details...</p>;
+  const getRatingLabel = (score) => {
+  if (score <= 3) return "Poor";
+  if (score <= 5) return "Good";
+  if (score <= 7) return "Very Good";
+  if (score <= 9) return "Excellent";
+  return "Outstanding";
+};
+
 
   return (
     <div className={`${styles["mainmain"]} container`}>
@@ -48,15 +56,16 @@ export default function Hotel_card({ hotel }) {
           <div className={`${styles["rate"]} mt-4`}>
             <Card className={styles["Card_rate"]}>
               <Card.Body>
-                <blockquote className="blockquote mb-0">
-                  <p>{hotel.star_rating}/10 Very Good</p>
-                  <div>
-                    {[...Array(hotel.star_rating)].map((_, index) => (
-                      <FaStar key={index} color="gold" size={20} />
-                    ))}
-                  </div>
-                </blockquote>
-              </Card.Body>
+  <blockquote className="blockquote mb-0">
+    <p>{hotel.star_rating}/10 - {getRatingLabel(hotel.star_rating)}</p>
+    <div>
+      {[...Array(Math.floor(hotel.star_rating))].map((_, index) => (
+        <FaStar key={index} color="gold" size={20} />
+      ))}
+    </div>
+  </blockquote>
+</Card.Body>
+
             </Card>
           </div>
 
