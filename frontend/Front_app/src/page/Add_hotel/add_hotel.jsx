@@ -8,6 +8,7 @@ import { facilityMap } from '../../assets/hoteldata/facilityMap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useHotel } from '../../context/HotelContext';
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 const amenities = [
   { name: 'restaurant', label: 'Restaurant' },
@@ -54,19 +55,15 @@ const AddHotelForm = () => {
 
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     if (paramsHotelId) setHotelId(paramsHotelId);
-    
     return () => {
       if (paramsHotelId) setHotelId(null);
     };
   }, [paramsHotelId, setHotelId]);
 
-  
   useEffect(() => {
     if (!hotelId) {
-      
       setFormData({
         hotel_name: '',
         description: '',
@@ -83,7 +80,6 @@ const AddHotelForm = () => {
         facilities: [],
       });
     } else {
-      // edit mode: fetch data
       const token = localStorage.getItem('access');
       axios.get(`http://localhost:8000/api/hotel/${hotelId}/`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -136,8 +132,59 @@ const AddHotelForm = () => {
     });
   };
 
+
+  const timeToMinutes = (t) => {
+    if (!t) return null;
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check-in and Check-out validation
+    const ciFrom = timeToMinutes(formData.check_in_from);
+    const ciUntil = timeToMinutes(formData.check_in_until);
+    const coFrom = timeToMinutes(formData.check_out_from);
+    const coUntil = timeToMinutes(formData.check_out_until);
+
+    if (ciFrom == null || ciUntil == null || coFrom == null || coUntil == null) {
+      await Swal.fire({
+        title: "Missing Data",
+        text: "Please fill all check-in and check-out times.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
+      return;
+    }
+    if (ciFrom >= ciUntil) {
+      await Swal.fire({
+        title: "Invalid Check-in Time",
+        text: "Check-in 'from' time must be before 'until' time.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+      return;
+    }
+    if (coFrom >= coUntil) {
+      await Swal.fire({
+        title: "Invalid Check-out Time",
+        text: "Check-out 'from' time must be before 'until' time.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+      return;
+    }
+    if (ciUntil > coFrom) {
+      await Swal.fire({
+        title: "Invalid Time Range",
+        text: "Check-in 'until' time must be before or equal to check-out 'from' time.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+      return;
+    }
+
     const token = localStorage.getItem('access');
     try {
       if (hotelId) {
@@ -150,7 +197,11 @@ const AddHotelForm = () => {
             },
           }
         );
-        alert("Hotel updated successfully!");
+        await Swal.fire({
+          title: "Hotel updated successfully!",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
       } else {
         const res = await axios.post(
           'http://localhost:8000/api/add-hotel/',
@@ -164,14 +215,24 @@ const AddHotelForm = () => {
         const newHotelId = res.data?.id;
         if (!newHotelId) throw new Error("Hotel ID missing");
         setHotelId(newHotelId);
-        alert("Hotel added successfully!");
+        await Swal.fire({
+          title: "Hotel added successfully!",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
       }
       navigate('/add-property');
     } catch (error) {
       console.error(error.response?.data || error.message);
-      alert("An error occurred while saving the hotel");
+      await Swal.fire({
+        title: "Error",
+        text: "An error occurred while saving the hotel",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
+ 
 
   return (
     <div className={styles.hotelFormBackground}>

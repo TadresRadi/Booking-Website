@@ -1,9 +1,12 @@
 
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './add_room.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useHotel } from "../../context/HotelContext";
+import Swal from 'sweetalert2';
 
 const allFeatures = [
   { id: 1, name: 'clothes_rack', label: 'Clothes Rack' },
@@ -25,14 +28,12 @@ const AddRoomForm = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  
   const { hotelId: contextHotelId, roomId: contextRoomId, setRoomId, setHotelId } = useHotel();
   const hotelIdFromUrl = queryParams.get('hotelId');
   const roomIdFromUrl = queryParams.get('roomId');
   const hotelId = contextHotelId || hotelIdFromUrl;
   const roomId = contextRoomId || roomIdFromUrl;
 
-  
   useEffect(() => {
     if (!contextHotelId && hotelIdFromUrl) {
       setHotelId(hotelIdFromUrl);
@@ -41,8 +42,6 @@ const AddRoomForm = () => {
       setRoomId(roomIdFromUrl);
     }
   }, [contextHotelId, hotelIdFromUrl, setHotelId, contextRoomId, roomIdFromUrl, setRoomId]);
-
- 
 
   const [formData, setFormData] = useState({
     hotel: hotelId ? Number(hotelId) : '',
@@ -106,12 +105,22 @@ const AddRoomForm = () => {
     e.preventDefault();
 
     if (!formData.room_facilities.length) {
-      alert("Please select at least one feature.");
+      await Swal.fire({
+        title: "Missing Feature",
+        text: "Please select at least one feature.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
       return;
     }
 
     if (!formData.hotel || isNaN(Number(formData.hotel))) {
-      alert("Hotel ID is missing! Please select a hotel first.");
+      await Swal.fire({
+        title: "Missing Data",
+        text: "Hotel ID is missing! Please select a hotel first.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
       return;
     }
 
@@ -129,7 +138,12 @@ const AddRoomForm = () => {
             },
           }
         );
-        alert("Room updated successfully!");
+        await Swal.fire({
+          title: "Success",
+          text: "Room updated successfully!",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
         navigate(`/add-property?hotelId=${formData.hotel}&roomId=${roomId}`);
       } else {
         const res = await axios.post(
@@ -143,15 +157,30 @@ const AddRoomForm = () => {
           }
         );
         setRoomId(res.data.id);
-        alert("Room added successfully!");
+        await Swal.fire({
+          title: "Success",
+          text: "Room added successfully!",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
         navigate(`/add-property?hotelId=${formData.hotel}&roomId=${res.data.id}`);
       }
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data) {
-        alert("Error: " + JSON.stringify(error.response.data));
+        await Swal.fire({
+          title: "Error",
+          text: "Error: " + JSON.stringify(error.response.data),
+          icon: "error",
+          confirmButtonText: "OK"
+        });
       } else {
-        alert("An error occurred while saving the room.");
+        await Swal.fire({
+          title: "Error",
+          text: "An error occurred while saving the room.",
+          icon: "error",
+          confirmButtonText: "OK"
+        });
       }
     }
   };
@@ -178,7 +207,7 @@ const AddRoomForm = () => {
           <div className={`col-11 col-md-10 col-lg-7 p-4 shadow ${styles.roomFormCard}`}>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h3 className="text-center mb-0 flex-grow-1">{roomId ? 'Edit Your Room' : 'Add Your Room'}</h3>
-              {roomId && (
+              {/* {roomId && (
                 <button
                   type="button"
                   className={`${styles.saveButton} btn-outline-primary ms-2`}
@@ -187,7 +216,7 @@ const AddRoomForm = () => {
                 >
                   Add Another Room
                 </button>
-              )}
+              )} */}
             </div>
 
             <form onSubmit={handleSubmit}>

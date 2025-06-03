@@ -1,10 +1,12 @@
 
 
+
 import React, { useState, useEffect } from "react";
 import styles from "./add_images.module.css";
 import axios from "axios";
 import { useHotel } from "../../context/HotelContext.jsx";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function AddPhotosPage() {
   const { hotelId, roomId } = useHotel();
@@ -16,7 +18,6 @@ export default function AddPhotosPage() {
 
   const navigate = useNavigate();
 
-  
   const token = localStorage.getItem("access");
 
   useEffect(() => {
@@ -39,8 +40,15 @@ export default function AddPhotosPage() {
   }, [hotelId, roomId, token]);
 
   const handleDeletePhoto = async (photoId, type) => {
-    const confirmed = window.confirm("Are you sure you want to delete this photo?");
-    if (!confirmed) return;
+    const confirmed = await Swal.fire({
+      title: "Are you sure?",
+      text: "Are you sure you want to delete this photo?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel"
+    });
+    if (!confirmed.isConfirmed) return;
 
     try {
       await axios.delete(`http://localhost:8000/api/delete-image/${photoId}/`, {
@@ -53,16 +61,31 @@ export default function AddPhotosPage() {
         setExistingRoomPhotos((prev) => prev.filter((photo) => photo.id !== photoId));
       }
 
-      alert("🗑️ Photo deleted successfully.");
+      await Swal.fire({
+        title: "Deleted!",
+        text: "🗑️ Photo deleted successfully.",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
     } catch (error) {
       console.error("Error deleting photo:", error);
-      alert("❌ Failed to delete photo.");
+      await Swal.fire({
+        title: "Error",
+        text: "❌ Failed to delete photo.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
   const handleSubmit = async () => {
     if (!hotelId || !roomId) {
-      alert("Hotel ID or Room ID is missing!");
+      await Swal.fire({
+        title: "Missing Data",
+        text: "Hotel ID or Room ID is missing!",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
       return;
     }
 
@@ -70,7 +93,12 @@ export default function AddPhotosPage() {
     const totalRoomImages = roomFiles.length + existingRoomPhotos.length;
 
     if (totalHotelImages < 5 || totalRoomImages < 5) {
-      alert("Please upload at least 5 photos for hotel and room.");
+      await Swal.fire({
+        title: "Not enough photos",
+        text: "Please upload at least 5 photos for hotel and room.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
       return;
     }
 
@@ -104,11 +132,21 @@ export default function AddPhotosPage() {
         });
       }
 
-      alert("✅ Images uploaded successfully!");
+      await Swal.fire({
+        title: "Success",
+        text: "✅ Images uploaded successfully!",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
       navigate("/add-property");
     } catch (error) {
       console.error("❌ Error while uploading images:", error);
-      alert("An error occurred while uploading images.");
+      await Swal.fire({
+        title: "Error",
+        text: "An error occurred while uploading images.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
@@ -282,3 +320,4 @@ function RoomPhotosUploader({
     </div>
   );
 }
+

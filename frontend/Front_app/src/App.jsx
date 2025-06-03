@@ -60,7 +60,7 @@ function App() {
         <div className="app-container">
           {isAdminRoute ? (
             isAdminLogin ? (
-              // لو على صفحة اللوجن فقط، اعرض صفحة اللوجن بدون سايدبار أو توب بار
+              
               <Routes>
                 <Route path="/admin/login" element={<AdminLogin />} />
               </Routes>

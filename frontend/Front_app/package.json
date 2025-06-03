@@ -43,6 +43,7 @@
     "react-select": "^5.10.1",
     "reactflow": "^11.11.4",
     "recharts": "^2.15.3",
+    "sweetalert2": "^11.22.0",
     "swiper": "^11.2.8"
   },
   "devDependencies": {

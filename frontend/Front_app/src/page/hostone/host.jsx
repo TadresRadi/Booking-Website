@@ -43,17 +43,6 @@ export function Add_property() {
     <div className={styles.bodylike}>
       <div className={styles.bgGlass}></div>
       <div className="position-relative" style={{ zIndex: 1, minHeight: "100vh" }}>
-        {/* زرار view hotel في أعلى الصفحة */}
-        <div className="container py-2">
-          <div className="d-flex justify-content-end mb-3">
-            <button
-              className={styles.saveButton}
-              onClick={() => navigate('/host-properties')}
-            >
-              View Hotel
-            </button>
-          </div>
-        </div>
 
         <div className="container py-5">
 
@@ -249,6 +238,8 @@ export function Add_property() {
               </div>
             </div>
           </div>
+
+
 
         </div>
       </div>

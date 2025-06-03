@@ -12,6 +12,11 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
+
+  const showViewHotel =
+    location.pathname === "/add-property" ||
+    location.pathname.startsWith("/add-property/");
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -56,6 +61,8 @@ const Header = () => {
         <div className="logo" onClick={() => navigateTo("/home")}>
           Diva
         </div>
+      
+
 
         <div className="auth-buttons">
           <button className="login-btn" onClick={() => navigateTo("/fav")}>
@@ -64,6 +71,15 @@ const Header = () => {
           <button className="login-btn" onClick={() => navigateTo("/home")}>
             Home
           </button>
+
+          {showViewHotel && (
+            <button
+                className="login-btn view-hotel-btn"
+              onClick={() => navigateTo("/host-properties")}
+            >
+             View Hotel
+            </button>
+   )}
 
           {!userData || !userData.username ? (
             <>
