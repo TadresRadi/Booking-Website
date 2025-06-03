@@ -7,11 +7,11 @@
   background-position: center;
   min-height: 100vh;
   padding: 40px 0;
-  position: relative;       /* أضفنا هذا السطر */
-  overflow: hidden;         /* أضفنا هذا السطر */
+  position: relative;
+  overflow: hidden;       
 }
 
-/* تأثير البلور على صورة الخلفية */
+
 .container::before {
   content: "";
   position: absolute;
@@ -35,7 +35,7 @@
   padding: 40px;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
   border-top: 8px solid #78c4dd;
-  position: relative;       /* أضفنا هذا السطر */
+  position: relative;      
   z-index: 1;               /* أضفنا هذا السطر */
 }
 
