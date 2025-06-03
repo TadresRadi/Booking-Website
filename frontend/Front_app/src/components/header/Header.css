@@ -125,3 +125,24 @@
 .create-account-btn{
   text-decoration: none;
 }
+
+
+.view-hotel-btn {
+  background-color: #67bfd1;
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #fcfafa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  margin-right: 10px;
+}
+
+.view-hotel-btn:hover {
+  background-color: #f0f0f0;
+  color: #444;
+}
