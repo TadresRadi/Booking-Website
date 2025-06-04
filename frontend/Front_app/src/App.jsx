@@ -40,6 +40,7 @@ import EditCombinedStepper from './page/EditHotelStepper/edithotelstepper.jsx';
 import HostDashboard from './page/HostDashboard/HostHome/hostdashboard.jsx';
 import HostBookings from './page/HostDashboard/HostBooking/hostbooking.jsx';
 import Properties from './page/HostDashboard/Properties/properties.jsx';
+import ReviewsPage from './page/HostDashboard/review/review.jsx';
 
 
 
@@ -109,6 +110,7 @@ function App() {
                 <Route path="host-properties" element={<Properties />} />
                 <Route path="/edit-hotel/:hotelId" element={<AddHotelForm />} />
                 <Route path="host-booking" element={<HostBookings />} />
+                   <Route path="/reviews" element={<ReviewsPage />} />
               </Routes>
                 <FloatingChatButton />
               {!hideHeaderFooter && <Footer />}

@@ -1,20 +1,23 @@
 import React from "react";
 import styles from "./hostdashboard.module.css";
+import { Link } from "react-router-dom";
 
 export default function HostDashboard() {
   return (
     <div className={styles.dashboardRoot}>
      
       <header className={styles.header}>
-        <div className={styles.logo}>Bookingio</div>
         <nav>
-          <a>Dashboard</a>
-          <a>Properties</a>
-          <a>Bookings</a>
-          <a>Messages</a>
-          <a>Reviews</a>
-          <a>Settings</a>
+          <Link to="/host-dashboard">Dashboard</Link>
+          <Link to="/host-properties" >Properties</Link>
+          <Link to="/host-booking">Bookings</Link>
+          <Link to="/reviews">Reviews</Link>
+        
         </nav>
+
+
+
+         
         <div className={styles.avatar}></div>
       </header>
 
@@ -29,7 +32,7 @@ export default function HostDashboard() {
           <div className={styles.statsBar}>
             <StatCard label="Properties" value={4} icon="🏠" />
             <StatCard label="Bookings" value={12} icon="📅" />
-            <StatCard label="Revenue" value="18,700 EGP" icon="💰" />
+            <StatCard label="Revenue" value="700 EGP" icon="💰" />
             <StatCard label="Reviews" value={21} icon="⭐" />
           </div>
         </section>

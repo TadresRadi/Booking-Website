@@ -1,49 +1,64 @@
+.bodylike {
+  position: relative;
+  min-height: 120vh;
+  overflow: hidden;
+}
+
+.bgGlass {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 120vh;
+  background-image: url('../../assets/natural.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) brightness(0.92) saturate(110%);
+  z-index: 0;
+  padding-bottom: 200px;
+}
+
 .cardCustom {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255,255,255,0.75) !important;
   border-radius: 20px !important;
   padding: 2rem !important;
   border-top: 8px solid #78c4dd !important;
   background-color: #fff5f3 !important;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1) !important;
-
+  box-shadow: 0 20px 30px rgba(0,0,0,0.1) !important;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* لتوزيع المحتوى بين الأعلى والأسفل */
   height: 100%;
-  max-width: 400px;
-  margin: auto;
 }
 
 .cardTitle {
-  color:  #5d8b9b!important;
+  color: #78c4dd !important;
   text-align: center;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   margin-top: 0;
-  font-size: 1.8rem;
 }
 
-/* حاوية الأزرار لتوزيعها أفقياً */
-.buttonGroup {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-/* تصميم الزر */
 .saveButton {
   background: linear-gradient(135deg, #78c4dd, #78c4dd);
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.12rem 0.6rem;
   border-radius: 7px;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border: none;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  font-size: 1rem;
-  cursor: pointer;
+  width: auto;
+  min-width: 100px;
+  height: 40px;
+  font-size: 0.90rem;
+  display: block;
+
   text-align: center;
+}
+
+
+.hotelButton {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .saveButton:hover {
@@ -51,42 +66,6 @@
   transform: translateY(-3px);
 }
 
-/* زر مختلف لو تريده مميز (اختياري) */
 .roomsPhotosButton {
-  background-color: #f78f7f;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 7px;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  font-size: 1rem;
-  cursor: pointer;
-  flex: 1;
+  margin-top: 50px; 
 }
-
-.roomsPhotosButton:hover {
-  background-color: #d36253;
-  transform: translateY(-3px);
-}
-.bodylike{
-background-image: url('/natural.jpg');
-}
-
-.addAnother {
-background-color: #78c4dd ;
-  color: white !important;
-height: 50px;
-width: 100px !important;
-
-}
-
-.addAnother:hover {
-  background-color: #78c4dd !important;
-  color: white !important;
-  transform: translateY(-3px);
-  min-width: 150px;
-
-}
-

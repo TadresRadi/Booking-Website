@@ -36,12 +36,11 @@ export default function Properties() {
     <div className={styles.propertiesRoot}>
       <header className={styles.header}>
         <nav>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/host-dashboard">Dashboard</Link>
           <Link to="/host-properties" className={styles.active}>Properties</Link>
           <Link to="/host-booking">Bookings</Link>
-          <Link to="/messages">Messages</Link>
           <Link to="/reviews">Reviews</Link>
-          <Link to="/settings">Settings</Link>
+   
         </nav>
         <div className={styles.avatar}></div>
       </header>
@@ -165,8 +164,6 @@ function PropertyCard({ property, onDeleteSuccess }) {
           {property.street_address} · {property.city}
         </div>
         <div className={styles.propertyQuickStats}>
-          <span>Rooms: <b>{property.rooms?.length || 0}</b></span>
-          <span>Bookings: <b>{property.reviews_count || 0}</b></span>
           <span>
             Rating: <b>{property.star_rating || "-"}</b> <span style={{ fontSize: "1em" }}>⭐</span>
           </span>
@@ -174,7 +171,6 @@ function PropertyCard({ property, onDeleteSuccess }) {
       </div>
       <div className={styles.propertyBtns}>
         <button className={styles.propertyBtn} onClick={handleEdit}>Edit</button>
-        <button className={styles.propertyBtn} onClick={handleView}>View</button>
         <button
           className={`${styles.propertyBtn} ${styles.deleteBtn}`}
           onClick={handleDelete}

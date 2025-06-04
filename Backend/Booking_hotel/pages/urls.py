@@ -45,6 +45,7 @@ from pages.views.photo_views import delete_image
 from pages.views.hotel_views import HotelDetail
 from pages.views.hotel_views import UserHotelsListView
 from pages.views.rooms_views import RoomViewSet
+from pages.views.host_rooms  import HostRoomsView
 router = DefaultRouter()
 router.register(r'rooms', RoomViewSet, basename='rooms')
 
@@ -93,6 +94,7 @@ urlpatterns = [
     path("delete-image/<int:image_id>/", delete_image, name="delete-image"),
     path('hotel-detail/<int:pk>/', HotelDetail.as_view()),
     path('my-hotels/', UserHotelsListView.as_view(), name='user-hotels'),
+    path('host/<int:host_id>/rooms/', HostRoomsView.as_view(), name='host-rooms'),
 
     
 
